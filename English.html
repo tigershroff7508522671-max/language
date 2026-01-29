@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Languages.com | Learning Dashboard</title>
+
+<style>
+:root {
+    --primary: #f0df22;
+    --primary-dark: #0a150e;
+    --bg: #f0fdf4;
+    --card: #ffffff;
+    --text: #064e3b;
+    --muted: #6b7280;
+    --locked: #e5e7eb;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* ---------- TOP BAR ---------- */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.topbar {
+    max-width: 1400px;
+    margin: auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.brand-logo {
+    width: 38px;
+    height: 38px;
+    background: white;
+    color: var(--primary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+}
+
+.page-title {
+    font-size: 18px;
+    font-weight: 500;
+    opacity: 0.95;
+}
+
+.datetime {
+    background: rgba(255,255,255,0.18);
+    padding: 8px 14px;
+    border-radius: 12px;
+    text-align: right;
+    font-size: 13px;
+    backdrop-filter: blur(6px);
+}
+
+.datetime .time {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .page-title { display: none; }
+}
+
+/* ---------- PROGRESS ---------- */
+.progress-container {
+    width: 90%;
+    max-width: 900px;
+    background: #fff9c4;
+    border-radius: 999px;
+    margin: 25px auto 10px;
+    height: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--primary);
+    color: black;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: center;
+    transition: width 0.4s ease;
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 15px;
+}
+
+/* ---------- MAIN ---------- */
+main {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* ---------- LESSON GRID ---------- */
+.lesson-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 18px;
+}
+
+.lesson-logo {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    border-top: 4px solid var(--primary);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.lesson-logo span {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+}
+
+.lesson-logo:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* ---------- LESSON VIEW ---------- */
+.lesson-container {
+    display: none;
+    background: var(--card);
+    padding: 25px;
+    margin-top: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.phrase {
+    margin-bottom: 12px;
+    padding: 12px;
+    background: #fffde7;
+    border-radius: 12px;
+  
+
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.phrase .english {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.phrase .russian {
+    color: #f0df22;
+    font-size: 15px;
+    margin-top: 2px;
+}
+
+.phrase .pronunciation {
+    color: #6b7280;
+    font-style: italic;
+    margin-top: 2px;
+}
+
+.speak-btn {
+    background: var(--primary);
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background 0.3s;
+}
+.speak-btn:hover { background: var(--primary-dark); color:white; }
+
+.back-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 30px;
+    background: var(--primary);
+    color: black;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.back-btn:hover {
+    background: var(--primary-dark);
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="topbar">
+        <div class="brand">
+            <div class="brand-logo">L</div>
+            Languages.com
+        </div>
+
+        <div class="page-title">
+            Russian Learning Dashboard
+        </div>
+
+        <div class="datetime">
+            <div id="dayDate"></div>
+            <div class="time" id="timeNow"></div>
+        </div>
+    </div>
+</header>
+
+<!-- PROGRESS -->
+<div class="progress-container">
+    <div class="progress-bar" id="progressBar">0%</div>
+</div>
+<div class="progress-text" id="progressText">0 of 100 lessons completed</div>
+
+<main>
+    <div class="lesson-grid" id="lessonsGrid"></div>
+
+    <div class="lesson-container" id="lessonContent">
+        <h2 id="lessonTitle"></h2>
+        <div id="lessonPhrases"></div>
+        <a href="#" class="back-btn" id="backBtn">← Back to Lessons</a>
+    </div>
+</main>
+
+<script>
+
+const lessonsData = {
+  1: [
+   {english:"A", hindi:"ए"}, {english:"B", hindi:"बी"}, {english:"C", hindi:"सी"}, {english:"D", hindi:"डी"}, {english:"E", hindi:"ई"}, {english:"F", hindi:"एफ"}, {english:"G", hindi:"जी"}, {english:"H", hindi:"एच"}, {english:"I", hindi:"आई"}, {english:"J", hindi:"जे"}, {english:"K", hindi:"के"}, {english:"L", hindi:"एल"}, {english:"M", hindi:"एम"}, {english:"N", hindi:"एन"}, {english:"O", hindi:"ओ"}, {english:"P", hindi:"पी"}, {english:"Q", hindi:"क्यू"}, {english:"R", hindi:"आर"}, {english:"S", hindi:"एस"}, {english:"T", hindi:"टी"}, {english:"U", hindi:"यू"}, {english:"V", hindi:"वी"}, {english:"W", hindi:"डब्ल्यू"}, {english:"X", hindi:"एक्स"}, {english:"Y", hindi:"वाई"}, {english:"Z", hindi:"ज़ेड"} ],
+  
+  2: [
+    {english:"Hi!", hindi:"नमस्ते!"}, {english:"Hi, how are you?", hindi:"नमस्ते, आप कैसे हैं?"}, {english:"Hi, I’m Vikas.", hindi:"नमस्ते, मैं विकास हूँ।"}, {english:"Hi, nice to meet you.", hindi:"नमस्ते, आपसे मिलकर खुशी हुई।"}, {english:"Hi, good morning.", hindi:"नमस्ते, सुप्रभात।"}, {english:"Hi, good evening.", hindi:"नमस्ते, शुभ संध्या।"}, {english:"Hi, what’s up?", hindi:"नमस्ते, कैसे हो?"}, {english:"Hi, welcome!", hindi:"नमस्ते, स्वागत है!"}, {english:"Hi, my friend!", hindi:"नमस्ते, मेरे मित्र!"}, {english:"Hi, long time no see.", hindi:"नमस्ते, लंबे समय बाद मिल रहे हैं।"} ]
+
+ ,
+    3: [
+    {english:"I want the other one.", hindi:"मैं दूसरे वाला लेना चाहता हूँ।"},
+    {english:"The other person is here.", hindi:"दूसरा व्यक्ति यहाँ है।"},
+    {english:"I like the other bag.", hindi:"मुझे दूसरी बैग पसंद है।"},
+    {english:"The other room is big.", hindi:"दूसरा कमरा बड़ा है।"},
+    {english:"I will take the other one.", hindi:"मैं दूसरा वाला लूंगा।"},
+    {english:"The other car is faster.", hindi:"दूसरी कार तेज़ है।"},
+    {english:"I met the other team.", hindi:"मैं दूसरी टीम से मिला।"},
+    {english:"The other choice is better.", hindi:"दूसरा विकल्प बेहतर है।"},
+    {english:"She went to the other shop.", hindi:"वह दूसरी दुकान गई।"},
+    {english:"We stayed in the other hotel.", hindi:"हम दूसरे होटल में रुके।"}
+],
+
+4: [  // Word: Good / अच्छा
+    {english:"This is good.", hindi:"यह अच्छा है।"},
+    {english:"The food is good.", hindi:"खाना अच्छा है।"},
+    {english:"You did a good job.", hindi:"तुमने अच्छा काम किया।"},
+    {english:"Good morning!", hindi:"सुप्रभात!"},
+    {english:"Good night.", hindi:"शुभ रात्रि।"},
+    {english:"That’s a good idea.", hindi:"यह एक अच्छा विचार है।"},
+    {english:"I feel good.", hindi:"मैं अच्छा महसूस कर रहा हूँ।"},
+    {english:"This is a good place.", hindi:"यह एक अच्छी जगह है।"},
+    {english:"The weather is good.", hindi:"मौसम अच्छा है।"},
+    {english:"Good luck!", hindi:"शुभकामनाएँ!"}
+],
+
+5: [  // Word: Bad / बुरा
+    {english:"This is bad.", hindi:"यह बुरा है।"},
+    {english:"The food is bad.", hindi:"खाना बुरा है।"},
+    {english:"I feel bad.", hindi:"मैं बुरा महसूस कर रहा हूँ।"},
+    {english:"The weather is bad.", hindi:"मौसम बुरा है।"},
+    {english:"This is a bad idea.", hindi:"यह एक बुरा विचार है।"},
+    {english:"He is a bad person.", hindi:"वह एक बुरा व्यक्ति है।"},
+    {english:"I had a bad day.", hindi:"मेरा दिन बुरा था।"},
+    {english:"The situation is bad.", hindi:"स्थिति बुरी है।"},
+    {english:"Bad luck!", hindi:"अभाग्य!"},
+    {english:"This movie is bad.", hindi:"यह फिल्म बुरी है।"}
+],
+
+6: [  // Word: Want / चाहना
+    {english:"I want water.", hindi:"मैं पानी चाहता हूँ।"},
+    {english:"She wants a new bag.", hindi:"वह एक नई बैग चाहती है।"},
+    {english:"I want to go home.", hindi:"मैं घर जाना चाहता हूँ।"},
+    {english:"He wants more food.", hindi:"वह अधिक खाना चाहता है।"},
+    {english:"Do you want tea?", hindi:"क्या आप चाय चाहते हैं?"},
+    {english:"I want to sleep.", hindi:"मैं सोना चाहता हूँ।"},
+    {english:"They want help.", hindi:"वे मदद चाहते हैं।"},
+    {english:"I want a new phone.", hindi:"मैं नया फोन चाहता हूँ।"},
+    {english:"She wants to study.", hindi:"वह पढ़ाई करना चाहती है।"},
+    {english:"We want to travel.", hindi:"हम यात्रा करना चाहते हैं।"}
+],
+
+7: [  // Word: Need / आवश्यकता
+    {english:"I need help.", hindi:"मुझे मदद चाहिए।"},
+    {english:"You need water.", hindi:"तुम्हें पानी चाहिए।"},
+    {english:"We need to go now.", hindi:"हमें अब जाना चाहिए।"},
+    {english:"He needs money.", hindi:"उसे पैसे चाहिए।"},
+    {english:"She needs rest.", hindi:"उसे आराम चाहिए।"},
+    {english:"I need a new phone.", hindi:"मुझे नया फोन चाहिए।"},
+    {english:"Do you need anything?", hindi:"क्या आपको कुछ चाहिए?"},
+    {english:"We need food.", hindi:"हमें खाना चाहिए।"},
+    {english:"They need guidance.", hindi:"उन्हें मार्गदर्शन चाहिए।"},
+    {english:"I need to study.", hindi:"मुझे पढ़ाई करनी चाहिए।"}
+],
+
+8: [  // Word: Go / जाना
+    {english:"I go to school.", hindi:"मैं स्कूल जाता हूँ।"},
+    {english:"He goes to work.", hindi:"वह काम पर जाता है।"},
+    {english:"We go home.", hindi:"हम घर जाते हैं।"},
+    {english:"I want to go there.", hindi:"मैं वहाँ जाना चाहता हूँ।"},
+    {english:"Go now!", hindi:"अब जाओ!"},
+    {english:"They go together.", hindi:"वे साथ जाते हैं।"},
+    {english:"She goes fast.", hindi:"वह जल्दी जाती है।"},
+    {english:"I go shopping.", hindi:"मैं खरीदारी करने जाता हूँ।"},
+    {english:"Go straight.", hindi:"सीधा जाओ।"},
+    {english:"We go every day.", hindi:"हम रोज़ जाते हैं।"}
+],
+
+9: [  // Word: Come / आना
+    {english:"I will come tomorrow.", hindi:"मैं कल आऊँगा।"},
+    {english:"She comes every day.", hindi:"वह हर दिन आती है।"},
+    {english:"Come here.", hindi:"यहाँ आओ।"},
+    {english:"They will come soon.", hindi:"वे जल्द ही आएँगे।"},
+    {english:"He comes late.", hindi:"वह देर से आता है।"},
+    {english:"Please come in.", hindi:"कृपया अंदर आएँ।"},
+    {english:"We come together.", hindi:"हम साथ आते हैं।"},
+    {english:"Come quickly!", hindi:"जल्दी आओ!"},
+    {english:"I come from India.", hindi:"मैं भारत से आता हूँ।"},
+    {english:"Will you come?", hindi:"क्या आप आएँगे?"}
+],
+
+10: [  // Word: See / देखना
+    {english:"I see the car.", hindi:"मैं कार देखता हूँ।"},
+    {english:"She sees me.", hindi:"वह मुझे देखती है।"},
+    {english:"Do you see it?", hindi:"क्या आप इसे देख रहे हैं?"},
+    {english:"We see the sunset.", hindi:"हम सूर्यास्त देखते हैं।"},
+    {english:"I can see everything.", hindi:"मैं सब कुछ देख सकता हूँ।"},
+    {english:"He sees a bird.", hindi:"वह एक पक्षी देखता है।"},
+    {english:"I want to see you.", hindi:"मैं आपको देखना चाहता हूँ।"},
+    {english:"They see the problem.", hindi:"वे समस्या देखते हैं।"},
+    {english:"I saw a movie.", hindi:"मैंने एक फिल्म देखी।"},
+    {english:"Did you see that?", hindi:"क्या आपने यह देखा?"}
+],
+
+11: [  // Word: Eat / खाना
+    {english:"I eat breakfast.", hindi:"मैं नाश्ता करता हूँ।"},
+    {english:"She eats quickly.", hindi:"वह जल्दी खाती है।"},
+    {english:"Do you want to eat?", hindi:"क्या आप खाना चाहते हैं?"},
+    {english:"We eat together.", hindi:"हम साथ में खाते हैं।"},
+    {english:"I like to eat fruit.", hindi:"मुझे फल खाना पसंद है।"},
+    {english:"He eats lunch.", hindi:"वह दोपहर का खाना खाता है।"},
+    {english:"I don’t want to eat.", hindi:"मैं खाना नहीं चाहता।"},
+    {english:"They eat dinner.", hindi:"वे रात का खाना खाते हैं।"},
+    {english:"I ate too much.", hindi:"मैंने बहुत खा लिया।"},
+    {english:"What do you eat?", hindi:"आप क्या खाते हैं?"}
+],
+
+12: [  // Word: Drink / पीना
+    {english:"I drink water.", hindi:"मैं पानी पीता हूँ।"},
+    {english:"She drinks tea.", hindi:"वह चाय पीती है।"},
+    {english:"Do you want to drink?", hindi:"क्या आप पीना चाहते हैं?"},
+    {english:"We drink coffee.", hindi:"हम कॉफ़ी पीते हैं।"},
+    {english:"He drinks milk.", hindi:"वह दूध पीता है।"},
+    {english:"I need to drink.", hindi:"मुझे पीना चाहिए।"},
+    {english:"They drink juice.", hindi:"वे जूस पीते हैं।"},
+    {english:"I drank too much.", hindi:"मैंने बहुत पी लिया।"},
+    {english:"Drink slowly.", hindi:"धीरे-धीरे पीओ।"},
+    {english:"What are you drinking?", hindi:"आप क्या पी रहे हैं?"}
+],
+
+13: [  // Word: Go / जाना / यात्रा
+    {english:"I go to school every day.", hindi:"मैं हर दिन स्कूल जाता हूँ।"},
+    {english:"She goes to the market.", hindi:"वह बाजार जाती है।"},
+    {english:"Do you go to work?", hindi:"क्या आप काम पर जाते हैं?"},
+    {english:"We go for a walk.", hindi:"हम टहलने जाते हैं।"},
+    {english:"He goes to the gym.", hindi:"वह जिम जाता है।"},
+    {english:"I go shopping on weekends.", hindi:"मैं सप्ताहांत में खरीदारी करता हूँ।"},
+    {english:"They go together.", hindi:"वे साथ में जाते हैं।"},
+    {english:"I like to go there.", hindi:"मुझे वहाँ जाना पसंद है।"},
+    {english:"Go straight ahead.", hindi:"सीधे आगे जाओ।"},
+    {english:"He goes every morning.", hindi:"वह हर सुबह जाता है।"}
+],
+
+14: [  // Word: Come / आना / पहुँचना
+    {english:"I will come soon.", hindi:"मैं जल्द आऊँगा।"},
+    {english:"She comes every morning.", hindi:"वह हर सुबह आती है।"},
+    {english:"Come to my house.", hindi:"मेरे घर आओ।"},
+    {english:"They come together.", hindi:"वे साथ में आते हैं।"},
+    {english:"He came late.", hindi:"वह देर से आया।"},
+    {english:"I come from India.", hindi:"मैं भारत से आता हूँ।"},
+    {english:"Will you come tomorrow?", hindi:"क्या आप कल आएँगे?"},
+    {english:"Please come in.", hindi:"कृपया अंदर आएँ।"},
+    {english:"I am coming now.", hindi:"मैं अब आ रहा हूँ।"},
+    {english:"They came yesterday.", hindi:"वे कल आए थे।"}
+],
+
+15: [  // Word: Look / देखना
+    {english:"Look at this.", hindi:"इसे देखो।"},
+    {english:"She looks happy.", hindi:"वह खुश लग रही है।"},
+    {english:"I look at the sky.", hindi:"मैं आकाश देखता हूँ।"},
+    {english:"Look over there.", hindi:"वहाँ देखो।"},
+    {english:"They are looking for you.", hindi:"वे तुम्हें ढूँढ रहे हैं।"},
+    {english:"Look carefully.", hindi:"ध्यान से देखो।"},
+    {english:"I looked yesterday.", hindi:"मैंने कल देखा।"},
+    {english:"She is looking at the map.", hindi:"वह नक्शा देख रही है।"},
+    {english:"Look this way.", hindi:"इस दिशा में देखो।"},
+    {english:"He looked happy.", hindi:"वह खुश दिख रहा था।"}
+],
+
+16: [  // Word: Take / लेना
+    {english:"I take a pen.", hindi:"मैं एक पेन लेता हूँ।"},
+    {english:"Take this book.", hindi:"यह किताब लो।"},
+    {english:"He takes money.", hindi:"वह पैसे लेता है।"},
+    {english:"Take care!", hindi:"ख्याल रखना!"},
+    {english:"They took the bus.", hindi:"उन्होंने बस ली।"},
+    {english:"I will take it.", hindi:"मैं इसे ले लूँगा।"},
+    {english:"Take your time.", hindi:"अपना समय लो।"},
+    {english:"She takes notes.", hindi:"वह नोट्स लेती है।"},
+    {english:"I took it yesterday.", hindi:"मैंने इसे कल लिया।"},
+    {english:"Take this with you.", hindi:"इसे अपने साथ ले जाओ।"}
+],
+
+17: [  // Word: Give / देना
+    {english:"Give me water.", hindi:"मुझे पानी दो।"},
+    {english:"She gives a gift.", hindi:"वह एक उपहार देती है।"},
+    {english:"Give it to him.", hindi:"इसे उसे दो।"},
+    {english:"I give money to charity.", hindi:"मैं चैरिटी को पैसे देता हूँ।"},
+    {english:"They give flowers.", hindi:"वे फूल देते हैं।"},
+    {english:"Give me a minute.", hindi:"मुझे एक मिनट दो।"},
+    {english:"He gives advice.", hindi:"वह सलाह देता है।"},
+    {english:"I gave it yesterday.", hindi:"मैंने इसे कल दिया।"},
+    {english:"Give generously.", hindi:"उदारता से दो।"},
+    {english:"She gives me a smile.", hindi:"वह मुझे मुस्कान देती है।"}
+],
+
+18: [  // Word: Know / जानना
+    {english:"I know the answer.", hindi:"मुझे उत्तर पता है।"},
+    {english:"She knows him.", hindi:"वह उसे जानती है।"},
+    {english:"Do you know this place?", hindi:"क्या आप इस जगह को जानते हैं?"},
+    {english:"We know the rules.", hindi:"हमें नियम पता हैं।"},
+    {english:"I don’t know.", hindi:"मुझे नहीं पता।"},
+    {english:"He knows everything.", hindi:"वह सब कुछ जानता है।"},
+    {english:"I know her name.", hindi:"मुझे उसका नाम पता है।"},
+    {english:"They know the way.", hindi:"वे रास्ता जानते हैं।"},
+    {english:"Do you know him well?", hindi:"क्या आप उसे अच्छी तरह जानते हैं?"},
+    {english:"I know how to do it.", hindi:"मुझे यह करने का तरीका पता है।"}
+],
+
+19: [  // Word: Work / काम
+    {english:"I work every day.", hindi:"मैं हर दिन काम करता हूँ।"},
+    {english:"She works in an office.", hindi:"वह ऑफिस में काम करती है।"},
+    {english:"He works hard.", hindi:"वह मेहनत करता है।"},
+    {english:"Do you work today?", hindi:"क्या आप आज काम कर रहे हैं?"},
+    {english:"We work together.", hindi:"हम साथ में काम करते हैं।"},
+    {english:"I like my work.", hindi:"मुझे मेरा काम पसंद है।"},
+    {english:"They work at a school.", hindi:"वे स्कूल में काम करते हैं।"},
+    {english:"I started work early.", hindi:"मैंने जल्दी काम शुरू किया।"},
+    {english:"She finished work late.", hindi:"उसने देर से काम खत्म किया।"},
+    {english:"He is looking for work.", hindi:"वह काम ढूंढ रहा है।"}
+],
+
+20: [  // Word: Play / खेलना
+    {english:"I play football.", hindi:"मैं फुटबॉल खेलता हूँ।"},
+    {english:"She plays piano.", hindi:"वह पियानो बजाती है।"},
+    {english:"Do you want to play?", hindi:"क्या आप खेलना चाहते हैं?"},
+    {english:"We play together.", hindi:"हम साथ में खेलते हैं।"},
+    {english:"He plays video games.", hindi:"वह वीडियो गेम खेलता है।"},
+    {english:"I played yesterday.", hindi:"मैंने कल खेला।"},
+    {english:"She likes to play outside.", hindi:"उसे बाहर खेलना पसंद है।"},
+    {english:"They play every weekend.", hindi:"वे हर सप्ताहांत खेलते हैं।"},
+    {english:"I play the guitar.", hindi:"मैं गिटार बजाता हूँ।"},
+    {english:"He plays chess.", hindi:"वह शतरंज खेलता है।"}
+],
+
+21: [  // Word: Read / पढ़ना
+    {english:"I read a book.", hindi:"मैं एक किताब पढ़ता हूँ।"},
+    {english:"She reads newspapers.", hindi:"वह समाचार पत्र पढ़ती है।"},
+    {english:"Do you read this?", hindi:"क्या आप इसे पढ़ते हैं?"},
+    {english:"We read together.", hindi:"हम साथ में पढ़ते हैं।"},
+    {english:"He reads every day.", hindi:"वह हर दिन पढ़ता है।"},
+    {english:"I read yesterday.", hindi:"मैंने कल पढ़ा।"},
+    {english:"She likes to read.", hindi:"उसे पढ़ना पसंद है।"},
+    {english:"They read the instructions.", hindi:"वे निर्देश पढ़ते हैं।"},
+    {english:"Read carefully.", hindi:"ध्यान से पढ़ो।"},
+    {english:"I am reading now.", hindi:"मैं अब पढ़ रहा हूँ।"}
+],
+
+22: [  // Word: Write / लिखना
+    {english:"I write a letter.", hindi:"मैं एक पत्र लिखता हूँ।"},
+    {english:"She writes emails.", hindi:"वह ईमेल लिखती है।"},
+    {english:"Do you write often?", hindi:"क्या आप अक्सर लिखते हैं?"},
+    {english:"We write together.", hindi:"हम साथ में लिखते हैं।"},
+    {english:"He writes fast.", hindi:"वह जल्दी लिखता है।"},
+    {english:"I wrote yesterday.", hindi:"मैंने कल लिखा।"},
+    {english:"She likes to write.", hindi:"उसे लिखना पसंद है।"},
+    {english:"They write reports.", hindi:"वे रिपोर्ट लिखते हैं।"},
+    {english:"Write your name.", hindi:"अपना नाम लिखो।"},
+    {english:"I am writing now.", hindi:"मैं अब लिख रहा हूँ।"}
+],
+
+23: [  // Word: Sleep / सोना
+    {english:"I sleep eight hours.", hindi:"मैं आठ घंटे सोता हूँ।"},
+    {english:"She sleeps well.", hindi:"वह अच्छी तरह सोती है।"},
+    {english:"Do you want to sleep?", hindi:"क्या आप सोना चाहते हैं?"},
+    {english:"We sleep early.", hindi:"हम जल्दी सोते हैं।"},
+    {english:"He sleeps a lot.", hindi:"वह बहुत सोता है।"},
+    {english:"I slept yesterday.", hindi:"मैंने कल सोया।"},
+    {english:"She likes to sleep.", hindi:"उसे सोना पसंद है।"},
+    {english:"They sleep together.", hindi:"वे साथ में सोते हैं।"},
+    {english:"Sleep well!", hindi:"शुभ रात्रि!"},
+    {english:"I am sleeping now.", hindi:"मैं अब सो रहा हूँ।"}
+],
+
+24: [  // Word: Buy / खरीदना
+    {english:"I buy fruits.", hindi:"मैं फल खरीदता हूँ।"},
+    {english:"She buys clothes.", hindi:"वह कपड़े खरीदती है।"},
+    {english:"Do you want to buy?", hindi:"क्या आप खरीदना चाहते हैं?"},
+    {english:"We buy together.", hindi:"हम साथ में खरीदते हैं।"},
+    {english:"He buys gifts.", hindi:"वह उपहार खरीदता है।"},
+    {english:"I bought this yesterday.", hindi:"मैंने इसे कल खरीदा।"},
+    {english:"She likes to buy new things.", hindi:"उसे नई चीज़ें खरीदना पसंद है।"},
+    {english:"They buy every week.", hindi:"वे हर हफ्ते खरीदते हैं।"},
+    {english:"Buy carefully.", hindi:"ध्यान से खरीदो।"},
+    {english:"I am buying now.", hindi:"मैं अब खरीद रहा हूँ।"}
+],
+
+25: [  // Word: Sell / बेचना
+    {english:"I sell fruits.", hindi:"मैं फल बेचता हूँ।"},
+    {english:"She sells clothes.", hindi:"वह कपड़े बेचती है।"},
+    {english:"Do you want to sell?", hindi:"क्या आप बेचना चाहते हैं?"},
+    {english:"We sell together.", hindi:"हम साथ में बेचते हैं।"},
+    {english:"He sells gifts.", hindi:"वह उपहार बेचता है।"},
+    {english:"I sold this yesterday.", hindi:"मैंने इसे कल बेचा।"},
+    {english:"She likes to sell things.", hindi:"उसे चीज़ें बेचना पसंद है।"},
+    {english:"They sell every week.", hindi:"वे हर हफ्ते बेचते हैं।"},
+    {english:"Sell carefully.", hindi:"ध्यान से बेचो।"},
+    {english:"I am selling now.", hindi:"मैं अब बेच रहा हूँ।"}
+],
+
+26: [  // Word: Wait / इंतजार करना
+    {english:"I wait for the bus.", hindi:"मैं बस का इंतजार करता हूँ।"},
+    {english:"She waits every day.", hindi:"वह हर दिन इंतजार करती है।"},
+    {english:"Do you wait here?", hindi:"क्या आप यहाँ इंतजार करते हैं?"},
+    {english:"We wait together.", hindi:"हम साथ में इंतजार करते हैं।"},
+    {english:"He waited yesterday.", hindi:"उसने कल इंतजार किया।"},
+    {english:"Wait a minute.", hindi:"एक मिनट इंतजार करो।"},
+    {english:"They wait patiently.", hindi:"वे धैर्यपूर्वक इंतजार करते हैं।"},
+    {english:"I am waiting now.", hindi:"मैं अब इंतजार कर रहा हूँ।"},
+    {english:"Wait for me.", hindi:"मेरा इंतजार करो।"},
+    {english:"She waits at the station.", hindi:"वह स्टेशन पर इंतजार करती है।"}
+],
+
+27: [  // Word: Run / दौड़ना
+    {english:"I run every morning.", hindi:"मैं हर सुबह दौड़ता हूँ।"},
+    {english:"She runs fast.", hindi:"वह तेज़ दौड़ती है।"},
+    {english:"Do you run often?", hindi:"क्या आप अक्सर दौड़ते हैं?"},
+    {english:"We run together.", hindi:"हम साथ में दौड़ते हैं।"},
+    {english:"He ran yesterday.", hindi:"वह कल दौड़ा।"},
+    {english:"I am running now.", hindi:"मैं अब दौड़ रहा हूँ।"},
+    {english:"Run quickly!", hindi:"तेज़ दौड़ो!"},
+    {english:"They run every evening.", hindi:"वे हर शाम दौड़ते हैं।"},
+    {english:"She likes to run.", hindi:"उसे दौड़ना पसंद है।"},
+    {english:"Run to the school.", hindi:"स्कूल की ओर दौड़ो।"}
+],
+
+28: [  // Word: Speak / बोलना
+    {english:"I speak Russian.", hindi:"मैं रूसी बोलता हूँ।"},
+    {english:"She speaks English.", hindi:"वह अंग्रेज़ी बोलती है।"},
+    {english:"Do you speak French?", hindi:"क्या आप फ्रेंच बोलते हैं?"},
+    {english:"We speak together.", hindi:"हम साथ में बोलते हैं।"},
+    {english:"He speaks slowly.", hindi:"वह धीरे बोलता है।"},
+    {english:"I spoke yesterday.", hindi:"मैंने कल बोला।"},
+    {english:"Speak louder!", hindi:"जोर से बोलो!"},
+    {english:"They speak every day.", hindi:"वे हर दिन बोलते हैं।"},
+    {english:"She likes to speak.", hindi:"उसे बोलना पसंद है।"},
+    {english:"I am speaking now.", hindi:"मैं अब बोल रहा हूँ।"}
+],
+
+29: [  // Word: Listen / सुनना
+    {english:"I listen to music.", hindi:"मैं संगीत सुनता हूँ।"},
+    {english:"She listens carefully.", hindi:"वह ध्यान से सुनती है।"},
+    {english:"Do you listen to me?", hindi:"क्या आप मेरी सुन रहे हैं?"},
+    {english:"We listen together.", hindi:"हम साथ में सुनते हैं।"},
+    {english:"He listens every day.", hindi:"वह हर दिन सुनता है।"},
+    {english:"I listened yesterday.", hindi:"मैंने कल सुना।"},
+    {english:"Listen carefully!", hindi:"ध्यान से सुनो!"},
+    {english:"They listen to the teacher.", hindi:"वे शिक्षक की सुनते हैं।"},
+    {english:"She likes to listen to music.", hindi:"उसे संगीत सुनना पसंद है।"},
+    {english:"I am listening now.", hindi:"मैं अब सुन रहा हूँ।"}
+],
+
+30: [  // Word: Learn / सीखना
+    {english:"I learn Russian.", hindi:"मैं रूसी सीखता हूँ।"},
+    {english:"She learns quickly.", hindi:"वह जल्दी सीखती है।"},
+    {english:"Do you learn English?", hindi:"क्या आप अंग्रेज़ी सीखते हैं?"},
+    {english:"We learn together.", hindi:"हम साथ में सीखते हैं।"},
+    {english:"He learned yesterday.", hindi:"उसने कल सीखा।"},
+    {english:"I like to learn.", hindi:"मुझे सीखना पसंद है।"},
+    {english:"Learn carefully.", hindi:"ध्यान से सीखो।"},
+    {english:"They learn every day.", hindi:"वे हर दिन सीखते हैं।"},
+    {english:"She is learning now.", hindi:"वह अब सीख रही है।"},
+    {english:"I want to learn more.", hindi:"मैं और सीखना चाहता हूँ।"}
+],
+
+31: [  // Word: Teach / सिखाना
+    {english:"I teach English.", hindi:"मैं अंग्रेज़ी सिखाता हूँ।", pron:"Main angrezi sikhata hoon"},
+    {english:"She teaches math.", hindi:"वह गणित सिखाती है।", pron:"Vah ganit sikhati hai"},
+    {english:"Do you teach here?", hindi:"क्या आप यहाँ सिखाते हैं?", pron:"Kya aap yahan sikhate hain?"},
+    {english:"We teach together.", hindi:"हम साथ में सिखाते हैं।", pron:"Hum saath mein sikhate hain"},
+    {english:"He teaches well.", hindi:"वह अच्छा सिखाता है।", pron:"Vah accha sikhata hai"},
+    {english:"I taught yesterday.", hindi:"मैंने कल सिखाया।", pron:"Maine kal sikhaya"},
+    {english:"She likes to teach.", hindi:"उसे सिखाना पसंद है।", pron:"Use sikhana pasand hai"},
+    {english:"They teach students.", hindi:"वे छात्रों को सिखाते हैं।", pron:"Ve chhatron ko sikhate hain"},
+    {english:"Teach carefully.", hindi:"ध्यान से सिखाएँ।", pron:"Dhyan se sikhayein"},
+    {english:"I am teaching now.", hindi:"मैं अब सिखा रहा हूँ।", pron:"Main ab sikha raha hoon"}
+],
+32: [  // Word: Understand / समझना
+    {english:"I understand Hindi.", hindi:"मैं हिंदी समझता हूँ।", pron:"Main Hindi samajhta hoon"},
+    {english:"She understands me.", hindi:"वह मुझे समझती है।", pron:"Vah mujhe samajhti hai"},
+    {english:"Do you understand?", hindi:"क्या आप समझते हैं?", pron:"Kya aap samajhte hain?"},
+    {english:"We understand each other.", hindi:"हम एक-दूसरे को समझते हैं।", pron:"Hum ek-doosre ko samajhte hain"},
+    {english:"He understands quickly.", hindi:"वह जल्दी समझता है।", pron:"Vah jaldi samajhta hai"},
+    {english:"I understood yesterday.", hindi:"मैंने कल समझा।", pron:"Maine kal samjha"},
+    {english:"She likes to understand new things.", hindi:"उसे नई चीज़ें समझना पसंद है।", pron:"Use nai cheezen samajhna pasand hai"},
+    {english:"They understand everything.", hindi:"वे सब कुछ समझते हैं।", pron:"Ve sab kuch samajhte hain"},
+    {english:"Understand carefully.", hindi:"ध्यान से समझें।", pron:"Dhyan se samjhein"},
+    {english:"I am understanding now.", hindi:"मैं अब समझ रहा हूँ।", pron:"Main ab samajh raha hoon"}
+],
+33: [  // Word: Remember / याद रखना
+    {english:"I remember you.", hindi:"मैं आपको याद करता हूँ।", pron:"Main aapko yaad karta hoon"},
+    {english:"She remembers the day.", hindi:"वह उस दिन को याद रखती है।", pron:"Vah us din ko yaad rakhti hai"},
+    {english:"Do you remember me?", hindi:"क्या आप मुझे याद करते हैं?", pron:"Kya aap mujhe yaad karte hain?"},
+    {english:"We remember everything.", hindi:"हम सब कुछ याद रखते हैं।", pron:"Hum sab kuch yaad rakhte hain"},
+    {english:"He remembers clearly.", hindi:"वह स्पष्ट रूप से याद रखता है।", pron:"Vah spasht roop se yaad rakhta hai"},
+    {english:"I remembered yesterday.", hindi:"मैंने कल याद किया।", pron:"Maine kal yaad kiya"},
+    {english:"She likes to remember important things.", hindi:"उसे महत्वपूर्ण चीज़ें याद रखना पसंद है।", pron:"Use mahatvapurn cheezen yaad rakhna pasand hai"},
+    {english:"They remember well.", hindi:"वे अच्छी तरह याद रखते हैं।", pron:"Ve achhi tarah yaad rakhte hain"},
+    {english:"Remember carefully.", hindi:"ध्यान से याद रखें।", pron:"Dhyan se yaad rakhein"},
+    {english:"I am remembering now.", hindi:"मैं अब याद कर रहा हूँ।", pron:"Main ab yaad kar raha hoon"}
+],
+34: [  // Word: Forget / भूलना
+    {english:"I forget sometimes.", hindi:"मैं कभी-कभी भूल जाता हूँ।", pron:"Main kabhi-kabhi bhool jaata hoon"},
+    {english:"She forgets her keys.", hindi:"वह अपनी चाबियाँ भूल जाती है।", pron:"Vah apni chabiyan bhool jaati hai"},
+    {english:"Do you forget often?", hindi:"क्या आप अक्सर भूलते हैं?", pron:"Kya aap aksar bhoolte hain?"},
+    {english:"We forget nothing.", hindi:"हम कुछ नहीं भूलते।", pron:"Hum kuch nahi bhoolte"},
+    {english:"He forgot yesterday.", hindi:"वह कल भूल गया।", pron:"Vah kal bhool gaya"},
+    {english:"I will not forget.", hindi:"मैं नहीं भूलूंगा।", pron:"Main nahi bhoolunga"},
+    {english:"She likes to forget mistakes.", hindi:"उसे गलतियाँ भूलना पसंद है।", pron:"Use galtiyan bhoolna pasand hai"},
+    {english:"They forget easily.", hindi:"वे आसानी से भूल जाते हैं।", pron:"Ve aasani se bhool jaate hain"},
+    {english:"Forget about it.", hindi:"इसे भूल जाओ।", pron:"Ise bhool jao"},
+    {english:"I am forgetting now.", hindi:"मैं अब भूल रहा हूँ।", pron:"Main ab bhool raha hoon"}
+],
+35: [  // Word: Help / मदद करना
+    {english:"I help my friend.", hindi:"मैं अपने दोस्त की मदद करता हूँ।", pron:"Main apne dost ki madad karta hoon"},
+    {english:"She helps her mother.", hindi:"वह अपनी माँ की मदद करती है।", pron:"Vah apni maa ki madad karti hai"},
+    {english:"Do you help often?", hindi:"क्या आप अक्सर मदद करते हैं?", pron:"Kya aap aksar madad karte hain?"},
+    {english:"We help each other.", hindi:"हम एक-दूसरे की मदद करते हैं।", pron:"Hum ek-doosre ki madad karte hain"},
+    {english:"He helped yesterday.", hindi:"उसने कल मदद की।", pron:"Usne kal madad ki"},
+    {english:"I need help.", hindi:"मुझे मदद की ज़रूरत है।", pron:"Mujhe madad ki zarurat hai"},
+    {english:"She likes to help people.", hindi:"उसे लोगों की मदद करना पसंद है।", pron:"Use logon ki madad karna pasand hai"},
+    {english:"They help every day.", hindi:"वे हर दिन मदद करते हैं।", pron:"Ve har din madad karte hain"},
+    {english:"Help quickly!", hindi:"जल्दी मदद करें!", pron:"Jaldi madad karein!"},
+    {english:"I am helping now.", hindi:"मैं अब मदद कर रहा हूँ।", pron:"Main ab madad kar raha hoon"}
+],
+36: [  // Word: Call / फोन करना
+    {english:"I call my friend.", hindi:"मैं अपने दोस्त को कॉल करता हूँ।", pron:"Main apne dost ko call karta hoon"},
+    {english:"She calls her mother.", hindi:"वह अपनी माँ को कॉल करती है।", pron:"Vah apni maa ko call karti hai"},
+    {english:"Do you call often?", hindi:"क्या आप अक्सर कॉल करते हैं?", pron:"Kya aap aksar call karte hain?"},
+    {english:"We call every day.", hindi:"हम हर दिन कॉल करते हैं।", pron:"Hum har din call karte hain"},
+    {english:"He called yesterday.", hindi:"उसने कल कॉल किया।", pron:"Usne kal call kiya"},
+    {english:"Call me later.", hindi:"मुझे बाद में कॉल करें।", pron:"Mujhe baad mein call karein"},
+    {english:"She likes to call people.", hindi:"उसे लोगों को कॉल करना पसंद है।", pron:"Use logon ko call karna pasand hai"},
+    {english:"They call together.", hindi:"वे साथ में कॉल करते हैं।", pron:"Ve saath mein call karte hain"},
+    {english:"I am calling now.", hindi:"मैं अब कॉल कर रहा हूँ।", pron:"Main ab call kar raha hoon"},
+    {english:"Call quickly!", hindi:"जल्दी कॉल करें!", pron:"Jaldi call karein!"}
+],
+37: [  // Word: Open / खोलना
+    {english:"I open the door.", hindi:"मैं दरवाज़ा खोलता हूँ।", pron:"Main darwaza kholta hoon"},
+    {english:"She opens the window.", hindi:"वह खिड़की खोलती है।", pron:"Vah khidki kholti hai"},
+    {english:"Do you open it?", hindi:"क्या आप इसे खोलते हैं?", pron:"Kya aap ise kholte hain?"},
+    {english:"We open together.", hindi:"हम साथ में खोलते हैं।", pron:"Hum saath mein kholte hain"},
+    {english:"He opened yesterday.", hindi:"उसने कल खोला।", pron:"Usne kal khola"},
+    {english:"I like to open gifts.", hindi:"मुझे उपहार खोलना पसंद है।", pron:"Mujhe uphaar kholna pasand hai"},
+    {english:"They open every morning.", hindi:"वे हर सुबह खोलते हैं।", pron:"Ve har subah kholte hain"},
+    {english:"Open carefully.", hindi:"ध्यान से खोलें।", pron:"Dhyan se kholen"},
+    {english:"I am opening now.", hindi:"मैं अब खोल रहा हूँ।", pron:"Main ab khol raha hoon"},
+    {english:"Open quickly!", hindi:"जल्दी खोलें!", pron:"Jaldi kholen!"}
+],
+38: [  // Word: Close / बंद करना
+    {english:"I close the door.", hindi:"मैं दरवाज़ा बंद करता हूँ।", pron:"Main darwaza band karta hoon"},
+    {english:"She closes the window.", hindi:"वह खिड़की बंद करती है।", pron:"Vah khidki band karti hai"},
+    {english:"Do you close it?", hindi:"क्या आप इसे बंद करते हैं?", pron:"Kya aap ise band karte hain?"},
+    {english:"We close together.", hindi:"हम साथ में बंद करते हैं।", pron:"Hum saath mein band karte hain"},
+    {english:"He closed yesterday.", hindi:"उसने कल बंद किया।", pron:"Usne kal band kiya"},
+    {english:"I like to close boxes.", hindi:"मुझे डिब्बे बंद करना पसंद है।", pron:"Mujhe dibbe band karna pasand hai"},
+    {english:"They close every night.", hindi:"वे हर रात बंद करते हैं।", pron:"Ve har raat band karte hain"},
+    {english:"Close carefully.", hindi:"ध्यान से बंद करें।", pron:"Dhyan se band karein"},
+    {english:"I am closing now.", hindi:"मैं अब बंद कर रहा हूँ।", pron:"Main ab band kar raha hoon"},
+    {english:"Close quickly!", hindi:"जल्दी बंद करें!", pron:"Jaldi band karein!"}
+],
+39: [  // Word: Wash / धोना
+    {english:"I wash my hands.", hindi:"मैं अपने हाथ धोता हूँ।", pron:"Main apne haath dhota hoon"},
+    {english:"She washes the dishes.", hindi:"वह बर्तन धोती है।", pron:"Vah bartan dhoti hai"},
+    {english:"Do you wash every day?", hindi:"क्या आप हर दिन धोते हैं?", pron:"Kya aap har din dhote hain?"},
+    {english:"We wash together.", hindi:"हम साथ में धोते हैं।", pron:"Hum saath mein dhote hain"},
+    {english:"He washed yesterday.", hindi:"उसने कल धोया।", pron:"Usne kal dhoya"},
+    {english:"I like to wash clothes.", hindi:"मुझे कपड़े धोना पसंद है।", pron:"Mujhe kapde dhona pasand hai"},
+    {english:"They wash every morning.", hindi:"वे हर सुबह धोते हैं।", pron:"Ve har subah dhote hain"},
+    {english:"Wash carefully.", hindi:"ध्यान से धोएं।", pron:"Dhyan se dhoyen"},
+    {english:"I am washing now.", hindi:"मैं अब धो रहा हूँ।", pron:"Main ab dhot raha hoon"},
+    {english:"Wash quickly!", hindi:"जल्दी धोएं!", pron:"Jaldi dhoyen!"}
+],
+40: [  // Word: Clean / साफ़ करना
+    {english:"I clean the room.", hindi:"मैं कमरे को साफ़ करता हूँ।", pron:"Main kamre ko saaf karta hoon"},
+    {english:"She cleans the kitchen.", hindi:"वह रसोई साफ़ करती है।", pron:"Vah rasoi saaf karti hai"},
+    {english:"Do you clean often?", hindi:"क्या आप अक्सर साफ़ करते हैं?", pron:"Kya aap aksar saaf karte hain?"},
+    {english:"We clean together.", hindi:"हम साथ में साफ़ करते हैं।", pron:"Hum saath mein saaf karte hain"},
+    {english:"He cleaned yesterday.", hindi:"उसने कल साफ़ किया।", pron:"Usne kal saaf kiya"},
+    {english:"I like to clean.", hindi:"मुझे साफ़ करना पसंद है।", pron:"Mujhe saaf karna pasand hai"},
+    {english:"They clean every day.", hindi:"वे हर दिन साफ़ करते हैं।", pron:"Ve har din saaf karte hain"},
+    {english:"Clean carefully.", hindi:"ध्यान से साफ़ करें।", pron:"Dhyan se saaf karein"},
+    {english:"I am cleaning now.", hindi:"मैं अब साफ़ कर रहा हूँ।", pron:"Main ab saaf kar raha hoon"},
+    {english:"Clean quickly!", hindi:"जल्दी साफ़ करें!", pron:"Jaldi saaf karein"}
+],
+41: [  // Word: Buy / खरीदना
+    {english:"I buy fruits every morning.", hindi:"मैं हर सुबह फल खरीदता हूँ।", pron:"Main har subah phal kharidta hoon"},
+    {english:"She buys gifts for her friends.", hindi:"वह अपने दोस्तों के लिए उपहार खरीदती है।", pron:"Vah apne doston ke liye uphaar kharidti hai"},
+    {english:"Do you buy vegetables?", hindi:"क्या आप सब्ज़ियाँ खरीदते हैं?", pron:"Kya aap sabziyan kharidte hain?"},
+    {english:"We buy together.", hindi:"हम साथ में खरीदते हैं।", pron:"Hum saath mein kharidte hain"},
+    {english:"He buys clothes every week.", hindi:"वह हर हफ़्ते कपड़े खरीदता है।", pron:"Vah har hafte kapde kharidta hai"},
+    {english:"I bought a new phone.", hindi:"मैंने नया फोन खरीदा।", pron:"Maine naya phone kharida"},
+    {english:"She likes to buy books.", hindi:"उसे किताबें खरीदना पसंद है।", pron:"Use kitabein kharidna pasand hai"},
+    {english:"They buy every Saturday.", hindi:"वे हर शनिवार खरीदते हैं।", pron:"Ve har shanivaar kharidte hain"},
+    {english:"Buy carefully.", hindi:"ध्यान से खरीदें।", pron:"Dhyan se khariden"},
+    {english:"I am buying now.", hindi:"मैं अब खरीद रहा हूँ।", pron:"Main ab kharid raha hoon"}
+],
+42: [  // Word: Sell / बेचना
+    {english:"I sell fruits in the market.", hindi:"मैं बाज़ार में फल बेचता हूँ।", pron:"Main bazaar mein phal bechta hoon"},
+    {english:"She sells clothes online.", hindi:"वह ऑनलाइन कपड़े बेचती है।", pron:"Vah online kapde bechti hai"},
+    {english:"Do you sell books?", hindi:"क्या आप किताबें बेचते हैं?", pron:"Kya aap kitabein bechte hain?"},
+    {english:"We sell together.", hindi:"हम साथ में बेचते हैं।", pron:"Hum saath mein bechte hain"},
+    {english:"He sells toys every day.", hindi:"वह हर दिन खिलौने बेचता है।", pron:"Vah har din khilaune bechta hai"},
+    {english:"I sold my old car.", hindi:"मैंने अपनी पुरानी कार बेची।", pron:"Maine apni purani car bechi"},
+    {english:"She likes to sell things.", hindi:"उसे चीज़ें बेचना पसंद है।", pron:"Use cheezen bechna pasand hai"},
+    {english:"They sell at the market.", hindi:"वे बाज़ार में बेचते हैं।", pron:"Ve bazaar mein bechte hain"},
+    {english:"Sell carefully.", hindi:"ध्यान से बेचें।", pron:"Dhyan se bechen"},
+    {english:"I am selling now.", hindi:"मैं अब बेच रहा हूँ।", pron:"Main ab bech raha hoon"}
+],
+43: [  // Word: Eat / खाना
+    {english:"I eat breakfast every morning.", hindi:"मैं हर सुबह नाश्ता करता हूँ।", pron:"Main har subah nashta karta hoon"},
+    {english:"She eats vegetables.", hindi:"वह सब्ज़ियाँ खाती है।", pron:"Vah sabziyan khati hai"},
+    {english:"Do you eat meat?", hindi:"क्या आप मांस खाते हैं?", pron:"Kya aap maans khate hain?"},
+    {english:"We eat together.", hindi:"हम साथ में खाते हैं।", pron:"Hum saath mein khate hain"},
+    {english:"He ate pizza yesterday.", hindi:"उसने कल पिज़्ज़ा खाया।", pron:"Usne kal pizza khaya"},
+    {english:"I like to eat fruits.", hindi:"मुझे फल खाना पसंद है।", pron:"Mujhe phal khana pasand hai"},
+    {english:"They eat every day.", hindi:"वे हर दिन खाते हैं।", pron:"Ve har din khate hain"},
+    {english:"Eat carefully.", hindi:"ध्यान से खाएं।", pron:"Dhyan se khayen"},
+    {english:"I am eating now.", hindi:"मैं अब खा रहा हूँ।", pron:"Main ab kha raha hoon"},
+    {english:"Eat quickly!", hindi:"जल्दी खाएं!", pron:"Jaldi khayen"}
+],
+44: [  // Word: Drink / पीना
+    {english:"I drink water.", hindi:"मैं पानी पीता हूँ।", pron:"Main paani peeta hoon"},
+    {english:"She drinks tea.", hindi:"वह चाय पीती है।", pron:"Vah chai peeti hai"},
+    {english:"Do you drink milk?", hindi:"क्या आप दूध पीते हैं?", pron:"Kya aap doodh peete hain?"},
+    {english:"We drink together.", hindi:"हम साथ में पीते हैं।", pron:"Hum saath mein peete hain"},
+    {english:"He drank juice yesterday.", hindi:"उसने कल जूस पिया।", pron:"Usne kal juice piya"},
+    {english:"I like to drink coffee.", hindi:"मुझे कॉफ़ी पीना पसंद है।", pron:"Mujhe coffee peena pasand hai"},
+    {english:"They drink every day.", hindi:"वे हर दिन पीते हैं।", pron:"Ve har din peete hain"},
+    {english:"Drink carefully.", hindi:"ध्यान से पिएं।", pron:"Dhyan se piyein"},
+    {english:"I am drinking now.", hindi:"मैं अब पी रहा हूँ।", pron:"Main ab pee raha hoon"},
+    {english:"Drink quickly!", hindi:"जल्दी पिएं!", pron:"Jaldi piyein"}
+],
+45: [  // Word: Sit / बैठना
+    {english:"I sit on the chair.", hindi:"मैं कुर्सी पर बैठता हूँ।", pron:"Main kursi par baithta hoon"},
+    {english:"She sits near the window.", hindi:"वह खिड़की के पास बैठती है।", pron:"Vah khidki ke paas baithti hai"},
+    {english:"Do you sit here?", hindi:"क्या आप यहाँ बैठते हैं?", pron:"Kya aap yahan baithte hain?"},
+    {english:"We sit together.", hindi:"हम साथ में बैठते हैं।", pron:"Hum saath mein baithte hain"},
+    {english:"He sat yesterday.", hindi:"वह कल बैठा।", pron:"Vah kal baitha"},
+    {english:"I like to sit quietly.", hindi:"मुझे चुपचाप बैठना पसंद है।", pron:"Mujhe chupchaap baithna pasand hai"},
+    {english:"They sit every morning.", hindi:"वे हर सुबह बैठते हैं।", pron:"Ve har subah baithte hain"},
+    {english:"Sit carefully.", hindi:"ध्यान से बैठें।", pron:"Dhyan se baithen"},
+    {english:"I am sitting now.", hindi:"मैं अब बैठा हूँ।", pron:"Main ab baitha hoon"},
+    {english:"Sit quickly!", hindi:"जल्दी बैठें!", pron:"Jaldi baithen"}
+],
+46: [  // Word: Stand / खड़ा होना
+    {english:"I stand near the door.", hindi:"मैं दरवाज़े के पास खड़ा हूँ।", pron:"Main darwaze ke paas khada hoon"},
+    {english:"She stands in the line.", hindi:"वह लाइन में खड़ी है।", pron:"Vah line mein khadi hai"},
+    {english:"Do you stand here?", hindi:"क्या आप यहाँ खड़े हैं?", pron:"Kya aap yahan khade hain?"},
+    {english:"We stand together.", hindi:"हम साथ में खड़े हैं।", pron:"Hum saath mein khade hain"},
+    {english:"He stood yesterday.", hindi:"वह कल खड़ा था।", pron:"Vah kal khada tha"},
+    {english:"I like to stand tall.", hindi:"मुझे ऊँचा खड़ा होना पसंद है।", pron:"Mujhe ooncha khada hona pasand hai"},
+    {english:"They stand every morning.", hindi:"वे हर सुबह खड़े होते हैं।", pron:"Ve har subah khade hote hain"},
+    {english:"Stand carefully.", hindi:"ध्यान से खड़े रहें।", pron:"Dhyan se khade rahen"},
+    {english:"I am standing now.", hindi:"मैं अब खड़ा हूँ।", pron:"Main ab khada hoon"},
+    {english:"Stand quickly!", hindi:"जल्दी खड़े हों!", pron:"Jaldi khade hon"}
+],
+47: [  // Word: Run / दौड़ना
+    {english:"I run every morning.", hindi:"मैं हर सुबह दौड़ता हूँ।", pron:"Main har subah daudta hoon"},
+    {english:"She runs fast.", hindi:"वह तेज दौड़ती है।", pron:"Vah tez daudti hai"},
+    {english:"Do you run daily?", hindi:"क्या आप रोज़ दौड़ते हैं?", pron:"Kya aap roz daudte hain?"},
+    {english:"We run together.", hindi:"हम साथ में दौड़ते हैं।", pron:"Hum saath mein daudte hain"},
+    {english:"He ran yesterday.", hindi:"वह कल दौड़ा।", pron:"Vah kal dauda"},
+    {english:"I like to run in the park.", hindi:"मुझे पार्क में दौड़ना पसंद है।", pron:"Mujhe park mein daudna pasand hai"},
+    {english:"They run every evening.", hindi:"वे हर शाम दौड़ते हैं।", pron:"Ve har shaam daudte hain"},
+    {english:"Run carefully.", hindi:"ध्यान से दौड़ें।", pron:"Dhyan se daudhen"},
+    {english:"I am running now.", hindi:"मैं अब दौड़ रहा हूँ।", pron:"Main ab daud raha hoon"},
+    {english:"Run quickly!", hindi:"जल्दी दौड़ें!", pron:"Jaldi daudhen"}
+],
+48: [  // Word: Walk / चलना
+    {english:"I walk to school.", hindi:"मैं स्कूल चलता हूँ।", pron:"Main school chalta hoon"},
+    {english:"She walks slowly.", hindi:"वह धीरे-धीरे चलती है।", pron:"Vah dheere-dheere chalti hai"},
+    {english:"Do you walk daily?", hindi:"क्या आप रोज़ चलते हैं?", pron:"Kya aap roz chalte hain?"},
+    {english:"We walk together.", hindi:"हम साथ में चलते हैं।", pron:"Hum saath mein chalte hain"},
+    {english:"He walked yesterday.", hindi:"वह कल चला।", pron:"Vah kal chala"},
+    {english:"I like to walk in the park.", hindi:"मुझे पार्क में चलना पसंद है।", pron:"Mujhe park mein chalna pasand hai"},
+    {english:"They walk every morning.", hindi:"वे हर सुबह चलते हैं।", pron:"Ve har subah chalte hain"},
+    {english:"Walk carefully.", hindi:"ध्यान से चलें।", pron:"Dhyan se chalen"},
+    {english:"I am walking now.", hindi:"मैं अब चल रहा हूँ।", pron:"Main ab chal raha hoon"},
+    {english:"Walk quickly!", hindi:"जल्दी चलें!", pron:"Jaldi chalen"}
+],
+49: [  // Word: Sleep / सोना
+    {english:"I sleep at night.", hindi:"मैं रात में सोता हूँ।", pron:"Main raat mein sota hoon"},
+    {english:"She sleeps early.", hindi:"वह जल्दी सोती है।", pron:"Vah jaldi soti hai"},
+    {english:"Do you sleep well?", hindi:"क्या आप अच्छी तरह सोते हैं?", pron:"Kya aap achhi tarah sote hain?"},
+    {english:"We sleep together.", hindi:"हम साथ में सोते हैं।", pron:"Hum saath mein sote hain"},
+    {english:"He slept yesterday.", hindi:"वह कल सोया।", pron:"Vah kal soya"},
+    {english:"I like to sleep late.", hindi:"मुझे देर तक सोना पसंद है।", pron:"Mujhe der tak sona pasand hai"},
+    {english:"They sleep every night.", hindi:"वे हर रात सोते हैं।", pron:"Ve har raat sote hain"},
+    {english:"Sleep carefully.", hindi:"ध्यान से सोएं।", pron:"Dhyan se soyein"},
+    {english:"I am sleeping now.", hindi:"मैं अब सो रहा हूँ।", pron:"Main ab so raha hoon"},
+    {english:"Sleep quickly!", hindi:"जल्दी सोएं!", pron:"Jaldi soyein"}
+],
+50: [  // Word: Travel / यात्रा करना
+    {english:"I travel every summer.", hindi:"मैं हर गर्मी यात्रा करता हूँ।", pron:"Main har garmi yatra karta hoon"},
+    {english:"She travels by plane.", hindi:"वह विमान से यात्रा करती है।", pron:"Vah viman se yatra karti hai"},
+    {english:"Do you like to travel?", hindi:"क्या आपको यात्रा करना पसंद है?", pron:"Kya aapko yatra karna pasand hai?"},
+    {english:"We travel together.", hindi:"हम साथ में यात्रा करते हैं।", pron:"Hum saath mein yatra karte hain"},
+    {english:"He traveled yesterday.", hindi:"उसने कल यात्रा की।", pron:"Usne kal yatra ki"},
+    {english:"I like to travel.", hindi:"मुझे यात्रा करना पसंद है।", pron:"Mujhe yatra karna pasand hai"},
+    {english:"They travel every year.", hindi:"वे हर साल यात्रा करते हैं।", pron:"Ve har saal yatra karte hain"},
+    {english:"Travel carefully.", hindi:"सावधानी से यात्रा करें।", pron:"Savdhani se yatra karein"},
+    {english:"I am traveling now.", hindi:"मैं अब यात्रा कर रहा हूँ।", pron:"Main ab yatra kar raha hoon"},
+    {english:"She travels fast.", hindi:"वह जल्दी यात्रा करती है।", pron:"Vah jaldi yatra karti hai"}
+],
+51: [  // Word: Read / पढ़ना
+    {english:"I read books every day.", hindi:"मैं हर दिन किताबें पढ़ता हूँ।", pron:"Main har din kitabein padhta hoon"},
+    {english:"She reads newspapers.", hindi:"वह अखबार पढ़ती है।", pron:"Vah akhbar padhti hai"},
+    {english:"Do you read often?", hindi:"क्या आप अक्सर पढ़ते हैं?", pron:"Kya aap aksar padte hain?"},
+    {english:"We read together.", hindi:"हम साथ में पढ़ते हैं।", pron:"Hum saath mein padte hain"},
+    {english:"He read yesterday.", hindi:"उसने कल पढ़ा।", pron:"Usne kal padha"},
+    {english:"I like to read novels.", hindi:"मुझे उपन्यास पढ़ना पसंद है।", pron:"Mujhe upanyas padhna pasand hai"},
+    {english:"They read every morning.", hindi:"वे हर सुबह पढ़ते हैं।", pron:"Ve har subah padte hain"},
+    {english:"Read carefully.", hindi:"ध्यान से पढ़ें।", pron:"Dhyan se padhein"},
+    {english:"I am reading now.", hindi:"मैं अब पढ़ रहा हूँ।", pron:"Main ab padh raha hoon"},
+    {english:"She reads quietly.", hindi:"वह चुपचाप पढ़ती है।", pron:"Vah chupchap padhti hai"}
+],
+52: [  // Word: Write / लिखना
+    {english:"I write letters every day.", hindi:"मैं हर दिन पत्र लिखता हूँ।", pron:"Main har din patra likhta hoon"},
+    {english:"She writes emails.", hindi:"वह ईमेल लिखती है।", pron:"Vah email likhti hai"},
+    {english:"Do you write often?", hindi:"क्या आप अक्सर लिखते हैं?", pron:"Kya aap aksar likhte hain?"},
+    {english:"We write together.", hindi:"हम साथ में लिखते हैं।", pron:"Hum saath mein likhte hain"},
+    {english:"He wrote yesterday.", hindi:"उसने कल लिखा।", pron:"Usne kal likha"},
+    {english:"I like to write stories.", hindi:"मुझे कहानियाँ लिखना पसंद है।", pron:"Mujhe kahaniyan likhna pasand hai"},
+    {english:"They write every morning.", hindi:"वे हर सुबह लिखते हैं।", pron:"Ve har subah likhte hain"},
+    {english:"Write carefully.", hindi:"ध्यान से लिखें।", pron:"Dhyan se likhein"},
+    {english:"I am writing now.", hindi:"मैं अब लिख रहा हूँ।", pron:"Main ab likh raha hoon"},
+    {english:"She writes fast.", hindi:"वह जल्दी लिखती है।", pron:"Vah jaldi likhti hai"}
+],
+53: [  // Word: Listen / सुनना
+    {english:"I listen to music every day.", hindi:"मैं हर दिन संगीत सुनता हूँ।", pron:"Main har din sangeet sunta hoon"},
+    {english:"She listens to the teacher.", hindi:"वह शिक्षक की सुनती है।", pron:"Vah shikshak ki sunti hai"},
+    {english:"Do you listen carefully?", hindi:"क्या आप ध्यान से सुनते हैं?", pron:"Kya aap dhyan se sunte hain?"},
+    {english:"We listen together.", hindi:"हम साथ में सुनते हैं।", pron:"Hum saath mein sunte hain"},
+    {english:"He listened yesterday.", hindi:"उसने कल सुना।", pron:"Usne kal suna"},
+    {english:"I like to listen to stories.", hindi:"मुझे कहानियाँ सुनना पसंद है।", pron:"Mujhe kahaniyan sunna pasand hai"},
+    {english:"They listen every morning.", hindi:"वे हर सुबह सुनते हैं।", pron:"Ve har subah sunte hain"},
+    {english:"Listen carefully.", hindi:"ध्यान से सुनें।", pron:"Dhyan se sunein"},
+    {english:"I am listening now.", hindi:"मैं अब सुन रहा हूँ।", pron:"Main ab sun raha hoon"},
+    {english:"She listens quietly.", hindi:"वह चुपचाप सुनती है।", pron:"Vah chupchap sunti hai"}
+],
+54: [  // Word: Speak / बोलना
+    {english:"I speak English.", hindi:"मैं अंग्रेज़ी बोलता हूँ।", pron:"Main angrezi bolta hoon"},
+    {english:"She speaks Hindi.", hindi:"वह हिंदी बोलती है।", pron:"Vah hindi bolti hai"},
+    {english:"Do you speak often?", hindi:"क्या आप अक्सर बोलते हैं?", pron:"Kya aap aksar bolte hain?"},
+    {english:"We speak together.", hindi:"हम साथ में बोलते हैं।", pron:"Hum saath mein bolte hain"},
+    {english:"He spoke yesterday.", hindi:"उसने कल बोला।", pron:"Usne kal bola"},
+    {english:"I like to speak with friends.", hindi:"मुझे दोस्तों के साथ बोलना पसंद है।", pron:"Mujhe doston ke saath bolna pasand hai"},
+    {english:"They speak every day.", hindi:"वे हर दिन बोलते हैं।", pron:"Ve har din bolte hain"},
+    {english:"Speak clearly.", hindi:"साफ बोलें।", pron:"Saaf bolein"},
+    {english:"I am speaking now.", hindi:"मैं अब बोल रहा हूँ।", pron:"Main ab bol raha hoon"},
+    {english:"She speaks slowly.", hindi:"वह धीरे बोलती है।", pron:"Vah dheere bolti hai"}
+],
+
+55: [  // Word: Watch / देखना
+    {english:"I watch TV every evening.", russian:"मैं हर शाम टीवी देखता हूँ।"},
+    {english:"She watches movies.", russian:"वह फिल्में देखती है।"},
+    {english:"Do you watch often?", russian:"क्या तुम अक्सर देखते हो?"},
+    {english:"We watch together.", russian:"हम साथ में देखते हैं।"},
+    {english:"He watched yesterday.", russian:"उसने कल देखा।"},
+    {english:"I like to watch documentaries.", russian:"मुझे डॉक्यूमेंट्री देखना पसंद है।"},
+    {english:"They watch every day.", russian:"वे हर दिन देखते हैं।"},
+    {english:"Watch carefully.", russian:"ध्यान से देखो।"},
+    {english:"I am watching now.", russian:"मैं अभी देख रहा हूँ।"},
+    {english:"She watches quietly.", russian:"वह चुपचाप देखती है।"}
+],
+
+56: [  // Word: Love / प्यार करना
+    {english:"I love my family.", russian:"मुझे अपने परिवार से प्यार है।"},
+    {english:"She loves her friends.", russian:"वह अपने दोस्तों से प्यार करती है।"},
+    {english:"Do you love me?", russian:"क्या तुम मुझसे प्यार करते हो?"},
+    {english:"We love each other.", russian:"हम एक-दूसरे से प्यार करते हैं।"},
+    {english:"He loved her yesterday.", russian:"उसने कल उससे प्यार किया।"},
+    {english:"I like to love everyone.", russian:"मुझे सब से प्यार करना पसंद है।"},
+    {english:"They love every day.", russian:"वे हर दिन प्यार करते हैं।"},
+    {english:"Love carefully.", russian:"ध्यान से प्यार करो।"},
+    {english:"I am loving now.", russian:"मैं अभी प्यार कर रहा हूँ।"},
+    {english:"She loves animals.", russian:"वह जानवरों से प्यार करती है।"}
+],
+
+57: [  // Word: Like / पसंद करना
+    {english:"I like this song.", russian:"मुझे यह गाना पसंद है।"},
+    {english:"She likes chocolate.", russian:"उसे चॉकलेट पसंद है।"},
+    {english:"Do you like it?", russian:"क्या तुम्हें यह पसंद है?"},
+    {english:"We like this place.", russian:"हमें यह जगह पसंद है।"},
+    {english:"He liked the movie.", russian:"उसे फिल्म पसंद आई।"},
+    {english:"I like to read.", russian:"मुझे पढ़ना पसंद है।"},
+    {english:"They like every day.", russian:"उन्हें हर दिन पसंद है।"},
+    {english:"Like carefully.", russian:"ध्यान से पसंद करो।"},
+    {english:"I am liking it now.", russian:"मुझे अभी यह पसंद आ रहा है।"},
+    {english:"She likes animals.", russian:"उसे जानवर पसंद हैं।"}
+],
+
+58: [  // Word: Hate / नफरत करना
+    {english:"I hate lying.", russian:"मुझे झूठ से नफरत है।"},
+    {english:"She hates waiting.", russian:"उसे इंतज़ार करना पसंद नहीं है।"},
+    {english:"Do you hate him?", russian:"क्या तुम उससे नफरत करते हो?"},
+    {english:"We hate cheating.", russian:"हमें धोखा देना पसंद नहीं है।"},
+    {english:"He hated yesterday.", russian:"उसे कल नफरत थी।"},
+    {english:"I like to hate bad habits.", russian:"मुझे बुरी आदतों से नफरत है।"},
+    {english:"They hate every day.", russian:"उन्हें हर दिन नफरत है।"},
+    {english:"Hate carefully.", russian:"ध्यान से नफरत करो।"},
+    {english:"I am hating now.", russian:"मुझे अभी नफरत हो रही है।"},
+    {english:"She hates loud noises.", russian:"उसे तेज आवाज़ें पसंद नहीं हैं।"}
+],
+
+59: [  // Word: Start / शुरू करना
+    {english:"I start work at 9.", russian:"मैं 9 बजे काम शुरू करता हूँ।"},
+    {english:"She starts school at 8.", russian:"वह 8 बजे स्कूल शुरू करती है।"},
+    {english:"Do you start now?", russian:"क्या तुम अभी शुरू करते हो?"},
+    {english:"We start together.", russian:"हम साथ में शुरू करते हैं।"},
+    {english:"He started yesterday.", russian:"उसने कल शुरू किया।"},
+    {english:"I like to start early.", russian:"मुझे जल्दी शुरू करना पसंद है।"},
+    {english:"They start every day.", russian:"वे हर दिन शुरू करते हैं।"},
+    {english:"Start carefully.", russian:"ध्यान से शुरू करो।"},
+    {english:"I am starting now.", russian:"मैं अभी शुरू कर रहा हूँ।"},
+    {english:"She starts fast.", russian:"वह जल्दी शुरू करती है।"}
+],
+
+60: [  // Word: Finish / खत्म करना
+    {english:"I finish work at 6.", russian:"मैं 6 बजे काम खत्म करता हूँ।"},
+    {english:"She finishes school at 3.", russian:"वह 3 बजे स्कूल खत्म करती है।"},
+    {english:"Do you finish now?", russian:"क्या तुम अभी खत्म करते हो?"},
+    {english:"We finish together.", russian:"हम साथ में खत्म करते हैं।"},
+    {english:"He finished yesterday.", russian:"उसने कल खत्म किया।"},
+    {english:"I like to finish early.", russian:"मुझे जल्दी खत्म करना पसंद है।"},
+    {english:"They finish every day.", russian:"वे हर दिन खत्म करते हैं।"},
+    {english:"Finish carefully.", russian:"ध्यान से खत्म करो।"},
+    {english:"I am finishing now.", russian:"मैं अभी खत्म कर रहा हूँ।"},
+    {english:"She finishes quickly.", russian:"वह जल्दी खत्म करती है।"}
+],
+
+61: [  // Word: Open
+    {english:"I open the window.", hindi:"मैं खिड़की खोलता हूँ।"},
+    {english:"She opens the door.", hindi:"वह दरवाज़ा खोलती है।"},
+    {english:"Do you open it?", hindi:"क्या तुम इसे खोलते हो?"},
+    {english:"We open together.", hindi:"हम साथ में खोलते हैं।"},
+    {english:"He opened yesterday.", hindi:"उसने कल खोला।"},
+    {english:"I like to open gifts.", hindi:"मुझे उपहार खोलना पसंद है।"},
+    {english:"They open every morning.", hindi:"वे हर सुबह खोलते हैं।"},
+    {english:"Open carefully.", hindi:"ध्यान से खोलो।"},
+    {english:"I am opening now.", hindi:"मैं अभी खोल रहा हूँ।"},
+    {english:"She opens slowly.", hindi:"वह धीरे-धीरे खोलती है।"}
+],
+
+62: [  // Word: Close
+    {english:"I close the window.", hindi:"मैं खिड़की बंद करता हूँ।"},
+    {english:"She closes the door.", hindi:"वह दरवाज़ा बंद करती है।"},
+    {english:"Do you close it?", hindi:"क्या तुम इसे बंद करते हो?"},
+    {english:"We close together.", hindi:"हम साथ में बंद करते हैं।"},
+    {english:"He closed yesterday.", hindi:"उसने कल बंद किया।"},
+    {english:"I like to close the shop.", hindi:"मुझे दुकान बंद करना पसंद है।"},
+    {english:"They close every night.", hindi:"वे हर रात बंद करते हैं।"},
+    {english:"Close carefully.", hindi:"ध्यान से बंद करो।"},
+    {english:"I am closing now.", hindi:"मैं अभी बंद कर रहा हूँ।"},
+    {english:"She closes quickly.", hindi:"वह जल्दी बंद करती है।"}
+],
+
+63: [  // Word: Wait
+    {english:"I wait for the bus.", hindi:"मैं बस का इंतज़ार करता हूँ।"},
+    {english:"She waits at the station.", hindi:"वह स्टेशन पर इंतज़ार करती है।"},
+    {english:"Do you wait often?", hindi:"क्या तुम अक्सर इंतज़ार करते हो?"},
+    {english:"We wait together.", hindi:"हम साथ में इंतज़ार करते हैं।"},
+    {english:"He waited yesterday.", hindi:"उसने कल इंतज़ार किया।"},
+    {english:"I like to wait patiently.", hindi:"मुझे धैर्य से इंतज़ार करना पसंद है।"},
+    {english:"They wait every morning.", hindi:"वे हर सुबह इंतज़ार करते हैं।"},
+    {english:"Wait carefully.", hindi:"ध्यान से इंतज़ार करो।"},
+    {english:"I am waiting now.", hindi:"मैं अभी इंतज़ार कर रहा हूँ।"},
+    {english:"She waits quietly.", hindi:"वह चुपचाप इंतज़ार करती है।"}
+],
+
+64: [  // Word: Help
+    {english:"I help my friends.", hindi:"मैं अपने दोस्तों की मदद करता हूँ।"},
+    {english:"She helps her mother.", hindi:"वह अपनी माँ की मदद करती है।"},
+    {english:"Do you help often?", hindi:"क्या तुम अक्सर मदद करते हो?"},
+    {english:"We help together.", hindi:"हम साथ में मदद करते हैं।"},
+    {english:"He helped yesterday.", hindi:"उसने कल मदद की।"},
+    {english:"I like to help others.", hindi:"मुझे दूसरों की मदद करना पसंद है।"},
+    {english:"They help every day.", hindi:"वे हर दिन मदद करते हैं।"},
+    {english:"Help carefully.", hindi:"ध्यान से मदद करो।"},
+    {english:"I am helping now.", hindi:"मैं अभी मदद कर रहा हूँ।"},
+    {english:"She helps quietly.", hindi:"वह चुपचाप मदद करती है।"}
+],
+
+65: [  // Word: Work
+    {english:"I work every day.", hindi:"मैं हर दिन काम करता हूँ।"},
+    {english:"She works in an office.", hindi:"वह ऑफिस में काम करती है।"},
+    {english:"Do you work now?", hindi:"क्या तुम अभी काम कर रहे हो?"},
+    {english:"We work together.", hindi:"हम साथ में काम करते हैं।"},
+    {english:"He worked yesterday.", hindi:"उसने कल काम किया।"},
+    {english:"I like to work hard.", hindi:"मुझे मेहनत से काम करना पसंद है।"},
+    {english:"They work every morning.", hindi:"वे हर सुबह काम करते हैं।"},
+    {english:"Work carefully.", hindi:"ध्यान से काम करो।"},
+    {english:"I am working now.", hindi:"मैं अभी काम कर रहा हूँ।"},
+    {english:"She works quickly.", hindi:"वह जल्दी काम करती है।"}
+],
+
+66: [  // Word: Play
+    {english:"I play football every day.", hindi:"मैं हर दिन फुटबॉल खेलता हूँ।"},
+    {english:"She plays piano.", hindi:"वह पियानो बजाती है।"},
+    {english:"Do you play often?", hindi:"क्या तुम अक्सर खेलते हो?"},
+    {english:"We play together.", hindi:"हम साथ में खेलते हैं।"},
+    {english:"He played yesterday.", hindi:"उसने कल खेला।"},
+    {english:"I like to play games.", hindi:"मुझे खेल खेलना पसंद है।"},
+    {english:"They play every evening.", hindi:"वे हर शाम खेलते हैं।"},
+    {english:"Play carefully.", hindi:"ध्यान से खेलो।"},
+    {english:"I am playing now.", hindi:"मैं अभी खेल रहा हूँ।"},
+    {english:"She plays quietly.", hindi:"वह चुपचाप खेलती है।"}
+],
+
+67: [  // Word: Study
+    {english:"I study English every day.", hindi:"मैं हर दिन अंग्रेज़ी पढ़ता हूँ।"},
+    {english:"She studies math.", hindi:"वह गणित पढ़ती है।"},
+    {english:"Do you study now?", hindi:"क्या तुम अभी पढ़ रहे हो?"},
+    {english:"We study together.", hindi:"हम साथ में पढ़ते हैं।"},
+    {english:"He studied yesterday.", hindi:"उसने कल पढ़ाई की।"},
+    {english:"I like to study every night.", hindi:"मुझे हर रात पढ़ना पसंद है।"},
+    {english:"They study every morning.", hindi:"वे हर सुबह पढ़ते हैं।"},
+    {english:"Study carefully.", hindi:"ध्यान से पढ़ो।"},
+    {english:"I am studying now.", hindi:"मैं अभी पढ़ रहा हूँ।"},
+    {english:"She studies quietly.", hindi:"वह चुपचाप पढ़ती है।"}
+],
+
+68: [  // Word: Wait (formal)
+    {english:"I wait for the train.", hindi:"मैं ट्रेन का इंतज़ार करता हूँ।"},
+    {english:"She waits for her friend.", hindi:"वह अपने दोस्त का इंतज़ार करती है।"},
+    {english:"Do you wait often?", hindi:"क्या तुम अक्सर इंतज़ार करते हो?"},
+    {english:"We wait together.", hindi:"हम साथ में इंतज़ार करते हैं।"},
+    {english:"He waited yesterday.", hindi:"उसने कल इंतज़ार किया।"},
+    {english:"I like to wait patiently.", hindi:"मुझे धैर्य से इंतज़ार करना पसंद है।"},
+    {english:"They wait every day.", hindi:"वे हर दिन इंतज़ार करते हैं।"},
+    {english:"Wait carefully.", hindi:"ध्यान से इंतज़ार करो।"},
+    {english:"I am waiting now.", hindi:"मैं अभी इंतज़ार कर रहा हूँ।"},
+    {english:"She waits quietly.", hindi:"वह चुपचाप इंतज़ार करती है।"}
+],
+
+69: [  // Word: Turn
+    {english:"I turn left.", hindi:"मैं बाएँ मुड़ता हूँ।"},
+    {english:"She turns right.", hindi:"वह दाएँ मुड़ती है।"},
+    {english:"Do you turn now?", hindi:"क्या तुम अभी मुड़ रहे हो?"},
+    {english:"We turn together.", hindi:"हम साथ में मुड़ते हैं।"},
+    {english:"He turned yesterday.", hindi:"वह कल मुड़ा।"},
+    {english:"I like to turn carefully.", hindi:"मुझे ध्यान से मुड़ना पसंद है।"},
+    {english:"They turn every corner.", hindi:"वे हर मोड़ पर मुड़ते हैं।"},
+    {english:"Turn carefully.", hindi:"ध्यान से मुड़ो।"},
+    {english:"I am turning now.", hindi:"मैं अभी मुड़ रहा हूँ।"},
+    {english:"She turns slowly.", hindi:"वह धीरे-धीरे मुड़ती है।"}
+],
+
+70: [  // Word: Use
+    {english:"I use my phone every day.", hindi:"मैं हर दिन अपना फोन इस्तेमाल करता हूँ।"},
+    {english:"She uses a computer.", hindi:"वह कंप्यूटर इस्तेमाल करती है।"},
+    {english:"Do you use it?", hindi:"क्या तुम इसका इस्तेमाल करते हो?"},
+    {english:"We use together.", hindi:"हम साथ में इस्तेमाल करते हैं।"},
+    {english:"He used it yesterday.", hindi:"उसने कल इसका इस्तेमाल किया।"},
+    {english:"I like to use apps.", hindi:"मुझे ऐप्स इस्तेमाल करना पसंद है।"},
+    {english:"They use every day.", hindi:"वे हर दिन इस्तेमाल करते हैं।"},
+    {english:"Use carefully.", hindi:"ध्यान से इस्तेमाल करो।"},
+    {english:"I am using now.", hindi:"मैं अभी इस्तेमाल कर रहा हूँ।"},
+    {english:"She uses quickly.", hindi:"वह जल्दी इस्तेमाल करती है।"}
+],
+
+71: [  // Word: Buy
+    {english:"I buy fruits every day.", hindi:"मैं हर दिन फल खरीदता हूँ।", pron:"Main har din phal khareedta hoon"},
+    {english:"She buys clothes.", hindi:"वह कपड़े खरीदती है।", pron:"Woh kapde khareedti hai"},
+    {english:"Do you buy often?", hindi:"क्या तुम अक्सर खरीदते हो?", pron:"Kya tum aksar khareedte ho?"},
+    {english:"We buy together.", hindi:"हम साथ में खरीदते हैं।", pron:"Hum saath mein khareedte hain"},
+    {english:"He bought yesterday.", hindi:"उसने कल खरीदा।", pron:"Usne kal khareeda"},
+    {english:"I like to buy gifts.", hindi:"मुझे तोहफे खरीदना पसंद है।", pron:"Mujhe tohfe khareedna pasand hai"},
+    {english:"They buy every week.", hindi:"वे हर हफ्ते खरीदते हैं।", pron:"Ve har hafte khareedte hain"},
+    {english:"Buy carefully.", hindi:"ध्यान से खरीदो।", pron:"Dhyaan se khareedo"},
+    {english:"I am buying now.", hindi:"मैं अभी खरीद रहा हूँ।", pron:"Main abhi khareed raha hoon"},
+    {english:"She buys quickly.", hindi:"वह जल्दी खरीदती है।", pron:"Woh jaldi khareedti hai"}
+],
+
+72: [  // Word: Sell
+    {english:"I sell vegetables every day.", hindi:"मैं हर दिन सब्ज़ियाँ बेचता हूँ।", pron:"Main har din sabziyaan bechta hoon"},
+    {english:"She sells clothes.", hindi:"वह कपड़े बेचती है।", pron:"Woh kapde bechti hai"},
+    {english:"Do you sell often?", hindi:"क्या तुम अक्सर बेचते हो?", pron:"Kya tum aksar bechte ho?"},
+    {english:"We sell together.", hindi:"हम साथ में बेचते हैं।", pron:"Hum saath mein bechte hain"},
+    {english:"He sold yesterday.", hindi:"उसने कल बेचा।", pron:"Usne kal becha"},
+    {english:"I like to sell things.", hindi:"मुझे चीज़ें बेचना पसंद है।", pron:"Mujhe cheezein bechna pasand hai"},
+    {english:"They sell every day.", hindi:"वे हर दिन बेचते हैं।", pron:"Ve har din bechte hain"},
+    {english:"Sell carefully.", hindi:"ध्यान से बेचो।", pron:"Dhyaan se becho"},
+    {english:"I am selling now.", hindi:"मैं अभी बेच रहा हूँ।", pron:"Main abhi bech raha hoon"},
+    {english:"She sells quickly.", hindi:"वह जल्दी बेचती है।", pron:"Woh jaldi bechti hai"}
+],
+
+73: [  // Word: Eat
+    {english:"I eat breakfast every day.", hindi:"मैं हर दिन नाश्ता करता हूँ।", pron:"Main har din nashta karta hoon"},
+    {english:"She eats vegetables.", hindi:"वह सब्ज़ियाँ खाती है।", pron:"Woh sabziyaan khati hai"},
+    {english:"Do you eat often?", hindi:"क्या तुम अक्सर खाते हो?", pron:"Kya tum aksar khate ho?"},
+    {english:"We eat together.", hindi:"हम साथ में खाते हैं।", pron:"Hum saath mein khate hain"},
+    {english:"He ate yesterday.", hindi:"उसने कल खाया।", pron:"Usne kal khaya"},
+    {english:"I like to eat fruits.", hindi:"मुझे फल खाना पसंद है।", pron:"Mujhe phal khana pasand hai"},
+    {english:"They eat every morning.", hindi:"वे हर सुबह खाते हैं।", pron:"Ve har subah khate hain"},
+    {english:"Eat carefully.", hindi:"ध्यान से खाओ।", pron:"Dhyaan se khao"},
+    {english:"I am eating now.", hindi:"मैं अभी खा रहा हूँ।", pron:"Main abhi kha raha hoon"},
+    {english:"She eats slowly.", hindi:"वह धीरे खाती है।", pron:"Woh dheere khati hai"}
+],
+
+74: [  // Word: Drink
+    {english:"I drink water every day.", hindi:"मैं हर दिन पानी पीता हूँ।", pron:"Main har din paani peeta hoon"},
+    {english:"She drinks tea.", hindi:"वह चाय पीती है।", pron:"Woh chai peeti hai"},
+    {english:"Do you drink coffee?", hindi:"क्या तुम कॉफी पीते हो?", pron:"Kya tum coffee peete ho?"},
+    {english:"We drink together.", hindi:"हम साथ में पीते हैं।", pron:"Hum saath mein peete hain"},
+    {english:"He drank yesterday.", hindi:"उसने कल पिया।", pron:"Usne kal piya"},
+    {english:"I like to drink juice.", hindi:"मुझे जूस पीना पसंद है।", pron:"Mujhe juice peena pasand hai"},
+    {english:"They drink every morning.", hindi:"वे हर सुबह पीते हैं।", pron:"Ve har subah peete hain"},
+    {english:"Drink carefully.", hindi:"ध्यान से पियो।", pron:"Dhyaan se piyo"},
+    {english:"I am drinking now.", hindi:"मैं अभी पी रहा हूँ।", pron:"Main abhi pee raha hoon"},
+    {english:"She drinks slowly.", hindi:"वह धीरे पीती है।", pron:"Woh dheere peeti hai"}
+],
+
+75: [  // Word: Sleep
+    {english:"I sleep 8 hours every night.", hindi:"मैं हर रात 8 घंटे सोता हूँ।", pron:"Main har raat 8 ghante sota hoon"},
+    {english:"She sleeps early.", hindi:"वह जल्दी सोती है।", pron:"Woh jaldi soti hai"},
+    {english:"Do you sleep well?", hindi:"क्या तुम अच्छे से सोते हो?", pron:"Kya tum achhe se sote ho?"},
+    {english:"We sleep together.", hindi:"हम साथ में सोते हैं।", pron:"Hum saath mein sote hain"},
+    {english:"He slept yesterday.", hindi:"वह कल सोया।", pron:"Woh kal soya"},
+    {english:"I like to sleep late.", hindi:"मुझे देर से सोना पसंद है।", pron:"Mujhe der se sona pasand hai"},
+    {english:"They sleep every night.", hindi:"वे हर रात सोते हैं।", pron:"Ve har raat sote hain"},
+    {english:"Sleep carefully.", hindi:"ध्यान से सोओ।", pron:"Dhyaan se soo"},
+    {english:"I am sleeping now.", hindi:"मैं अभी सो रहा हूँ।", pron:"Main abhi so raha hoon"},
+    {english:"She sleeps quietly.", hindi:"वह शांति से सोती है।", pron:"Woh shaanti se soti hai"}
+],
+
+76: [  // Word: Walk
+    {english:"I walk to work every day.", hindi:"मैं हर दिन काम पर पैदल जाता हूँ।"},
+    {english:"She walks in the park.", hindi:"वह पार्क में टहलती है।"},
+    {english:"Do you walk often?", hindi:"क्या तुम अक्सर पैदल चलते हो?"},
+    {english:"We walk together.", hindi:"हम साथ चलते हैं।"},
+    {english:"He walked yesterday.", hindi:"वह कल पैदल चला था।"},
+    {english:"I like to walk in the morning.", hindi:"मुझे सुबह टहलना पसंद है।"},
+    {english:"They walk every day.", hindi:"वे हर दिन चलते हैं।"},
+    {english:"Walk carefully.", hindi:"ध्यान से चलो।"},
+    {english:"I am walking now.", hindi:"मैं अभी चल रहा हूँ।"},
+    {english:"She walks slowly.", hindi:"वह धीरे चलती है।"}
+],
+
+77: [  // Word: Run
+    {english:"I run every morning.", hindi:"मैं हर सुबह दौड़ता हूँ।"},
+    {english:"She runs fast.", hindi:"वह तेज दौड़ती है।"},
+    {english:"Do you run often?", hindi:"क्या तुम अक्सर दौड़ते हो?"},
+    {english:"We run together.", hindi:"हम साथ दौड़ते हैं।"},
+    {english:"He ran yesterday.", hindi:"वह कल दौड़ा था।"},
+    {english:"I like to run in park.", hindi:"मुझे पार्क में दौड़ना पसंद है।"},
+    {english:"They run every day.", hindi:"वे हर दिन दौड़ते हैं।"},
+    {english:"Run carefully.", hindi:"ध्यान से दौड़ो।"},
+    {english:"I am running now.", hindi:"मैं अभी दौड़ रहा हूँ।"},
+    {english:"She runs quietly.", hindi:"वह चुपचाप दौड़ती है।"}
+],
+
+78: [  // Word: Drive
+    {english:"I drive to work every day.", hindi:"मैं हर दिन काम पर गाड़ी चलाकर जाता हूँ।"},
+    {english:"She drives carefully.", hindi:"वह सावधानी से गाड़ी चलाती है।"},
+    {english:"Do you drive often?", hindi:"क्या तुम अक्सर गाड़ी चलाते हो?"},
+    {english:"We drive together.", hindi:"हम साथ गाड़ी चलाते हैं।"},
+    {english:"He drove yesterday.", hindi:"उसने कल गाड़ी चलाई थी।"},
+    {english:"I like to drive fast.", hindi:"मुझे तेज गाड़ी चलाना पसंद है।"},
+    {english:"They drive every day.", hindi:"वे हर दिन गाड़ी चलाते हैं।"},
+    {english:"Drive carefully.", hindi:"सावधानी से चलाओ।"},
+    {english:"I am driving now.", hindi:"मैं अभी गाड़ी चला रहा हूँ।"},
+    {english:"She drives slowly.", hindi:"वह धीरे गाड़ी चलाती है।"}
+],
+
+79: [  // Word: Teach
+    {english:"I teach English.", hindi:"मैं अंग्रेज़ी पढ़ाता हूँ।"},
+    {english:"She teaches math.", hindi:"वह गणित पढ़ाती है।"},
+    {english:"Do you teach now?", hindi:"क्या तुम अभी पढ़ा रहे हो?"},
+    {english:"We teach together.", hindi:"हम साथ पढ़ाते हैं।"},
+    {english:"He taught yesterday.", hindi:"उसने कल पढ़ाया था।"},
+    {english:"I like to teach children.", hindi:"मुझे बच्चों को पढ़ाना पसंद है।"},
+    {english:"They teach every day.", hindi:"वे हर दिन पढ़ाते हैं।"},
+    {english:"Teach carefully.", hindi:"ध्यान से पढ़ाओ।"},
+    {english:"I am teaching now.", hindi:"मैं अभी पढ़ा रहा हूँ।"},
+    {english:"She teaches quietly.", hindi:"वह शांतिपूर्वक पढ़ाती है।"}
+],
+
+80: [  // Word: Learn
+    {english:"I learn Russian every day.", hindi:"मैं हर दिन रूसी सीखता हूँ।"},
+    {english:"She learns quickly.", hindi:"वह जल्दी सीखती है।"},
+    {english:"Do you learn often?", hindi:"क्या तुम अक्सर सीखते हो?"},
+    {english:"We learn together.", hindi:"हम साथ सीखते हैं।"},
+    {english:"He learned yesterday.", hindi:"उसने कल सीखा था।"},
+    {english:"I like to learn new things.", hindi:"मुझे नई चीज़ें सीखना पसंद है।"},
+    {english:"They learn every day.", hindi:"वे हर दिन सीखते हैं।"},
+    {english:"Learn carefully.", hindi:"ध्यान से सीखो।"},
+    {english:"I am learning now.", hindi:"मैं अभी सीख रहा हूँ।"},
+    {english:"She learns quietly.", hindi:"वह चुपचाप सीखती है।"}
+],
+
+81: [  // Word: Read
+    {english:"I read books every day.", hindi:"मैं हर दिन किताबें पढ़ता हूँ।"},
+    {english:"She reads newspapers.", hindi:"वह अख़बार पढ़ती है।"},
+    {english:"Do you read often?", hindi:"क्या तुम अक्सर पढ़ते हो?"},
+    {english:"We read together.", hindi:"हम साथ पढ़ते हैं।"},
+    {english:"He read yesterday.", hindi:"उसने कल पढ़ा था।"},
+    {english:"I like to read stories.", hindi:"मुझे कहानियाँ पढ़ना पसंद है।"},
+    {english:"They read every night.", hindi:"वे हर रात पढ़ते हैं।"},
+    {english:"Read carefully.", hindi:"ध्यान से पढ़ो।"},
+    {english:"I am reading now.", hindi:"मैं अभी पढ़ रहा हूँ।"},
+    {english:"She reads slowly.", hindi:"वह धीरे पढ़ती है।"}
+],
+
+82: [  // Word: Write
+    {english:"I write letters every day.", hindi:"मैं हर दिन पत्र लिखता हूँ।"},
+    {english:"She writes notes.", hindi:"वह नोट्स लिखती है।"},
+    {english:"Do you write often?", hindi:"क्या तुम अक्सर लिखते हो?"},
+    {english:"We write together.", hindi:"हम साथ लिखते हैं।"},
+    {english:"He wrote yesterday.", hindi:"उसने कल लिखा था।"},
+    {english:"I like to write stories.", hindi:"मुझे कहानियाँ लिखना पसंद है।"},
+    {english:"They write every day.", hindi:"वे हर दिन लिखते हैं।"},
+    {english:"Write carefully.", hindi:"ध्यान से लिखो।"},
+    {english:"I am writing now.", hindi:"मैं अभी लिख रहा हूँ।"},
+    {english:"She writes quickly.", hindi:"वह जल्दी लिखती है।"}
+],
+
+83: [  // Word: Watch
+    {english:"I watch TV every day.", hindi:"मैं हर दिन टीवी देखता हूँ।"},
+    {english:"She watches movies.", hindi:"वह फ़िल्में देखती है।"},
+    {english:"Do you watch often?", hindi:"क्या तुम अक्सर देखते हो?"},
+    {english:"We watch together.", hindi:"हम साथ देखते हैं।"},
+    {english:"He watched yesterday.", hindi:"उसने कल देखा था।"},
+    {english:"I like to watch cartoons.", hindi:"मुझे कार्टून देखना पसंद है।"},
+    {english:"They watch every evening.", hindi:"वे हर शाम देखते हैं।"},
+    {english:"Watch carefully.", hindi:"ध्यान से देखो।"},
+    {english:"I am watching now.", hindi:"मैं अभी देख रहा हूँ।"},
+    {english:"She watches quietly.", hindi:"वह चुपचाप देखती है।"}
+],
+
+84: [  // Word: Listen
+    {english:"I listen to music every day.", hindi:"मैं हर दिन संगीत सुनता हूँ।"},
+    {english:"She listens to radio.", hindi:"वह रेडियो सुनती है।"},
+    {english:"Do you listen often?", hindi:"क्या तुम अक्सर सुनते हो?"},
+    {english:"We listen together.", hindi:"हम साथ सुनते हैं।"},
+    {english:"He listened yesterday.", hindi:"उसने कल सुना था।"},
+    {english:"I like to listen to songs.", hindi:"मुझे गाने सुनना पसंद है।"},
+    {english:"They listen every day.", hindi:"वे हर दिन सुनते हैं।"},
+    {english:"Listen carefully.", hindi:"ध्यान से सुनो।"},
+    {english:"I am listening now.", hindi:"मैं अभी सुन रहा हूँ।"},
+    {english:"She listens quietly.", hindi:"वह चुपचाप सुनती है।"}
+],
+
+85: [  // Word: Speak
+    {english:"I speak English.", hindi:"मैं अंग्रेज़ी बोलता हूँ।"},
+    {english:"She speaks Russian.", hindi:"वह रूसी बोलती है।"},
+    {english:"Do you speak now?", hindi:"क्या तुम अभी बोल रहे हो?"},
+    {english:"We speak together.", hindi:"हम साथ बोलते हैं।"},
+    {english:"He spoke yesterday.", hindi:"उसने कल बोला था।"},
+    {english:"I like to speak with friends.", hindi:"मुझे दोस्तों से बात करना पसंद है।"},
+    {english:"They speak every day.", hindi:"वे हर दिन बोलते हैं।"},
+    {english:"Speak carefully.", hindi:"ध्यान से बोलो।"},
+    {english:"I am speaking now.", hindi:"मैं अभी बोल रहा हूँ।"},
+    {english:"She speaks quietly.", hindi:"वह धीरे बोलती है।"}
+],
+
+86: [  // Word: Ask
+    {english:"I ask questions.", hindi:"मैं सवाल पूछता हूँ।"},
+    {english:"She asks for help.", hindi:"वह मदद माँगती है।"},
+    {english:"Do you ask often?", hindi:"क्या तुम अक्सर पूछते हो?"},
+    {english:"We ask together.", hindi:"हम साथ पूछते हैं।"},
+    {english:"He asked yesterday.", hindi:"उसने कल पूछा था।"},
+    {english:"I like to ask questions.", hindi:"मुझे सवाल पूछना पसंद है।"},
+    {english:"They ask every day.", hindi:"वे हर दिन पूछते हैं।"},
+    {english:"Ask carefully.", hindi:"ध्यान से पूछो।"},
+    {english:"I am asking now.", hindi:"मैं अभी पूछ रहा हूँ।"},
+    {english:"She asks politely.", hindi:"वह विनम्रता से पूछती है।"}
+],
+
+87: [  // Word: Answer
+    {english:"I answer questions.", hindi:"मैं सवालों के जवाब देता हूँ।"},
+    {english:"She answers quickly.", hindi:"वह जल्दी जवाब देती है।"},
+    {english:"Do you answer often?", hindi:"क्या तुम अक्सर जवाब देते हो?"},
+    {english:"We answer together.", hindi:"हम साथ जवाब देते हैं।"},
+    {english:"He answered yesterday.", hindi:"उसने कल जवाब दिया था।"},
+    {english:"I like to answer questions.", hindi:"मुझे सवालों के जवाब देना पसंद है।"},
+    {english:"They answer every day.", hindi:"वे हर दिन जवाब देते हैं।"},
+    {english:"Answer carefully.", hindi:"ध्यान से जवाब दो।"},
+    {english:"I am answering now.", hindi:"मैं अभी जवाब दे रहा हूँ।"},
+    {english:"She answers politely.", hindi:"वह विनम्रता से जवाब देती है।"}
+],
+
+88: [  // Word: Call
+    {english:"I call my friend.", hindi:"मैं अपने दोस्त को फोन करता हूँ।"},
+    {english:"She calls her mother.", hindi:"वह अपनी माँ को फोन करती है।"},
+    {english:"Do you call often?", hindi:"क्या तुम अक्सर फोन करते हो?"},
+    {english:"We call together.", hindi:"हम साथ फोन करते हैं।"},
+    {english:"He called yesterday.", hindi:"उसने कल फोन किया था।"},
+    {english:"I like to call family.", hindi:"मुझे परिवार को फोन करना पसंद है।"},
+    {english:"They call every day.", hindi:"वे हर दिन फोन करते हैं।"},
+    {english:"Call carefully.", hindi:"ध्यान से फोन करो।"},
+    {english:"I am calling now.", hindi:"मैं अभी फोन कर रहा हूँ।"},
+    {english:"She calls quietly.", hindi:"वह धीरे फोन करती है।"}
+],
+
+89: [  // Word: Open
+    {english:"I open the book.", hindi:"मैं किताब खोलता हूँ।"},
+    {english:"She opens the box.", hindi:"वह डिब्बा खोलती है।"},
+    {english:"Do you open the door?", hindi:"क्या तुम दरवाज़ा खोलते हो?"},
+    {english:"We open together.", hindi:"हम साथ खोलते हैं।"},
+    {english:"He opened it yesterday.", hindi:"उसने इसे कल खोला था।"},
+    {english:"I like to open presents.", hindi:"मुझे उपहार खोलना पसंद है।"},
+    {english:"They open every morning.", hindi:"वे हर सुबह खोलते हैं।"},
+    {english:"Open carefully.", hindi:"ध्यान से खोलो।"},
+    {english:"I am opening now.", hindi:"मैं अभी खोल रहा हूँ।"},
+    {english:"She opens slowly.", hindi:"वह धीरे खोलती है।"}
+],
+
+90: [  // Word: Close
+    {english:"I close the book.", hindi:"मैं किताब बंद करता हूँ।"},
+    {english:"She closes the window.", hindi:"वह खिड़की बंद करती है।"},
+    {english:"Do you close the door?", hindi:"क्या तुम दरवाज़ा बंद करते हो?"},
+    {english:"We close together.", hindi:"हम साथ बंद करते हैं।"},
+    {english:"He closed it yesterday.", hindi:"उसने इसे कल बंद किया था।"},
+    {english:"I like to close the shop.", hindi:"मुझे दुकान बंद करना पसंद है।"},
+    {english:"They close every night.", hindi:"वे हर रात बंद करते हैं।"},
+    {english:"Close carefully.", hindi:"ध्यान से बंद करो।"},
+    {english:"I am closing now.", hindi:"मैं अभी बंद कर रहा हूँ।"},
+    {english:"She closes quickly.", hindi:"वह जल्दी बंद करती है।"}
+],
+90: [  // Word: Close
+    {english:"I close the book.", hindi:"मैं किताब बंद करता हूँ।"},
+    {english:"She closes the window.", hindi:"वह खिड़की बंद करती है।"},
+    {english:"Do you close the door?", hindi:"क्या तुम दरवाज़ा बंद करते हो?"},
+    {english:"We close together.", hindi:"हम साथ बंद करते हैं।"},
+    {english:"He closed it yesterday.", hindi:"उसने इसे कल बंद किया था।"},
+    {english:"I like to close the shop.", hindi:"मुझे दुकान बंद करना पसंद है।"},
+    {english:"They close every night.", hindi:"वे हर रात बंद करते हैं।"},
+    {english:"Close carefully.", hindi:"ध्यान से बंद करो।"},
+    {english:"I am closing now.", hindi:"मैं अभी बंद कर रहा हूँ।"},
+    {english:"She closes quickly.", hindi:"वह जल्दी बंद करती है।"}
+],
+
+91: [  // Word: Open
+    {english:"I open the book.", hindi:"मैं किताब खोलता हूँ।"},
+    {english:"She opens the box.", hindi:"वह डिब्बा खोलती है।"},
+    {english:"Do you open the door?", hindi:"क्या तुम दरवाज़ा खोलते हो?"},
+    {english:"We open together.", hindi:"हम साथ खोलते हैं।"},
+    {english:"He opened it yesterday.", hindi:"उसने इसे कल खोला था।"},
+    {english:"I like to open presents.", hindi:"मुझे उपहार खोलना पसंद है।"},
+    {english:"They open every morning.", hindi:"वे हर सुबह खोलते हैं।"},
+    {english:"Open carefully.", hindi:"ध्यान से खोलो।"},
+    {english:"I am opening now.", hindi:"मैं अभी खोल रहा हूँ।"},
+    {english:"She opens slowly.", hindi:"वह धीरे खोलती है।"}
+],
+
+92: [  // Word: Close
+    {english:"I close the book.", hindi:"मैं किताब बंद करता हूँ।"},
+    {english:"She closes the window.", hindi:"वह खिड़की बंद करती है।"},
+    {english:"Do you close the door?", hindi:"क्या तुम दरवाज़ा बंद करते हो?"},
+    {english:"We close together.", hindi:"हम साथ बंद करते हैं।"},
+    {english:"He closed it yesterday.", hindi:"उसने इसे कल बंद किया था।"},
+    {english:"I like to close the shop.", hindi:"मुझे दुकान बंद करना पसंद है।"},
+    {english:"They close every night.", hindi:"वे हर रात बंद करते हैं।"},
+    {english:"Close carefully.", hindi:"ध्यान से बंद करो।"},
+    {english:"I am closing now.", hindi:"मैं अभी बंद कर रहा हूँ।"},
+    {english:"She closes quickly.", hindi:"वह जल्दी बंद करती है।"}
+],
+
+93: [  // Word: Buy
+    {english:"I buy fruits every day.", hindi:"मैं हर दिन फल खरीदता हूँ।"},
+    {english:"She buys clothes.", hindi:"वह कपड़े खरीदती है।"},
+    {english:"Do you buy often?", hindi:"क्या तुम अक्सर खरीदते हो?"},
+    {english:"We buy together.", hindi:"हम साथ खरीदते हैं।"},
+    {english:"He bought yesterday.", hindi:"उसने कल खरीदा था।"},
+    {english:"I like to buy gifts.", hindi:"मुझे उपहार खरीदना पसंद है।"},
+    {english:"They buy every week.", hindi:"वे हर हफ्ते खरीदते हैं।"},
+    {english:"Buy carefully.", hindi:"ध्यान से खरीदो।"},
+    {english:"I am buying now.", hindi:"मैं अभी खरीद रहा हूँ।"},
+    {english:"She buys quickly.", hindi:"वह जल्दी खरीदती है।"}
+],
+
+94: [  // Word: Sell
+    {english:"I sell vegetables every day.", hindi:"मैं हर दिन सब्ज़ियाँ बेचता हूँ।"},
+    {english:"She sells clothes.", hindi:"वह कपड़े बेचती है।"},
+    {english:"Do you sell often?", hindi:"क्या तुम अक्सर बेचते हो?"},
+    {english:"We sell together.", hindi:"हम साथ बेचते हैं।"},
+    {english:"He sold yesterday.", hindi:"उसने कल बेचा था।"},
+    {english:"I like to sell things.", hindi:"मुझे चीज़ें बेचना पसंद है।"},
+    {english:"They sell every day.", hindi:"वे हर दिन बेचते हैं।"},
+    {english:"Sell carefully.", hindi:"ध्यान से बेचो।"},
+    {english:"I am selling now.", hindi:"मैं अभी बेच रहा हूँ।"},
+    {english:"She sells quickly.", hindi:"वह जल्दी बेचती है।"}
+],
+
+95: [  // Word: Eat
+    {english:"I eat breakfast every day.", hindi:"मैं हर दिन नाश्ता करता हूँ।"},
+    {english:"She eats vegetables.", hindi:"वह सब्ज़ियाँ खाती है।"},
+    {english:"Do you eat often?", hindi:"क्या तुम अक्सर खाते हो?"},
+    {english:"We eat together.", hindi:"हम साथ खाते हैं।"},
+    {english:"He ate yesterday.", hindi:"उसने कल खाया था।"},
+    {english:"I like to eat fruits.", hindi:"मुझे फल खाना पसंद है।"},
+    {english:"They eat every morning.", hindi:"वे हर सुबह खाते हैं।"},
+    {english:"Eat carefully.", hindi:"ध्यान से खाओ।"},
+    {english:"I am eating now.", hindi:"मैं अभी खा रहा हूँ।"},
+    {english:"She eats slowly.", hindi:"वह धीरे खाती है।"}
+],
+
+96: [  // Word: Drink
+    {english:"I drink water every day.", hindi:"मैं हर दिन पानी पीता हूँ।"},
+    {english:"She drinks tea.", hindi:"वह चाय पीती है।"},
+    {english:"Do you drink coffee?", hindi:"क्या तुम कॉफी पीते हो?"},
+    {english:"We drink together.", hindi:"हम साथ पीते हैं।"},
+    {english:"He drank yesterday.", hindi:"उसने कल पिया था।"},
+    {english:"I like to drink juice.", hindi:"मुझे जूस पीना पसंद है।"},
+    {english:"They drink every morning.", hindi:"वे हर सुबह पीते हैं।"},
+    {english:"Drink carefully.", hindi:"ध्यान से पियो।"},
+    {english:"I am drinking now.", hindi:"मैं अभी पी रहा हूँ।"},
+    {english:"She drinks slowly.", hindi:"वह धीरे पीती है।"}
+],
+
+97: [  // Word: Sleep
+    {english:"I sleep 8 hours every night.", hindi:"मैं हर रात 8 घंटे सोता हूँ।"},
+    {english:"She sleeps early.", hindi:"वह जल्दी सोती है।"},
+    {english:"Do you sleep well?", hindi:"क्या तुम अच्छी नींद लेते हो?"},
+    {english:"We sleep together.", hindi:"हम साथ सोते हैं।"},
+    {english:"He slept yesterday.", hindi:"वह कल सोया था।"},
+    {english:"I like to sleep late.", hindi:"मुझे देर से सोना पसंद है।"},
+    {english:"They sleep every night.", hindi:"वे हर रात सोते हैं।"},
+    {english:"Sleep carefully.", hindi:"ध्यान से सोओ।"},
+    {english:"I am sleeping now.", hindi:"मैं अभी सो रहा हूँ।"},
+    {english:"She sleeps quietly.", hindi:"वह चुपचाप सोती है।"}
+],
+
+98: [  // Word: Walk
+    {english:"I walk to work every day.", hindi:"मैं हर दिन काम पर पैदल जाता हूँ।"},
+    {english:"She walks in the park.", hindi:"वह पार्क में टहलती है।"},
+    {english:"Do you walk often?", hindi:"क्या तुम अक्सर पैदल चलते हो?"},
+    {english:"We walk together.", hindi:"हम साथ चलते हैं।"},
+    {english:"He walked yesterday.", hindi:"वह कल पैदल चला था।"},
+    {english:"I like to walk in the morning.", hindi:"मुझे सुबह टहलना पसंद है।"},
+    {english:"They walk every day.", hindi:"वे हर दिन चलते हैं।"},
+    {english:"Walk carefully.", hindi:"ध्यान से चलो।"},
+    {english:"I am walking now.", hindi:"मैं अभी चल रहा हूँ।"},
+    {english:"She walks slowly.", hindi:"वह धीरे चलती है।"}
+],
+
+99: [  // Word: Run
+    {english:"I run every morning.", hindi:"मैं हर सुबह दौड़ता हूँ।"},
+    {english:"She runs fast.", hindi:"वह तेज दौड़ती है।"},
+    {english:"Do you run often?", hindi:"क्या तुम अक्सर दौड़ते हो?"},
+    {english:"We run together.", hindi:"हम साथ दौड़ते हैं।"},
+    {english:"He ran yesterday.", hindi:"वह कल दौड़ा था।"},
+    {english:"I like to run in park.", hindi:"मुझे पार्क में दौड़ना पसंद है।"},
+    {english:"They run every day.", hindi:"वे हर दिन दौड़ते हैं।"},
+    {english:"Run carefully.", hindi:"ध्यान से दौड़ो।"},
+    {english:"I am running now.", hindi:"मैं अभी दौड़ रहा हूँ।"},
+    {english:"She runs quietly.", hindi:"वह चुपचाप दौड़ती है।"}
+],
+
+100: [  // Word: Drive
+    {english:"I drive to work every day.", hindi:"मैं हर दिन काम पर गाड़ी चलाकर जाता हूँ।"},
+    {english:"She drives carefully.", hindi:"वह सावधानी से गाड़ी चलाती है।"},
+    {english:"Do you drive often?", hindi:"क्या तुम अक्सर गाड़ी चलाते हो?"},
+    {english:"We drive together.", hindi:"हम साथ गाड़ी चलाते हैं।"},
+    {english:"He drove yesterday.", hindi:"उसने कल गाड़ी चलाई थी।"},
+    {english:"I like to drive fast.", hindi:"मुझे तेज गाड़ी चलाना पसंद है।"},
+    {english:"They drive every day.", hindi:"वे हर दिन गाड़ी चलाते हैं।"},
+    {english:"Drive carefully.", hindi:"सावधानी से चलाओ।"},
+    {english:"I am driving now.", hindi:"मैं अभी गाड़ी चला रहा हूँ।"},
+    {english:"She drives slowly.", hindi:"वह धीरे गाड़ी चलाती है।"}
+]
+
+
+
+};
+
+
+/* ---------- LIVE DATE & TIME ---------- */
+function updateDateTime() {
+    const now = new Date();
+    const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    document.getElementById("dayDate").textContent =
+        days[now.getDay()] + ", " + now.toLocaleDateString();
+    document.getElementById("timeNow").textContent =
+        now.toLocaleTimeString();
+}
+setInterval(updateDateTime, 1000);
+updateDateTime();
+
+/* ---------- LESSON SYSTEM ---------- */
+const TOTAL = 100;
+const lessonsGrid = document.getElementById("lessonsGrid");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+
+// UNLOCK ALL LESSONS
+const unlocked = TOTAL;
+let completed = JSON.parse(localStorage.getItem("completedLessons")) || [];
+
+function updateProgress() {
+    const percent = Math.round((completed.length / TOTAL) * 100);
+    progressBar.style.width = percent + "%";
+    progressBar.textContent = percent + "%";
+    progressText.textContent = `${completed.length} of ${TOTAL} lessons completed`;
+}
+updateProgress();
+
+
+/* ---------- CREATE LESSONS ---------- */
+for (let i = 1; i <= TOTAL; i++) {
+    const card = document.createElement("div");
+    card.className = "lesson-logo";
+    card.innerHTML = `Lesson ${i}<span>Available</span>`;
+    card.onclick = () => openLesson(i);
+    lessonsGrid.appendChild(card);
+}
+
+/* ---------- OPEN LESSON ---------- */
+function openLesson(num) {
+    lessonsGrid.style.display = "none";
+    const lessonContent = document.getElementById("lessonContent");
+    lessonContent.style.display = "block";
+    document.getElementById("lessonTitle").textContent = `Lesson ${num}`;
+
+    const phrasesDiv = document.getElementById("lessonPhrases");
+    phrasesDiv.innerHTML = "";
+
+    const phrases = lessonsData[num] || [{ english: "Content coming soon!", hindi: "", pron: "" }];
+    phrases.forEach(p => {
+        const phraseDiv = document.createElement("div");
+        phraseDiv.className = "phrase";
+        phraseDiv.innerHTML = `
+            <div class="english">${p.english}</div>
+            <div class="hindi">${p.hindi}</div>
+            <div class="pronunciation">${p.pron || ""}</div>
+           
+            <button class="speak-btn">🔊</button>
+        `;
+        phrasesDiv.appendChild(phraseDiv);
+
+        // speak button
+        const btn = phraseDiv.querySelector('.speak-btn');
+        btn.addEventListener('click', () => {
+            const utter = new SpeechSynthesisUtterance(p.pron);
+            utter.lang = 'en-US';
+            speechSynthesis.speak(utter);
+        });
+    });
+
+    // mark completed
+    if (!completed.includes(num)) {
+        completed.push(num);
+        localStorage.setItem("completedLessons", JSON.stringify(completed));
+        updateProgress();
+    }
+}
+
+/* ---------- BACK BUTTON ---------- */
+document.getElementById("backBtn").onclick = () => {
+    document.getElementById("lessonContent").style.display = "none";
+    lessonsGrid.style.display = "grid";
+};
+</script>
+
+</body>
+</html>

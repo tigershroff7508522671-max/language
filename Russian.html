@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Languages.com | Learning Dashboard</title>
+
+<style>
+:root {
+    --primary: #f0df22;
+    --primary-dark: #0a150e;
+    --bg: #f0fdf4;
+    --card: #ffffff;
+    --text: #064e3b;
+    --muted: #6b7280;
+    --locked: #e5e7eb;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* ---------- TOP BAR ---------- */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.topbar {
+    max-width: 1400px;
+    margin: auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.brand-logo {
+    width: 38px;
+    height: 38px;
+    background: white;
+    color: var(--primary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+}
+
+.page-title {
+    font-size: 18px;
+    font-weight: 500;
+    opacity: 0.95;
+}
+
+.datetime {
+    background: rgba(255,255,255,0.18);
+    padding: 8px 14px;
+    border-radius: 12px;
+    text-align: right;
+    font-size: 13px;
+    backdrop-filter: blur(6px);
+}
+
+.datetime .time {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .page-title { display: none; }
+}
+
+/* ---------- PROGRESS ---------- */
+.progress-container {
+    width: 90%;
+    max-width: 900px;
+    background: #fff9c4;
+    border-radius: 999px;
+    margin: 25px auto 10px;
+    height: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--primary);
+    color: black;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: center;
+    transition: width 0.4s ease;
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 15px;
+}
+
+/* ---------- MAIN ---------- */
+main {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* ---------- LESSON GRID ---------- */
+.lesson-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 18px;
+}
+
+.lesson-logo {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    border-top: 4px solid var(--primary);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.lesson-logo span {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+}
+
+.lesson-logo:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* ---------- LESSON VIEW ---------- */
+.lesson-container {
+    display: none;
+    background: var(--card);
+    padding: 25px;
+    margin-top: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.phrase {
+    margin-bottom: 12px;
+    padding: 12px;
+    background: #fffde7;
+    border-radius: 12px;
+  
+
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.phrase .english {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.phrase .russian {
+    color: #f0df22;
+    font-size: 15px;
+    margin-top: 2px;
+}
+
+.phrase .pronunciation {
+    color: #6b7280;
+    font-style: italic;
+    margin-top: 2px;
+}
+
+.speak-btn {
+    background: var(--primary);
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background 0.3s;
+}
+.speak-btn:hover { background: var(--primary-dark); color:white; }
+
+.back-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 30px;
+    background: var(--primary);
+    color: black;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.back-btn:hover {
+    background: var(--primary-dark);
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="topbar">
+        <div class="brand">
+            <div class="brand-logo">L</div>
+            Languages.com
+        </div>
+
+        <div class="page-title">
+            Russian Learning Dashboard
+        </div>
+
+        <div class="datetime">
+            <div id="dayDate"></div>
+            <div class="time" id="timeNow"></div>
+        </div>
+    </div>
+</header>
+
+<!-- PROGRESS -->
+<div class="progress-container">
+    <div class="progress-bar" id="progressBar">0%</div>
+</div>
+<div class="progress-text" id="progressText">0 of 100 lessons completed</div>
+
+<main>
+    <div class="lesson-grid" id="lessonsGrid"></div>
+
+    <div class="lesson-container" id="lessonContent">
+        <h2 id="lessonTitle"></h2>
+        <div id="lessonPhrases"></div>
+        <a href="#" class="back-btn" id="backBtn">← Back to Lessons</a>
+    </div>
+</main>
+
+<script>
+
+
+const lessonsData = {
+    1: [
+        {english:"А – A", russian:"А", pron:"(ah)"},
+        {english:"Б – B", russian:"Б", pron:"(beh)"},
+        {english:"В – V", russian:"В", pron:"(veh)"},
+        {english:"Г – G", russian:"Г", pron:"(geh)"},
+        {english:"Д – D", russian:"Д", pron:"(deh)"},
+        {english:"Е – Ye", russian:"Е", pron:"(yeh)"},
+        {english:"Ё – Yo", russian:"Ё", pron:"(yo)"},
+        {english:"Ж – Zh", russian:"Ж", pron:"(like s in 'measure')"},
+        {english:"З – Z", russian:"З", pron:"(zeh)"},
+        {english:"И – I", russian:"И", pron:"(ee)"},
+        {english:"Й – Y", russian:"Й", pron:"(short i, like y in 'boy')"},
+        {english:"К – K", russian:"К", pron:"(keh)"},
+        {english:"Л – L", russian:"Л", pron:"(el)"},
+        {english:"М – M", russian:"М", pron:"(em)"},
+        {english:"Н – N", russian:"Н", pron:"(en)"},
+        {english:"О – O", russian:"О", pron:"(oh)"},
+        {english:"П – P", russian:"П", pron:"(peh)"},
+        {english:"Р – R", russian:"Р", pron:"(rolled r)"},
+        {english:"С – S", russian:"С", pron:"(es)"},
+        {english:"Т – T", russian:"Т", pron:"(teh)"},
+        {english:"У – U", russian:"У", pron:"(oo)"},
+        {english:"Ф – F", russian:"Ф", pron:"(ef)"},
+        {english:"Х – Kh", russian:"Х", pron:"(like ch in Scottish 'loch')"},
+        {english:"Ц – Ts", russian:"Ц", pron:"(ts)"},
+        {english:"Ч – Ch", russian:"Ч", pron:"(ch in 'chat')"},
+        {english:"Ш – Sh", russian:"Ш", pron:"(sh in 'shoe')"},
+        {english:"Щ – Shch", russian:"Щ", pron:"(soft sh)"},
+        {english:"Ъ – Hard sign", russian:"Ъ", pron:"(pause)"},
+        {english:"Ы – Y", russian:"Ы", pron:"(like i in 'ill' but deeper)"},
+        {english:"Ь – Soft sign", russian:"Ь", pron:"(softens previous consonant)"},
+        {english:"Э – E", russian:"Э", pron:"(like e in 'bed')"},
+        {english:"Ю – Yu", russian:"Ю", pron:"(you)"},
+        {english:"Я – Ya", russian:"Я", pron:"(ya)"}
+    ],
+    2: [
+        {english:"Hi!", russian:"Привет!", pron:"Pree-vyet!"},
+        {english:"Hi, how are you?", russian:"Привет, как дела?", pron:"Pree-vyet, kak de-la?"},
+        {english:"Hi, I’m Vikas.", russian:"Привет, я Викас.", pron:"Pree-vyet, ya Vee-kas"},
+        {english:"Hi, nice to meet you.", russian:"Привет, приятно познакомиться.", pron:"Pree-vyet, pra-yat-na po-zna-ko-mit-sya"},
+        {english:"Hi, good morning.", russian:"Привет, доброе утро.", pron:"Pree-vyet, do-bro-ye oo-tra"},
+        {english:"Hi, good evening.", russian:"Привет, добрый вечер.", pron:"Pree-vyet, do-briy ve-cher"},
+        {english:"Hi, what’s up?", russian:"Привет, как дела?", pron:"Pree-vyet, kak de-la?"},
+        {english:"Hi, welcome!", russian:"Привет, добро пожаловать!", pron:"Pree-vyet, do-bro pa-zha-lo-vat’"},
+        {english:"Hi, my friend!", russian:"Привет, друг!", pron:"Pree-vyet, droog!"},
+        {english:"Hi, long time no see.", russian:"Привет, давно не виделись.", pron:"Pree-vyet, da-vno nye vi-de-lis’"}
+    ],
+
+    3: [
+    {english:"I want the other one.", russian:"Я хочу другой.", pron:"Ya kho-choo dru-goy"},
+    {english:"The other person is here.", russian:"Другой человек здесь.", pron:"Dru-goy che-lo-vek zdes’"},
+    {english:"I like the other bag.", russian:"Мне нравится другая сумка.", pron:"Mne nrav-it-sya dru-gaya soom-ka"},
+    {english:"The other room is big.", russian:"Другая комната большая.", pron:"Dru-gaya kom-na-ta bol-sha-ya"},
+    {english:"I will take the other one.", russian:"Я возьму другой.", pron:"Ya voz’-mu dru-goy"},
+    {english:"The other car is faster.", russian:"Другая машина быстрее.", pron:"Dru-gaya ma-shee-na by-stree"},
+    {english:"I met the other team.", russian:"Я встретил другую команду.", pron:"Ya vstre-til dru-guyu ka-man-du"},
+    {english:"The other choice is better.", russian:"Другой выбор лучше.", pron:"Dru-goy vy-bor luch-she"},
+    {english:"She went to the other shop.", russian:"Она пошла в другой магазин.", pron:"O-na poshla v dru-goy ma-ga-zeen"},
+    {english:"We stayed in the other hotel.", russian:"Мы остановились в другом отеле.", pron:"My o-sta-no-vi-lis’ v dru-gom o-te-le"}
+    ],
+
+    4: [  // Word: Good / Хороший
+    {english:"This is good.", russian:"Это хорошо.", pron:"E-to kha-ro-sho"},
+    {english:"The food is good.", russian:"Еда хорошая.", pron:"Ye-da kha-ro-sha-ya"},
+    {english:"You did a good job.", russian:"Ты хорошо сделал.", pron:"Ty kha-ro-sho sde-lal"},
+    {english:"Good morning!", russian:"Доброе утро!", pron:"Do-bro-ye oo-tra"},
+    {english:"Good night.", russian:"Спокойной ночи.", pron:"Spa-koy-noy no-chi"},
+    {english:"That’s a good idea.", russian:"Это хорошая идея.", pron:"E-to kha-ro-sha-ya i-de-ya"},
+    {english:"I feel good.", russian:"Я чувствую себя хорошо.", pron:"Ya chuv-stvu-yu se-bya kha-ro-sho"},
+    {english:"This is a good place.", russian:"Это хорошее место.", pron:"E-to kha-ro-she-ye mes-to"},
+    {english:"The weather is good.", russian:"Погода хорошая.", pron:"Po-go-da kha-ro-sha-ya"},
+    {english:"Good luck!", russian:"Удачи!", pron:"U-da-chi"}
+],
+
+    5: [  // Word: Bad / Плохой
+    {english:"This is bad.", russian:"Это плохо.", pron:"E-to plo-kho"},
+    {english:"The food is bad.", russian:"Еда плохая.", pron:"Ye-da plo-kha-ya"},
+    {english:"I feel bad.", russian:"Я чувствую себя плохо.", pron:"Ya chuv-stvu-yu se-bya plo-kho"},
+    {english:"The weather is bad.", russian:"Погода плохая.", pron:"Po-go-da plo-kha-ya"},
+    {english:"This is a bad idea.", russian:"Это плохая идея.", pron:"E-to plo-kha-ya i-de-ya"},
+    {english:"He is a bad person.", russian:"Он плохой человек.", pron:"On plo-khoy che-lo-vek"},
+    {english:"I had a bad day.", russian:"У меня был плохой день.", pron:"U me-nya byl plo-khoy den’"},
+    {english:"The situation is bad.", russian:"Ситуация плохая.", pron:"Si-tu-a-tsi-ya plo-kha-ya"},
+    {english:"Bad luck!", russian:"Неудача!", pron:"Ne-u-da-cha"},
+    {english:"This movie is bad.", russian:"Этот фильм плохой.", pron:"E-tot film plo-khoy"}
+],
+
+    6: [  // Word: Want / Хотеть
+    {english:"I want water.", russian:"Я хочу воды.", pron:"Ya kho-chu vo-dy"},
+    {english:"She wants a new bag.", russian:"Она хочет новую сумку.", pron:"O-na kho-chet no-vu-yu soom-ku"},
+    {english:"I want to go home.", russian:"Я хочу идти домой.", pron:"Ya kho-chu id-ti do-moy"},
+    {english:"He wants more food.", russian:"Он хочет больше еды.", pron:"On kho-chet bol-she ye-dy"},
+    {english:"Do you want tea?", russian:"Ты хочешь чай?", pron:"Ty kho-chesh’ chai?"},
+    {english:"I want to sleep.", russian:"Я хочу спать.", pron:"Ya kho-chu spat’"},
+    {english:"They want help.", russian:"Они хотят помощи.", pron:"O-ni kho-tyat po-mo-shchi"},
+    {english:"I want a new phone.", russian:"Я хочу новый телефон.", pron:"Ya kho-chu no-vyy te-le-fon"},
+    {english:"She wants to study.", russian:"Она хочет учиться.", pron:"O-na kho-chet u-chi-tsya"},
+    {english:"We want to travel.", russian:"Мы хотим путешествовать.", pron:"My kho-tim pu-te-shes-tvo-vat’"}
+],
+
+    7: [  // Word: Need / Нужно
+    {english:"I need help.", russian:"Мне нужна помощь.", pron:"Mne nuzh-na po-moshch’"},
+    {english:"You need water.", russian:"Тебе нужна вода.", pron:"Te-be nuzh-na vo-da"},
+    {english:"We need to go now.", russian:"Нам нужно идти сейчас.", pron:"Nam nuzh-no id-ti seychas"},
+    {english:"He needs money.", russian:"Ему нужны деньги.", pron:"Ye-mu nuzh-ny den-gi"},
+    {english:"She needs rest.", russian:"Ей нужен отдых.", pron:"Yey nu-zhen otdykh"},
+    {english:"I need a new phone.", russian:"Мне нужен новый телефон.", pron:"Mne nu-zhen no-vyy te-le-fon"},
+    {english:"Do you need anything?", russian:"Тебе что-нибудь нужно?", pron:"Te-be chto-ni-bud’ nuzh-no?"},
+    {english:"We need food.", russian:"Нам нужна еда.", pron:"Nam nuzh-na ye-da"},
+    {english:"They need guidance.", russian:"Им нужны советы.", pron:"Im nuzh-ny so-vet-yi"},
+    {english:"I need to study.", russian:"Мне нужно учиться.", pron:"Mne nuzh-no u-chi-tsya"}
+],
+
+    8: [  // Word: Go / Идти
+    {english:"I go to school.", russian:"Я иду в школу.", pron:"Ya idu v shk-oo-lu"},
+    {english:"He goes to work.", russian:"Он идёт на работу.", pron:"On i-dyot na ra-bo-tu"},
+    {english:"We go home.", russian:"Мы идём домой.", pron:"My i-dyom do-moy"},
+    {english:"I want to go there.", russian:"Я хочу идти туда.", pron:"Ya kho-chu id-ti tu-da"},
+    {english:"Go now!", russian:"Иди сейчас!", pron:"I-di seychas!"},
+    {english:"They go together.", russian:"Они идут вместе.", pron:"O-ni i-dut vmye-stye"},
+    {english:"She goes fast.", russian:"Она идёт быстро.", pron:"O-na i-dyot by-stro"},
+    {english:"I go shopping.", russian:"Я иду за покупками.", pron:"Ya idu za po-ku-pka-mi"},
+    {english:"Go straight.", russian:"Идите прямо.", pron:"I-di-te pryamo"},
+    {english:"We go every day.", russian:"Мы ходим каждый день.", pron:"My kho-dim kazh-dyy den’"}
+],
+
+9: [  // Word: Come / Приходить
+    {english:"I will come tomorrow.", russian:"Я приду завтра.", pron:"Ya pri-du zav-tra"},
+    {english:"She comes every day.", russian:"Она приходит каждый день.", pron:"O-na pri-kho-dit kazh-dyy den’"},
+    {english:"Come here.", russian:"Приходи сюда.", pron:"Pri-kho-di su-da"},
+    {english:"They will come soon.", russian:"Они скоро придут.", pron:"O-ni sko-ro pri-dut"},
+    {english:"He comes late.", russian:"Он приходит поздно.", pron:"On pri-kho-dit pozd-no"},
+    {english:"Please come in.", russian:"Пожалуйста, входите.", pron:"Po-zha-lus-ta, vkhod-i-te"},
+    {english:"We come together.", russian:"Мы приходим вместе.", pron:"My pri-kho-dim vmye-stye"},
+    {english:"Come quickly!", russian:"Приходи быстро!", pron:"Pri-kho-di by-stro!"},
+    {english:"I come from India.", russian:"Я приехал из Индии.", pron:"Ya pri-e-khal iz In-dii"},
+    {english:"Will you come?", russian:"Ты придёшь?", pron:"Ty pri-dyosh’?"}
+],
+
+10: [  // Word: See / Видеть
+    {english:"I see the car.", russian:"Я вижу машину.", pron:"Ya vi-zhu ma-shee-nu"},
+    {english:"She sees me.", russian:"Она видит меня.", pron:"O-na vi-dit me-nya"},
+    {english:"Do you see it?", russian:"Ты это видишь?", pron:"Ty e-to vi-dish’?"},
+    {english:"We see the sunset.", russian:"Мы видим закат.", pron:"My vi-dim za-kat"},
+    {english:"I can see everything.", russian:"Я вижу всё.", pron:"Ya vi-zhu vsyo"},
+    {english:"He sees a bird.", russian:"Он видит птицу.", pron:"On vi-dit ptit-su"},
+    {english:"I want to see you.", russian:"Я хочу тебя видеть.", pron:"Ya kho-chu te-bya vi-dit’"},
+    {english:"They see the problem.", russian:"Они видят проблему.", pron:"O-ni vi-dyat pro-ble-mu"},
+    {english:"I saw a movie.", russian:"Я видел фильм.", pron:"Ya vi-del film"},
+    {english:"Did you see that?", russian:"Ты это видел?", pron:"Ty e-to vi-del?"}
+],
+
+11: [  // Word: Eat / Есть
+    {english:"I eat breakfast.", russian:"Я ем завтрак.", pron:"Ya yem zav-trak"},
+    {english:"She eats quickly.", russian:"Она ест быстро.", pron:"O-na yest by-stro"},
+    {english:"Do you want to eat?", russian:"Ты хочешь есть?", pron:"Ty kho-chesh’ yest’?"},
+    {english:"We eat together.", russian:"Мы едим вместе.", pron:"My ye-dim vmye-stye"},
+    {english:"I like to eat fruit.", russian:"Мне нравится есть фрукты.", pron:"Mne nrav-it-sya yest’ fruk-ty"},
+    {english:"He eats lunch.", russian:"Он ест обед.", pron:"On yest o-bed"},
+    {english:"I don’t want to eat.", russian:"Я не хочу есть.", pron:"Ya ne kho-chu yest’"},
+    {english:"They eat dinner.", russian:"Они едят ужин.", pron:"O-ni ye-dyat u-zhin"},
+    {english:"I ate too much.", russian:"Я съел слишком много.", pron:"Ya s’yel slish-kom mno-go"},
+    {english:"What do you eat?", russian:"Что ты ешь?", pron:"Chto ty yesh’?"}
+],
+
+12: [  // Word: Drink / Пить
+    {english:"I drink water.", russian:"Я пью воду.", pron:"Ya p’yu vo-du"},
+    {english:"She drinks tea.", russian:"Она пьёт чай.", pron:"O-na p’yot chai"},
+    {english:"Do you want to drink?", russian:"Ты хочешь пить?", pron:"Ty kho-chesh’ pit’?"},
+    {english:"We drink coffee.", russian:"Мы пьем кофе.", pron:"My p’yom ko-fe"},
+    {english:"He drinks milk.", russian:"Он пьет молоко.", pron:"On p’yot mo-lo-ko"},
+    {english:"I need to drink.", russian:"Мне нужно пить.", pron:"Mne nuzh-no pit’"},
+    {english:"They drink juice.", russian:"Они пьют сок.", pron:"O-ni p’yut sok"},
+    {english:"I drank too much.", russian:"Я выпил слишком много.", pron:"Ya vy-pil slish-kom mno-go"},
+    {english:"Drink slowly.", russian:"Пей медленно.", pron:"Pey med-len-no"},
+    {english:"What are you drinking?", russian:"Что ты пьешь?", pron:"Chto ty p’yesh’?"}
+],
+
+13: [  // Word: Go / Ходить / Travel
+    {english:"I go to school every day.", russian:"Я хожу в школу каждый день.", pron:"Ya kho-zhu v shk-oo-lu kazh-dyy den’"},
+    {english:"She goes to the market.", russian:"Она ходит на рынок.", pron:"O-na kho-dit na ryn-ok"},
+    {english:"Do you go to work?", russian:"Ты ходишь на работу?", pron:"Ty kho-dish’ na ra-bo-tu?"},
+    {english:"We go for a walk.", russian:"Мы ходим гулять.", pron:"My kho-dim gu-lyat’"},
+    {english:"He goes to the gym.", russian:"Он ходит в спортзал.", pron:"On kho-dit v sport-zal"},
+    {english:"I go shopping on weekends.", russian:"Я хожу за покупками по выходным.", pron:"Ya kho-zhu za po-ku-pka-mi po vy-khod-nym"},
+    {english:"They go together.", russian:"Они ходят вместе.", pron:"O-ni kho-dyat vmye-stye"},
+    {english:"I like to go there.", russian:"Мне нравится туда ходить.", pron:"Mne nrav-it-sya tu-da kho-dit’"},
+    {english:"Go straight ahead.", russian:"Идите прямо.", pron:"I-di-te pryamo"},
+    {english:"He goes every morning.", russian:"Он ходит каждое утро.", pron:"On kho-dit kazh-do-ye oo-tra"}
+],
+14: [  // Word: Come / Приходить / Arrive
+    {english:"I will come soon.", russian:"Я скоро приду.", pron:"Ya sko-ro pri-du"},
+    {english:"She comes every morning.", russian:"Она приходит каждое утро.", pron:"O-na pri-kho-dit kazh-do-ye oo-tra"},
+    {english:"Come to my house.", russian:"Приходи ко мне домой.", pron:"Pri-kho-di ko mne do-moy"},
+    {english:"They come together.", russian:"Они приходят вместе.", pron:"O-ni pri-kho-dyat vmye-stye"},
+    {english:"He came late.", russian:"Он пришёл поздно.", pron:"On pri-shyol pozd-no"},
+    {english:"I come from India.", russian:"Я приехал из Индии.", pron:"Ya pri-e-khal iz In-dii"},
+    {english:"Will you come tomorrow?", russian:"Ты придёшь завтра?", pron:"Ty pri-dyosh’ zav-tra?"},
+    {english:"Please come in.", russian:"Пожалуйста, входите.", pron:"Po-zha-lus-ta, vkhod-i-te"},
+    {english:"I am coming now.", russian:"Я иду сейчас.", pron:"Ya i-du seychas"},
+    {english:"They came yesterday.", russian:"Они пришли вчера.", pron:"O-ni pri-shli vche-ra"}
+],
+
+15: [  // Word: Look / Смотреть
+    {english:"Look at this.", russian:"Посмотри на это.", pron:"Pos-mo-tri na e-to"},
+    {english:"She looks happy.", russian:"Она выглядит счастливой.", pron:"O-na vyg-lyad-it schas-liv-oy"},
+    {english:"I look at the sky.", russian:"Я смотрю на небо.", pron:"Ya smot-ryu na ne-bo"},
+    {english:"Look over there.", russian:"Посмотри туда.", pron:"Pos-mo-tri tu-da"},
+    {english:"They are looking for you.", russian:"Они тебя ищут.", pron:"O-ni te-bya i-shut"},
+    {english:"Look carefully.", russian:"Смотри внимательно.", pron:"Smot-ri vni-mat-el-no"},
+    {english:"I looked yesterday.", russian:"Я смотрел вчера.", pron:"Ya smot-rel vche-ra"},
+    {english:"She is looking at the map.", russian:"Она смотрит на карту.", pron:"O-na smot-rit na kar-tu"},
+    {english:"Look this way.", russian:"Смотри сюда.", pron:"Smot-ri su-da"},
+    {english:"He looked happy.", russian:"Он выглядел счастливым.", pron:"On vyg-lyad-el schas-liv-ym"}
+],
+
+16: [  // Word: Take / Брать
+    {english:"I take a pen.", russian:"Я беру ручку.", pron:"Ya be-ru ruch-ku"},
+    {english:"Take this book.", russian:"Возьми эту книгу.", pron:"Voz’-mi e-tu kni-gu"},
+    {english:"He takes money.", russian:"Он берёт деньги.", pron:"On ber-yot den-gi"},
+    {english:"Take care!", russian:"Береги себя!", pron:"Be-re-gi se-bya"},
+    {english:"They took the bus.", russian:"Они поехали на автобусе.", pron:"O-ni po-ye-kha-li na av-to-bu-se"},
+    {english:"I will take it.", russian:"Я возьму это.", pron:"Ya voz’-mu e-to"},
+    {english:"Take your time.", russian:"Не спеши.", pron:"Ne spe-shi"},
+    {english:"She takes notes.", russian:"Она делает заметки.", pron:"O-na dye-la-yet za-met-ki"},
+    {english:"I took it yesterday.", russian:"Я взял это вчера.", pron:"Ya vzyal e-to vche-ra"},
+    {english:"Take this with you.", russian:"Возьми это с собой.", pron:"Voz’-mi e-to s so-boy"}
+],
+
+17: [  // Word: Give / Давать
+    {english:"Give me water.", russian:"Дай мне воду.", pron:"Dai mne vo-du"},
+    {english:"She gives a gift.", russian:"Она дарит подарок.", pron:"O-na da-rit po-da-rok"},
+    {english:"Give it to him.", russian:"Дай это ему.", pron:"Dai e-to ye-mu"},
+    {english:"I give money to charity.", russian:"Я даю деньги на благотворительность.", pron:"Ya da-yu den-gi na bla-go-to-vo-rit-el’-nost’"},
+    {english:"They give flowers.", russian:"Они дарят цветы.", pron:"O-ni da-ryat tsve-ty"},
+    {english:"Give me a minute.", russian:"Дай мне минуту.", pron:"Dai mne mi-nu-tu"},
+    {english:"He gives advice.", russian:"Он даёт совет.", pron:"On da-yot so-vet"},
+    {english:"I gave it yesterday.", russian:"Я дал это вчера.", pron:"Ya dal e-to vche-ra"},
+    {english:"Give generously.", russian:"Давай щедро.", pron:"Da-vay shched-ro"},
+    {english:"She gives me a smile.", russian:"Она улыбается мне.", pron:"O-na u-ly-ba-yet-sya mne"}
+],
+
+18: [  // Word: Know / Знать
+    {english:"I know the answer.", russian:"Я знаю ответ.", pron:"Ya zna-yu ot-vyet"},
+    {english:"She knows him.", russian:"Она его знает.", pron:"O-na ye-go zna-yet"},
+    {english:"Do you know this place?", russian:"Ты знаешь это место?", pron:"Ty zna-yesh’ e-to mes-to?"},
+    {english:"We know the rules.", russian:"Мы знаем правила.", pron:"My zna-yem pra-vi-la"},
+    {english:"I don’t know.", russian:"Я не знаю.", pron:"Ya ne zna-yu"},
+    {english:"He knows everything.", russian:"Он знает всё.", pron:"On zna-yet vsyo"},
+    {english:"I know her name.", russian:"Я знаю её имя.", pron:"Ya zna-yu ye-yo im-ya"},
+    {english:"They know the way.", russian:"Они знают путь.", pron:"O-ni zna-yut put’"},
+    {english:"Do you know him well?", russian:"Ты хорошо его знаешь?", pron:"Ty kha-ro-sho ye-go zna-yesh’?"},
+    {english:"I know how to do it.", russian:"Я знаю, как это сделать.", pron:"Ya zna-yu kak e-to sde-lat’"}
+],
+19: [  // Word: Work / Работа
+    {english:"I work every day.", russian:"Я работаю каждый день.", pron:"Ya ra-bo-ta-yu kazh-dyy den’"},
+    {english:"She works in an office.", russian:"Она работает в офисе.", pron:"O-na ra-bo-ta-yet v ofi-se"},
+    {english:"He works hard.", russian:"Он усердно работает.", pron:"On u-serd-no ra-bo-ta-yet"},
+    {english:"Do you work today?", russian:"Ты работаешь сегодня?", pron:"Ty ra-bo-ta-yesh’ se-vod-nya?"},
+    {english:"We work together.", russian:"Мы работаем вместе.", pron:"My ra-bo-ta-yem vmye-stye"},
+    {english:"I like my work.", russian:"Мне нравится моя работа.", pron:"Mne nrav-it-sya mo-ya ra-bo-ta"},
+    {english:"They work at a school.", russian:"Они работают в школе.", pron:"O-ni ra-bo-ta-yut v shkole"},
+    {english:"I started work early.", russian:"Я начал работу рано.", pron:"Ya na-chal ra-bo-tu ra-no"},
+    {english:"She finished work late.", russian:"Она закончила работу поздно.", pron:"O-na za-kon-chi-la ra-bo-tu pozd-no"},
+    {english:"He is looking for work.", russian:"Он ищет работу.", pron:"On i-shyet ra-bo-tu"}
+],
+
+20: [  // Word: Play / Играть
+    {english:"I play football.", russian:"Я играю в футбол.", pron:"Ya i-gra-yu v fut-bol"},
+    {english:"She plays piano.", russian:"Она играет на пианино.", pron:"O-na i-gra-yet na pia-ni-no"},
+    {english:"Do you want to play?", russian:"Ты хочешь играть?", pron:"Ty kho-chesh’ i-grat’?"},
+    {english:"We play together.", russian:"Мы играем вместе.", pron:"My i-gra-yem vmye-stye"},
+    {english:"He plays video games.", russian:"Он играет в видеоигры.", pron:"On i-gra-yet v vi-de-oi-gry"},
+    {english:"I played yesterday.", russian:"Я играл вчера.", pron:"Ya i-gral vche-ra"},
+    {english:"She likes to play outside.", russian:"Ей нравится играть на улице.", pron:"Yey nrav-it-sya i-grat’ na u-li-tse"},
+    {english:"They play every weekend.", russian:"Они играют каждые выходные.", pron:"O-ni i-gra-yut kazh-dye vy-khod-nye"},
+    {english:"I play the guitar.", russian:"Я играю на гитаре.", pron:"Ya i-gra-yu na gi-ta-re"},
+    {english:"He plays chess.", russian:"Он играет в шахматы.", pron:"On i-gra-yet v sha-khma-ty"}
+],
+
+21: [  // Word: Read / Читать
+    {english:"I read a book.", russian:"Я читаю книгу.", pron:"Ya chi-ta-yu kni-gu"},
+    {english:"She reads newspapers.", russian:"Она читает газеты.", pron:"O-na chi-ta-yet ga-zy-ty"},
+    {english:"Do you read this?", russian:"Ты читаешь это?", pron:"Ty chi-ta-yesh’ e-to?"},
+    {english:"We read together.", russian:"Мы читаем вместе.", pron:"My chi-ta-yem vmye-stye"},
+    {english:"He reads every day.", russian:"Он читает каждый день.", pron:"On chi-ta-yet kazh-dyy den’"},
+    {english:"I read yesterday.", russian:"Я читал вчера.", pron:"Ya chi-tal vche-ra"},
+    {english:"She likes to read.", russian:"Ей нравится читать.", pron:"Yey nrav-it-sya chi-tat’"},
+    {english:"They read the instructions.", russian:"Они читают инструкции.", pron:"O-ni chi-ta-yut in-stru-ktsii"},
+    {english:"Read carefully.", russian:"Читайте внимательно.", pron:"Chi-tay-te vni-mat-el-no"},
+    {english:"I am reading now.", russian:"Я читаю сейчас.", pron:"Ya chi-ta-yu seychas"}
+],
+
+22: [  // Word: Write / Писать
+    {english:"I write a letter.", russian:"Я пишу письмо.", pron:"Ya pi-shu pis’-mo"},
+    {english:"She writes emails.", russian:"Она пишет письма.", pron:"O-na pi-shet pis’-ma"},
+    {english:"Do you write often?", russian:"Ты часто пишешь?", pron:"Ty chas-to pi-shesh’?"},
+    {english:"We write together.", russian:"Мы пишем вместе.", pron:"My pi-shem vmye-stye"},
+    {english:"He writes fast.", russian:"Он пишет быстро.", pron:"On pi-shet by-stro"},
+    {english:"I wrote yesterday.", russian:"Я писал вчера.", pron:"Ya pi-sal vche-ra"},
+    {english:"She likes to write.", russian:"Ей нравится писать.", pron:"Yey nrav-it-sya pi-sat’"},
+    {english:"They write reports.", russian:"Они пишут отчёты.", pron:"O-ni pi-shut ot-chyoty"},
+    {english:"Write your name.", russian:"Напишите своё имя.", pron:"Na-pi-shi-te svo-yo im-ya"},
+    {english:"I am writing now.", russian:"Я пишу сейчас.", pron:"Ya pi-shu seychas"}
+],
+
+23: [  // Word: Sleep / Спать
+    {english:"I sleep eight hours.", russian:"Я сплю восемь часов.", pron:"Ya splyu vo-sem’ cha-sov"},
+    {english:"She sleeps well.", russian:"Она спит хорошо.", pron:"O-na spit kha-ro-sho"},
+    {english:"Do you want to sleep?", russian:"Ты хочешь спать?", pron:"Ty kho-chesh’ spat’?"},
+    {english:"We sleep early.", russian:"Мы спим рано.", pron:"My spim ra-no"},
+    {english:"He sleeps a lot.", russian:"Он много спит.", pron:"On mno-go spit"},
+    {english:"I slept yesterday.", russian:"Я спал вчера.", pron:"Ya spal vche-ra"},
+    {english:"She likes to sleep.", russian:"Ей нравится спать.", pron:"Yey nrav-it-sya spat’"},
+    {english:"They sleep together.", russian:"Они спят вместе.", pron:"O-ni spyat vmye-stye"},
+    {english:"Sleep well!", russian:"Спокойной ночи!", pron:"Spa-koy-noy no-chi"},
+    {english:"I am sleeping now.", russian:"Я сплю сейчас.", pron:"Ya splyu seychas"}
+],
+
+24: [  // Word: Buy / Покупать
+    {english:"I buy fruits.", russian:"Я покупаю фрукты.", pron:"Ya po-ku-pa-yu fruk-ty"},
+    {english:"She buys clothes.", russian:"Она покупает одежду.", pron:"O-na po-ku-pa-yet o-dezh-du"},
+    {english:"Do you want to buy?", russian:"Ты хочешь купить?", pron:"Ty kho-chesh’ ku-pit’?"},
+    {english:"We buy together.", russian:"Мы покупаем вместе.", pron:"My po-ku-pa-yem vmye-stye"},
+    {english:"He buys gifts.", russian:"Он покупает подарки.", pron:"On po-ku-pa-yet po-dar-ki"},
+    {english:"I bought this yesterday.", russian:"Я купил это вчера.", pron:"Ya ku-pil e-to vche-ra"},
+    {english:"She likes to buy new things.", russian:"Ей нравится покупать новые вещи.", pron:"Yey nrav-it-sya po-ku-pat’ no-vye ve-shchi"},
+    {english:"They buy every week.", russian:"Они покупают каждую неделю.", pron:"O-ni po-ku-pa-yut kazh-du-yu ne-del-yu"},
+    {english:"Buy carefully.", russian:"Покупайте внимательно.", pron:"Po-ku-pai-te vni-mat-el-no"},
+    {english:"I am buying now.", russian:"Я покупаю сейчас.", pron:"Ya po-ku-pa-yu seychas"}
+],
+
+25: [  // Word: Sell / Продавать
+    {english:"I sell fruits.", russian:"Я продаю фрукты.", pron:"Ya pro-da-yu fruk-ty"},
+    {english:"She sells clothes.", russian:"Она продаёт одежду.", pron:"O-na pro-da-yot o-dezh-du"},
+    {english:"Do you want to sell?", russian:"Ты хочешь продавать?", pron:"Ty kho-chesh’ pro-da-vat’?"},
+    {english:"We sell together.", russian:"Мы продаём вместе.", pron:"My pro-da-yom vmye-stye"},
+    {english:"He sells gifts.", russian:"Он продаёт подарки.", pron:"On pro-da-yot po-dar-ki"},
+    {english:"I sold this yesterday.", russian:"Я продал это вчера.", pron:"Ya pro-dal e-to vche-ra"},
+    {english:"She likes to sell things.", russian:"Ей нравится продавать вещи.", pron:"Yey nrav-it-sya pro-da-vat’ ve-shchi"},
+    {english:"They sell every week.", russian:"Они продают каждую неделю.", pron:"O-ni pro-da-yut kazh-du-yu ne-del-yu"},
+    {english:"Sell carefully.", russian:"Продавайте внимательно.", pron:"Pro-da-vai-te vni-mat-el-no"},
+    {english:"I am selling now.", russian:"Я продаю сейчас.", pron:"Ya pro-da-yu seychas"}
+],
+
+26: [  // Word: Wait / Ждать
+    {english:"I wait for the bus.", russian:"Я жду автобус.", pron:"Ya zh-du av-to-bus"},
+    {english:"She waits every day.", russian:"Она ждёт каждый день.", pron:"O-na zh-dyot kazh-dyy den’"},
+    {english:"Do you wait here?", russian:"Ты ждёшь здесь?", pron:"Ty zh-dyosh’ zdes’?"},
+    {english:"We wait together.", russian:"Мы ждём вместе.", pron:"My zh-dyom vmye-stye"},
+    {english:"He waited yesterday.", russian:"Он ждал вчера.", pron:"On zh-dal vche-ra"},
+    {english:"Wait a minute.", russian:"Подожди минуту.", pron:"Po-dozh-di mi-nu-tu"},
+    {english:"They wait patiently.", russian:"Они ждут терпеливо.", pron:"O-ni zh-dut ter-pe-li-vo"},
+    {english:"I am waiting now.", russian:"Я жду сейчас.", pron:"Ya zh-du seychas"},
+    {english:"Wait for me.", russian:"Жди меня.", pron:"Zh-di me-nya"},
+    {english:"She waits at the station.", russian:"Она ждёт на станции.", pron:"O-na zh-dyot na stan-tsii"}
+],
+
+27: [  // Word: Run / Бежать
+    {english:"I run every morning.", russian:"Я бегаю каждое утро.", pron:"Ya be-ga-yu kazh-do-ye oo-tra"},
+    {english:"She runs fast.", russian:"Она бегает быстро.", pron:"O-na be-ga-yet by-stro"},
+    {english:"Do you run often?", russian:"Ты часто бегаешь?", pron:"Ty chas-to be-ga-yesh’?"},
+    {english:"We run together.", russian:"Мы бегаем вместе.", pron:"My be-ga-yem vmye-stye"},
+    {english:"He ran yesterday.", russian:"Он бежал вчера.", pron:"On be-zhal vche-ra"},
+    {english:"I am running now.", russian:"Я бегу сейчас.", pron:"Ya be-gu seychas"},
+    {english:"Run quickly!", russian:"Беги быстро!", pron:"Be-gi by-stro!"},
+    {english:"They run every evening.", russian:"Они бегают каждый вечер.", pron:"O-ni be-ga-yut kazh-dyy ve-cher"},
+    {english:"She likes to run.", russian:"Ей нравится бегать.", pron:"Yey nrav-it-sya be-gat’"},
+    {english:"Run to the school.", russian:"Беги к школе.", pron:"Be-gi k shkole"}
+],
+
+28: [  // Word: Speak / Говорить
+    {english:"I speak Russian.", russian:"Я говорю по-русски.", pron:"Ya go-vo-ryu po-rus-ski"},
+    {english:"She speaks English.", russian:"Она говорит по-английски.", pron:"O-na go-vo-rit po-an-glee-ski"},
+    {english:"Do you speak French?", russian:"Ты говоришь по-французски?", pron:"Ty go-vo-rish’ po-fran-tsuz-ski?"},
+    {english:"We speak together.", russian:"Мы говорим вместе.", pron:"My go-vo-rim vmye-stye"},
+    {english:"He speaks slowly.", russian:"Он говорит медленно.", pron:"On go-vo-rit med-len-no"},
+    {english:"I spoke yesterday.", russian:"Я говорил вчера.", pron:"Ya go-vo-ril vche-ra"},
+    {english:"Speak louder!", russian:"Говори громче!", pron:"Go-vo-ri grom-che!"},
+    {english:"They speak every day.", russian:"Они говорят каждый день.", pron:"O-ni go-vo-ryat kazh-dyy den’"},
+    {english:"She likes to speak.", russian:"Ей нравится говорить.", pron:"Yey nrav-it-sya go-vo-rit’"},
+    {english:"I am speaking now.", russian:"Я говорю сейчас.", pron:"Ya go-vo-ryu seychas"}
+],
+
+29: [  // Word: Listen / Слушать
+    {english:"I listen to music.", russian:"Я слушаю музыку.", pron:"Ya slu-sha-yu mu-zy-ku"},
+    {english:"She listens carefully.", russian:"Она слушает внимательно.", pron:"O-na slu-sha-yet vni-mat-el-no"},
+    {english:"Do you listen to me?", russian:"Ты слушаешь меня?", pron:"Ty slu-sha-yesh’ me-nya?"},
+    {english:"We listen together.", russian:"Мы слушаем вместе.", pron:"My slu-sha-yem vmye-stye"},
+    {english:"He listens every day.", russian:"Он слушает каждый день.", pron:"On slu-sha-yet kazh-dyy den’"},
+    {english:"I listened yesterday.", russian:"Я слушал вчера.", pron:"Ya slu-shal vche-ra"},
+    {english:"Listen carefully!", russian:"Слушай внимательно!", pron:"Slu-shay vni-mat-el-no!"},
+    {english:"They listen to the teacher.", russian:"Они слушают учителя.", pron:"O-ni slu-sha-yut u-chi-te-lya"},
+    {english:"She likes to listen to music.", russian:"Ей нравится слушать музыку.", pron:"Yey nrav-it-sya slu-shat’ mu-zy-ku"},
+    {english:"I am listening now.", russian:"Я слушаю сейчас.", pron:"Ya slu-sha-yu seychas"}
+],
+
+30: [  // Word: Learn / Учить
+    {english:"I learn Russian.", russian:"Я учу русский язык.", pron:"Ya u-chu rus-skiy yazyk"},
+    {english:"She learns quickly.", russian:"Она учится быстро.", pron:"O-na u-chi-tsya by-stro"},
+    {english:"Do you learn English?", russian:"Ты учишь английский?", pron:"Ty u-chish’ an-glees-kiy?"},
+    {english:"We learn together.", russian:"Мы учимся вместе.", pron:"My u-chi-m-sya vmye-stye"},
+    {english:"He learned yesterday.", russian:"Он учил вчера.", pron:"On u-chil vche-ra"},
+    {english:"I like to learn.", russian:"Мне нравится учиться.", pron:"Mne nrav-it-sya u-chi-tsya"},
+    {english:"Learn carefully.", russian:"Учите внимательно.", pron:"U-chi-te vni-mat-el-no"},
+    {english:"They learn every day.", russian:"Они учатся каждый день.", pron:"O-ni u-chat-sya kazh-dyy den’"},
+    {english:"She is learning now.", russian:"Она учится сейчас.", pron:"O-na u-chi-tsya seychas"},
+    {english:"I want to learn more.", russian:"Я хочу учить больше.", pron:"Ya kho-chu u-chit’ bol-she"}
+],
+31: [  // Word: Teach / Преподавать / Учить других
+    {english:"I teach English.", russian:"Я преподаю английский.", pron:"Ya pre-po-da-yu an-glees-kiy"},
+    {english:"She teaches math.", russian:"Она преподаёт математику.", pron:"O-na pre-po-da-yot ma-te-ma-ti-ku"},
+    {english:"Do you teach here?", russian:"Ты преподаёшь здесь?", pron:"Ty pre-po-da-yesh’ zdes’?"},
+    {english:"We teach together.", russian:"Мы преподаём вместе.", pron:"My pre-po-da-yom vmye-stye"},
+    {english:"He teaches well.", russian:"Он преподаёт хорошо.", pron:"On pre-po-da-yot kha-ro-sho"},
+    {english:"I taught yesterday.", russian:"Я преподавал вчера.", pron:"Ya pre-po-da-val vche-ra"},
+    {english:"She likes to teach.", russian:"Ей нравится преподавать.", pron:"Yey nrav-it-sya pre-po-da-vat’"},
+    {english:"They teach students.", russian:"Они преподают студентам.", pron:"O-ni pre-po-da-yut stu-den-tam"},
+    {english:"Teach carefully.", russian:"Преподавайте внимательно.", pron:"Pre-po-da-vai-te vni-mat-el-no"},
+    {english:"I am teaching now.", russian:"Я преподаю сейчас.", pron:"Ya pre-po-da-yu seychas"}
+],
+
+32: [  // Word: Understand / Понимать
+    {english:"I understand Russian.", russian:"Я понимаю русский.", pron:"Ya po-ni-ma-yu rus-skiy"},
+    {english:"She understands me.", russian:"Она понимает меня.", pron:"O-na po-ni-ma-yet me-nya"},
+    {english:"Do you understand?", russian:"Ты понимаешь?", pron:"Ty po-ni-ma-yesh’?"},
+    {english:"We understand each other.", russian:"Мы понимаем друг друга.", pron:"My po-ni-ma-yem droog dru-ga"},
+    {english:"He understands quickly.", russian:"Он быстро понимает.", pron:"On by-stro po-ni-ma-yet"},
+    {english:"I understood yesterday.", russian:"Я понял вчера.", pron:"Ya po-nyal vche-ra"},
+    {english:"She likes to understand new things.", russian:"Ей нравится понимать новое.", pron:"Yey nrav-it-sya po-ni-mat’ no-vo-ye"},
+    {english:"They understand everything.", russian:"Они понимают всё.", pron:"O-ni po-ni-ma-yut vsyo"},
+    {english:"Understand carefully.", russian:"Понимай внимательно.", pron:"Po-ni-may vni-mat-el-no"},
+    {english:"I am understanding now.", russian:"Я понимаю сейчас.", pron:"Ya po-ni-ma-yu seychas"}
+],
+
+33: [  // Word: Remember / Помнить
+    {english:"I remember you.", russian:"Я помню тебя.", pron:"Ya pom-nyu te-bya"},
+    {english:"She remembers the day.", russian:"Она помнит этот день.", pron:"O-na pom-nit e-tot den’"},
+    {english:"Do you remember me?", russian:"Ты помнишь меня?", pron:"Ty pom-nish’ me-nya?"},
+    {english:"We remember everything.", russian:"Мы помним всё.", pron:"My pom-nim vsyo"},
+    {english:"He remembers clearly.", russian:"Он помнит ясно.", pron:"On pom-nit yas-no"},
+    {english:"I remembered yesterday.", russian:"Я вспомнил вчера.", pron:"Ya vos-pom-nil vche-ra"},
+    {english:"She likes to remember important things.", russian:"Ей нравится помнить важное.", pron:"Yey nrav-it-sya pom-nit’ vazh-no-ye"},
+    {english:"They remember well.", russian:"Они хорошо помнят.", pron:"O-ni kha-ro-sho pom-nyat"},
+    {english:"Remember carefully.", russian:"Помни внимательно.", pron:"Pom-ni vni-mat-el-no"},
+    {english:"I am remembering now.", russian:"Я вспоминаю сейчас.", pron:"Ya vos-pom-i-nayu seychas"}
+],
+
+34: [  // Word: Forget / Забывать
+    {english:"I forget sometimes.", russian:"Я иногда забываю.", pron:"Ya i-no-ga za-bu-va-yu"},
+    {english:"She forgets her keys.", russian:"Она забывает ключи.", pron:"O-na za-bu-va-yet klu-chi"},
+    {english:"Do you forget often?", russian:"Ты часто забываешь?", pron:"Ty chas-to za-bu-va-yesh’?"},
+    {english:"We forget nothing.", russian:"Мы ничего не забываем.", pron:"My ni-che-vo ne za-bu-va-yem"},
+    {english:"He forgot yesterday.", russian:"Он забыл вчера.", pron:"On za-byl vche-ra"},
+    {english:"I will not forget.", russian:"Я не забуду.", pron:"Ya ne za-bu-du"},
+    {english:"She likes to forget mistakes.", russian:"Ей нравится забывать ошибки.", pron:"Yey nrav-it-sya za-bu-vat’ osh-i-bki"},
+    {english:"They forget easily.", russian:"Они легко забывают.", pron:"O-ni leg-ko za-bu-va-yut"},
+    {english:"Forget about it.", russian:"Забудь об этом.", pron:"Za-bud’ ob e-tom"},
+    {english:"I am forgetting now.", russian:"Я забываю сейчас.", pron:"Ya za-bu-va-yu seychas"}
+],
+
+35: [  // Word: Help / Помогать
+    {english:"I help my friend.", russian:"Я помогаю другу.", pron:"Ya po-mo-ga-yu droogu"},
+    {english:"She helps her mother.", russian:"Она помогает маме.", pron:"O-na po-mo-ga-yet ma-me"},
+    {english:"Do you help often?", russian:"Ты часто помогаешь?", pron:"Ty chas-to po-mo-ga-yesh’?"},
+    {english:"We help each other.", russian:"Мы помогаем друг другу.", pron:"My po-mo-ga-yem droog dru-gu"},
+    {english:"He helped yesterday.", russian:"Он помог вчера.", pron:"On po-mog vche-ra"},
+    {english:"I need help.", russian:"Мне нужна помощь.", pron:"Mne nuzh-na po-moshch’"},
+    {english:"She likes to help people.", russian:"Ей нравится помогать людям.", pron:"Yey nrav-it-sya po-mo-gat’ lyu-dyam"},
+    {english:"They help every day.", russian:"Они помогают каждый день.", pron:"O-ni po-mo-ga-yut kazh-dyy den’"},
+    {english:"Help quickly!", russian:"Помогите быстро!", pron:"Po-mo-gi-te by-stro!"},
+    {english:"I am helping now.", russian:"Я помогаю сейчас.", pron:"Ya po-mo-ga-yu seychas"}
+],
+
+36: [  // Word: Call / Звонить
+    {english:"I call my friend.", russian:"Я звоню другу.", pron:"Ya zvo-nyu droogu"},
+    {english:"She calls her mother.", russian:"Она звонит маме.", pron:"O-na zvo-nit ma-me"},
+    {english:"Do you call often?", russian:"Ты часто звонишь?", pron:"Ty chas-to zvo-nish’?"},
+    {english:"We call every day.", russian:"Мы звоним каждый день.", pron:"My zvo-nim kazh-dyy den’"},
+    {english:"He called yesterday.", russian:"Он звонил вчера.", pron:"On zvo-nil vche-ra"},
+    {english:"Call me later.", russian:"Позвони мне позже.", pron:"Po-zvo-ni mne po-zhe"},
+    {english:"She likes to call people.", russian:"Ей нравится звонить людям.", pron:"Yey nrav-it-sya zvo-nit’ lyu-dyam"},
+    {english:"They call together.", russian:"Они звонят вместе.", pron:"O-ni zvo-nyat vmye-stye"},
+    {english:"I am calling now.", russian:"Я звоню сейчас.", pron:"Ya zvo-nyu seychas"},
+    {english:"Call quickly!", russian:"Позвони быстро!", pron:"Po-zvo-ni by-stro!"}
+],
+
+37: [  // Word: Open / Открывать
+    {english:"I open the door.", russian:"Я открываю дверь.", pron:"Ya ot-kry-va-yu dver’"},
+    {english:"She opens the window.", russian:"Она открывает окно.", pron:"O-na ot-kry-va-yet ok-no"},
+    {english:"Do you open it?", russian:"Ты открываешь это?", pron:"Ty ot-kry-va-yesh’ e-to?"},
+    {english:"We open together.", russian:"Мы открываем вместе.", pron:"My ot-kry-va-yem vmye-stye"},
+    {english:"He opened yesterday.", russian:"Он открыл вчера.", pron:"On ot-kryl vche-ra"},
+    {english:"I like to open gifts.", russian:"Мне нравится открывать подарки.", pron:"Mne nrav-it-sya ot-kry-vat’ po-dar-ki"},
+    {english:"They open every morning.", russian:"Они открывают каждое утро.", pron:"O-ni ot-kry-va-yut kazh-do-ye oo-tra"},
+    {english:"Open carefully.", russian:"Открывай внимательно.", pron:"Ot-kry-vay vni-mat-el-no"},
+    {english:"I am opening now.", russian:"Я открываю сейчас.", pron:"Ya ot-kry-va-yu seychas"},
+    {english:"Open quickly!", russian:"Открой быстро!", pron:"Ot-kroy by-stro!"}
+],
+
+38: [  // Word: Close / Закрывать
+    {english:"I close the door.", russian:"Я закрываю дверь.", pron:"Ya za-kry-va-yu dver’"},
+    {english:"She closes the window.", russian:"Она закрывает окно.", pron:"O-na za-kry-va-yet ok-no"},
+    {english:"Do you close it?", russian:"Ты закрываешь это?", pron:"Ty za-kry-va-yesh’ e-to?"},
+    {english:"We close together.", russian:"Мы закрываем вместе.", pron:"My za-kry-va-yem vmye-stye"},
+    {english:"He closed yesterday.", russian:"Он закрыл вчера.", pron:"On za-kryl vche-ra"},
+    {english:"I like to close boxes.", russian:"Мне нравится закрывать коробки.", pron:"Mne nrav-it-sya za-kry-vat’ ko-rob-ki"},
+    {english:"They close every night.", russian:"Они закрывают каждую ночь.", pron:"O-ni za-kry-va-yut kazh-du-yu noch’"},
+    {english:"Close carefully.", russian:"Закрывай внимательно.", pron:"Za-kry-vay vni-mat-el-no"},
+    {english:"I am closing now.", russian:"Я закрываю сейчас.", pron:"Ya za-kry-va-yu seychas"},
+    {english:"Close quickly!", russian:"Закрой быстро!", pron:"Za-kroy by-stro!"}
+],
+
+39: [  // Word: Wash / Мыть
+    {english:"I wash my hands.", russian:"Я мою руки.", pron:"Ya mo-yu ru-ki"},
+    {english:"She washes the dishes.", russian:"Она моет посуду.", pron:"O-na mo-yet po-su-du"},
+    {english:"Do you wash every day?", russian:"Ты моешь каждый день?", pron:"Ty mo-yesh’ kazh-dyy den’?"},
+    {english:"We wash together.", russian:"Мы моем вместе.", pron:"My mo-yem vmye-stye"},
+    {english:"He washed yesterday.", russian:"Он мыл вчера.", pron:"On myl vche-ra"},
+    {english:"I like to wash clothes.", russian:"Мне нравится стирать одежду.", pron:"Mne nrav-it-sya stirat’ o-dezh-du"},
+    {english:"They wash every morning.", russian:"Они моют каждое утро.", pron:"O-ni mo-yut kazh-do-ye oo-tra"},
+    {english:"Wash carefully.", russian:"Мой внимательно.", pron:"Moy vni-mat-el-no"},
+    {english:"I am washing now.", russian:"Я мою сейчас.", pron:"Ya mo-yu seychas"},
+    {english:"Wash quickly!", russian:"Мой быстро!", pron:"Moy by-stro!"}
+],
+
+40: [  // Word: Clean / Чистить / Убирать
+    {english:"I clean the room.", russian:"Я убираю комнату.", pron:"Ya u-bi-ra-yu kom-na-tu"},
+    {english:"She cleans the kitchen.", russian:"Она убирает кухню.", pron:"O-na u-bi-ra-yet kukh-nyu"},
+    {english:"Do you clean often?", russian:"Ты часто убираешь?", pron:"Ty chas-to u-bi-ra-yesh’?"},
+    {english:"We clean together.", russian:"Мы убираем вместе.", pron:"My u-bi-ra-yem vmye-stye"},
+    {english:"He cleaned yesterday.", russian:"Он убрал вчера.", pron:"On u-bral vche-ra"},
+    {english:"I like to clean.", russian:"Мне нравится убирать.", pron:"Mne nrav-it-sya u-bi-rat’"},
+    {english:"They clean every day.", russian:"Они убирают каждый день.", pron:"O-ni u-bi-ra-yut kazh-dyy den’"},
+    {english:"Clean carefully.", russian:"Убирай внимательно.", pron:"U-bi-rai vni-mat-el-no"},
+    {english:"I am cleaning now.", russian:"Я убираю сейчас.", pron:"Ya u-bi-ra-yu seychas"},
+    {english:"Clean quickly!", russian:"Убирай быстро!", pron:"U-bi-rai by-stro!"}
+],
+41: [  // Word: Buy / Покупать
+    {english:"I buy fruits every morning.", russian:"Я покупаю фрукты каждое утро.", pron:"Ya po-ku-pa-yu fruk-ty kazh-do-ye oo-tra"},
+    {english:"She buys gifts for her friends.", russian:"Она покупает подарки для друзей.", pron:"O-na po-ku-pa-yet po-dar-ki dlya droog"},
+    {english:"Do you buy vegetables?", russian:"Ты покупаешь овощи?", pron:"Ty po-ku-pa-yesh’ ovo-shchi?"},
+    {english:"We buy together.", russian:"Мы покупаем вместе.", pron:"My po-ku-pa-yem vmye-stye"},
+    {english:"He buys clothes every week.", russian:"Он покупает одежду каждую неделю.", pron:"On po-ku-pa-yet o-dezh-du kazh-du-yu ne-del-yu"},
+    {english:"I bought a new phone.", russian:"Я купил новый телефон.", pron:"Ya ku-pil no-vyy te-le-fon"},
+    {english:"She likes to buy books.", russian:"Ей нравится покупать книги.", pron:"Yey nrav-it-sya po-ku-pat’ kni-gi"},
+    {english:"They buy every Saturday.", russian:"Они покупают каждую субботу.", pron:"O-ni po-ku-pa-yut kazh-du-yu sub-bo-tu"},
+    {english:"Buy carefully.", russian:"Покупай внимательно.", pron:"Po-ku-pai vni-mat-el-no"},
+    {english:"I am buying now.", russian:"Я покупаю сейчас.", pron:"Ya po-ku-pa-yu seychas"}
+],
+
+42: [  // Word: Sell / Продавать
+    {english:"I sell fruits in the market.", russian:"Я продаю фрукты на рынке.", pron:"Ya pro-da-yu fruk-ty na ryn-ke"},
+    {english:"She sells clothes online.", russian:"Она продаёт одежду онлайн.", pron:"O-na pro-da-yot o-dezh-du on-layn"},
+    {english:"Do you sell books?", russian:"Ты продаёшь книги?", pron:"Ty pro-da-yesh’ kni-gi?"},
+    {english:"We sell together.", russian:"Мы продаём вместе.", pron:"My pro-da-yom vmye-stye"},
+    {english:"He sells toys every day.", russian:"Он продаёт игрушки каждый день.", pron:"On pro-da-yot ig-ru-shki kazh-dyy den’"},
+    {english:"I sold my old car.", russian:"Я продал свою старую машину.", pron:"Ya pro-dal svo-yu sta-ru-yu ma-shi-nu"},
+    {english:"She likes to sell things.", russian:"Ей нравится продавать вещи.", pron:"Yey nrav-it-sya pro-da-vat’ ve-shchi"},
+    {english:"They sell at the market.", russian:"Они продают на рынке.", pron:"O-ni pro-da-yut na ryn-ke"},
+    {english:"Sell carefully.", russian:"Продавай внимательно.", pron:"Pro-da-vai vni-mat-el-no"},
+    {english:"I am selling now.", russian:"Я продаю сейчас.", pron:"Ya pro-da-yu seychas"}
+],
+
+43: [  // Word: Eat / Есть
+    {english:"I eat breakfast every morning.", russian:"Я завтракаю каждое утро.", pron:"Ya za-vtra-ka-yu kazh-do-ye oo-tra"},
+    {english:"She eats vegetables.", russian:"Она ест овощи.", pron:"O-na yest ovo-shchi"},
+    {english:"Do you eat meat?", russian:"Ты ешь мясо?", pron:"Ty yesh’ mya-so?"},
+    {english:"We eat together.", russian:"Мы едим вместе.", pron:"My ye-dim vmye-stye"},
+    {english:"He ate pizza yesterday.", russian:"Он ел пиццу вчера.", pron:"On yel pit-su vche-ra"},
+    {english:"I like to eat fruits.", russian:"Мне нравится есть фрукты.", pron:"Mne nrav-it-sya yest’ fruk-ty"},
+    {english:"They eat every day.", russian:"Они едят каждый день.", pron:"O-ni ye-dyat kazh-dyy den’"},
+    {english:"Eat carefully.", russian:"Ешь внимательно.", pron:"Yesh’ vni-mat-el-no"},
+    {english:"I am eating now.", russian:"Я ем сейчас.", pron:"Ya yem seychas"},
+    {english:"She ate too much.", russian:"Она съела слишком много.", pron:"O-na s’ye-la sly-shkom mno-go"}
+],
+
+44: [  // Word: Drink / Пить
+    {english:"I drink water every day.", russian:"Я пью воду каждый день.", pron:"Ya p’yu vo-du kazh-dyy den’"},
+    {english:"She drinks tea.", russian:"Она пьёт чай.", pron:"O-na p’yot chai"},
+    {english:"Do you drink coffee?", russian:"Ты пьёшь кофе?", pron:"Ty p’yosh’ kofe?"},
+    {english:"We drink together.", russian:"Мы пьем вместе.", pron:"My p’yom vmye-stye"},
+    {english:"He drank juice yesterday.", russian:"Он выпил сок вчера.", pron:"On vy-pil sok vche-ra"},
+    {english:"I like to drink milk.", russian:"Мне нравится пить молоко.", pron:"Mne nrav-it-sya pit’ mo-lo-ko"},
+    {english:"They drink every morning.", russian:"Они пьют каждое утро.", pron:"O-ni p’yut kazh-do-ye oo-tra"},
+    {english:"Drink carefully.", russian:"Пей внимательно.", pron:"Pey vni-mat-el-no"},
+    {english:"I am drinking now.", russian:"Я пью сейчас.", pron:"Ya p’yu seychas"},
+    {english:"She drank too much.", russian:"Она выпила слишком много.", pron:"O-na vy-pi-la sly-shkom mno-go"}
+],
+
+45: [  // Word: Walk / Гулять / Ходить
+    {english:"I walk every evening.", russian:"Я гуляю каждый вечер.", pron:"Ya gu-lya-yu kazh-dyy ve-cher"},
+    {english:"She walks to school.", russian:"Она ходит в школу.", pron:"O-na kho-dit v shko-lu"},
+    {english:"Do you walk often?", russian:"Ты часто гуляешь?", pron:"Ty chas-to gu-lya-yesh’?"},
+    {english:"We walk together.", russian:"Мы гуляем вместе.", pron:"My gu-lya-yem vmye-stye"},
+    {english:"He walked yesterday.", russian:"Он гулял вчера.", pron:"On gu-lyal vche-ra"},
+    {english:"I like to walk in the park.", russian:"Мне нравится гулять в парке.", pron:"Mne nrav-it-sya gu-lyat’ v par-ke"},
+    {english:"They walk every morning.", russian:"Они гуляют каждое утро.", pron:"O-ni gu-lya-yut kazh-do-ye oo-tra"},
+    {english:"Walk carefully.", russian:"Гуляй осторожно.", pron:"Gu-lyay os-tor-ozh-no"},
+    {english:"I am walking now.", russian:"Я гуляю сейчас.", pron:"Ya gu-lya-yu seychas"},
+    {english:"She walks fast.", russian:"Она быстро ходит.", pron:"O-na by-stro kho-dit"}
+],
+
+46: [  // Word: Sit / Сидеть
+    {english:"I sit on the chair.", russian:"Я сижу на стуле.", pron:"Ya si-zh-oo na stu-le"},
+    {english:"She sits near me.", russian:"Она сидит рядом со мной.", pron:"O-na si-dit rya-dom so mnoy"},
+    {english:"Do you sit here?", russian:"Ты сидишь здесь?", pron:"Ty si-dish’ zdes’?"},
+    {english:"We sit together.", russian:"Мы сидим вместе.", pron:"My si-dim vmye-stye"},
+    {english:"He sat yesterday.", russian:"Он сидел вчера.", pron:"On si-del vche-ra"},
+    {english:"I like to sit by the window.", russian:"Мне нравится сидеть у окна.", pron:"Mne nrav-it-sya si-det’ u ok-na"},
+    {english:"They sit every day.", russian:"Они сидят каждый день.", pron:"O-ni si-dyat kazh-dyy den’"},
+    {english:"Sit carefully.", russian:"Сиди внимательно.", pron:"Si-di vni-mat-el-no"},
+    {english:"I am sitting now.", russian:"Я сижу сейчас.", pron:"Ya si-zh-oo seychas"},
+    {english:"She sits quietly.", russian:"Она сидит тихо.", pron:"O-na si-dit ti-kho"}
+],
+
+47: [  // Word: Stand / Стоять
+    {english:"I stand here.", russian:"Я стою здесь.", pron:"Ya sto-yu zdes’"},
+    {english:"She stands near the door.", russian:"Она стоит у двери.", pron:"O-na sto-it u dve-ri"},
+    {english:"Do you stand often?", russian:"Ты часто стоишь?", pron:"Ty chas-to sto-ish’?"},
+    {english:"We stand together.", russian:"Мы стоим вместе.", pron:"My sto-im vmye-stye"},
+    {english:"He stood yesterday.", russian:"Он стоял вчера.", pron:"On sto-yal vche-ra"},
+    {english:"I like to stand outside.", russian:"Мне нравится стоять на улице.", pron:"Mne nrav-it-sya sto-yat’ na u-li-tse"},
+    {english:"They stand every morning.", russian:"Они стоят каждое утро.", pron:"O-ni sto-yat kazh-do-ye oo-tra"},
+    {english:"Stand carefully.", russian:"Стань внимательно.", pron:"Stan’ vni-mat-el-no"},
+    {english:"I am standing now.", russian:"Я стою сейчас.", pron:"Ya sto-yu seychas"},
+    {english:"She stands quietly.", russian:"Она стоит тихо.", pron:"O-na sto-it ti-kho"}
+],
+
+48: [  // Word: Drive / Водить
+    {english:"I drive to work.", russian:"Я езжу на работу.", pron:"Ya yezh-u na ra-bo-tu"},
+    {english:"She drives a car.", russian:"Она водит машину.", pron:"O-na vo-dit ma-shi-nu"},
+    {english:"Do you drive often?", russian:"Ты часто водишь?", pron:"Ty chas-to vo-dish’?"},
+    {english:"We drive together.", russian:"Мы едем вместе.", pron:"My ye-dem vmye-stye"},
+    {english:"He drove yesterday.", russian:"Он ездил вчера.", pron:"On yez-dil vche-ra"},
+    {english:"I like to drive.", russian:"Мне нравится водить.", pron:"Mne nrav-it-sya vo-dit’"},
+    {english:"They drive every day.", russian:"Они водят каждый день.", pron:"O-ni vo-dyat kazh-dyy den’"},
+    {english:"Drive carefully.", russian:"Веди внимательно.", pron:"Ve-di vni-mat-el-no"},
+    {english:"I am driving now.", russian:"Я еду сейчас.", pron:"Ya ye-du seychas"},
+    {english:"She drives fast.", russian:"Она быстро водит.", pron:"O-na by-stro vo-dit"}
+],
+
+49: [  // Word: Fly / Летать
+    {english:"I fly to Moscow.", russian:"Я лечу в Москву.", pron:"Ya le-chu v Mos-kvu"},
+    {english:"She flies every week.", russian:"Она летает каждую неделю.", pron:"O-na le-ta-yet kazh-du-yu ne-del-yu"},
+    {english:"Do you fly often?", russian:"Ты часто летаешь?", pron:"Ty chas-to le-ta-yesh’?"},
+    {english:"We fly together.", russian:"Мы летаем вместе.", pron:"My le-ta-yem vmye-stye"},
+    {english:"He flew yesterday.", russian:"Он летел вчера.", pron:"On le-tel vche-ra"},
+    {english:"I like to fly.", russian:"Мне нравится летать.", pron:"Mne nrav-it-sya le-tat’"},
+    {english:"They fly every summer.", russian:"Они летают каждое лето.", pron:"O-ni le-ta-yut kazh-do-ye le-to"},
+    {english:"Fly carefully.", russian:"Летай осторожно.", pron:"Le-tay os-tor-ozh-no"},
+    {english:"I am flying now.", russian:"Я лечу сейчас.", pron:"Ya le-chu seychas"},
+    {english:"She flies fast.", russian:"Она быстро летает.", pron:"O-na by-stro le-ta-yet"}
+],
+
+50: [  // Word: Travel / Путешествовать
+    {english:"I travel every summer.", russian:"Я путешествую каждое лето.", pron:"Ya pu-te-shest-vu-yu kazh-do-ye le-to"},
+    {english:"She travels by plane.", russian:"Она путешествует на самолёте.", pron:"O-na pu-te-shes-tvu-yet na sa-mo-lyo-te"},
+    {english:"Do you like to travel?", russian:"Тебе нравится путешествовать?", pron:"Te-be nrav-it-sya pu-te-shest-vovat’?"},
+    {english:"We travel together.", russian:"Мы путешествуем вместе.", pron:"My pu-te-shes-tvu-yem vmye-stye"},
+    {english:"He traveled yesterday.", russian:"Он путешествовал вчера.", pron:"On pu-te-shes-tvo-val vche-ra"},
+    {english:"I like to travel.", russian:"Мне нравится путешествовать.", pron:"Mne nrav-it-sya pu-te-shest-vovat’"},
+    {english:"They travel every year.", russian:"Они путешествуют каждый год.", pron:"O-ni pu-te-shes-tvu-yut kazh-dyy god"},
+    {english:"Travel carefully.", russian:"Путешествуй осторожно.", pron:"Pu-te-shes-tvuy os-tor-ozh-no"},
+    {english:"I am traveling now.", russian:"Я путешествую сейчас.", pron:"Ya pu-te-shes-tvu-yu seychas"},
+    {english:"She travels fast.", russian:"Она быстро путешествует.", pron:"O-na by-stro pu-te-shes-tvu-yet"}
+],
+51: [  // Word: Read / Читать
+    {english:"I read books every day.", russian:"Я читаю книги каждый день.", pron:"Ya chi-ta-yu kni-gi kazh-dyy den’"},
+    {english:"She reads newspapers.", russian:"Она читает газеты.", pron:"O-na chi-ta-yet ga-zy-ty"},
+    {english:"Do you read often?", russian:"Ты часто читаешь?", pron:"Ty chas-to chi-ta-yesh’?"},
+    {english:"We read together.", russian:"Мы читаем вместе.", pron:"My chi-ta-yem vmye-stye"},
+    {english:"He read yesterday.", russian:"Он читал вчера.", pron:"On chi-tal vche-ra"},
+    {english:"I like to read novels.", russian:"Мне нравится читать романы.", pron:"Mne nrav-it-sya chi-tat’ ro-ma-ny"},
+    {english:"They read every morning.", russian:"Они читают каждое утро.", pron:"O-ni chi-tayut kazh-do-ye oo-tra"},
+    {english:"Read carefully.", russian:"Читай внимательно.", pron:"Chi-tay vni-mat-el-no"},
+    {english:"I am reading now.", russian:"Я читаю сейчас.", pron:"Ya chi-ta-yu seychas"},
+    {english:"She reads quietly.", russian:"Она читает тихо.", pron:"O-na chi-ta-yet ti-kho"}
+],
+
+52: [  // Word: Write / Писать
+    {english:"I write letters every day.", russian:"Я пишу письма каждый день.", pron:"Ya pi-shu pis’-ma kazh-dyy den’"},
+    {english:"She writes emails.", russian:"Она пишет электронные письма.", pron:"O-na pi-shet e-lek-tron-ny-e pis’-ma"},
+    {english:"Do you write often?", russian:"Ты часто пишешь?", pron:"Ty chas-to pi-shesh’?"},
+    {english:"We write together.", russian:"Мы пишем вместе.", pron:"My pi-shem vmye-stye"},
+    {english:"He wrote yesterday.", russian:"Он писал вчера.", pron:"On pi-sal vche-ra"},
+    {english:"I like to write stories.", russian:"Мне нравится писать истории.", pron:"Mne nrav-it-sya pi-sat’ is-to-rii"},
+    {english:"They write every morning.", russian:"Они пишут каждое утро.", pron:"O-ni pi-shut kazh-do-ye oo-tra"},
+    {english:"Write carefully.", russian:"Пиши внимательно.", pron:"Pi-shi vni-mat-el-no"},
+    {english:"I am writing now.", russian:"Я пишу сейчас.", pron:"Ya pi-shu seychas"},
+    {english:"She writes fast.", russian:"Она пишет быстро.", pron:"O-na pi-shet by-stro"}
+],
+
+53: [  // Word: Listen / Слушать
+    {english:"I listen to music every day.", russian:"Я слушаю музыку каждый день.", pron:"Ya slu-sha-yu mu-zy-ku kazh-dyy den’"},
+    {english:"She listens to the teacher.", russian:"Она слушает учителя.", pron:"O-na slu-sha-yet u-chi-te-lya"},
+    {english:"Do you listen carefully?", russian:"Ты слушаешь внимательно?", pron:"Ty slu-sha-yesh’ vni-mat-el-no?"},
+    {english:"We listen together.", russian:"Мы слушаем вместе.", pron:"My slu-sha-yem vmye-stye"},
+    {english:"He listened yesterday.", russian:"Он слушал вчера.", pron:"On slu-shal vche-ra"},
+    {english:"I like to listen to stories.", russian:"Мне нравится слушать истории.", pron:"Mne nrav-it-sya slu-shat’ is-to-rii"},
+    {english:"They listen every morning.", russian:"Они слушают каждое утро.", pron:"O-ni slu-sha-yut kazh-do-ye oo-tra"},
+    {english:"Listen carefully.", russian:"Слушай внимательно.", pron:"Slu-shay vni-mat-el-no"},
+    {english:"I am listening now.", russian:"Я слушаю сейчас.", pron:"Ya slu-sha-yu seychas"},
+    {english:"She listens quietly.", russian:"Она слушает тихо.", pron:"O-na slu-sha-yet ti-kho"}
+],
+
+54: [  // Word: Speak / Говорить
+    {english:"I speak English.", russian:"Я говорю по-английски.", pron:"Ya go-vo-ryu po an-glees-ki"},
+    {english:"She speaks Russian.", russian:"Она говорит по-русски.", pron:"O-na go-vo-rit po rus-ski"},
+    {english:"Do you speak often?", russian:"Ты часто говоришь?", pron:"Ty chas-to go-vo-rish’?"},
+    {english:"We speak together.", russian:"Мы говорим вместе.", pron:"My go-vo-rim vmye-stye"},
+    {english:"He spoke yesterday.", russian:"Он говорил вчера.", pron:"On go-vo-ril vche-ra"},
+    {english:"I like to speak with friends.", russian:"Мне нравится говорить с друзьями.", pron:"Mne nrav-it-sya go-vo-rit’ s dru-zyami"},
+    {english:"They speak every day.", russian:"Они говорят каждый день.", pron:"O-ni go-vo-ryat kazh-dyy den’"},
+    {english:"Speak clearly.", russian:"Говори ясно.", pron:"Go-vo-ri yas-no"},
+    {english:"I am speaking now.", russian:"Я говорю сейчас.", pron:"Ya go-vo-ryu seychas"},
+    {english:"She speaks slowly.", russian:"Она говорит медленно.", pron:"O-na go-vo-rit med-len-no"}
+],
+
+55: [  // Word: Watch / Смотреть
+    {english:"I watch TV every evening.", russian:"Я смотрю телевизор каждый вечер.", pron:"Ya smot-ryu te-le-vi-zor kazh-dyy ve-cher"},
+    {english:"She watches movies.", russian:"Она смотрит фильмы.", pron:"O-na smot-rit fil’-my"},
+    {english:"Do you watch often?", russian:"Ты часто смотришь?", pron:"Ty chas-to smot-rish’?"},
+    {english:"We watch together.", russian:"Мы смотрим вместе.", pron:"My smot-rim vmye-stye"},
+    {english:"He watched yesterday.", russian:"Он смотрел вчера.", pron:"On smot-rel vche-ra"},
+    {english:"I like to watch documentaries.", russian:"Мне нравится смотреть документальные фильмы.", pron:"Mne nrav-it-sya smot-ret’ do-ku-men-tal’-nye fil’-my"},
+    {english:"They watch every day.", russian:"Они смотрят каждый день.", pron:"O-ni smot-ryat kazh-dyy den’"},
+    {english:"Watch carefully.", russian:"Смотри внимательно.", pron:"Smo-tri vni-mat-el-no"},
+    {english:"I am watching now.", russian:"Я смотрю сейчас.", pron:"Ya smot-ryu seychas"},
+    {english:"She watches quietly.", russian:"Она смотрит тихо.", pron:"O-na smot-rit ti-kho"}
+],
+
+56: [  // Word: Love / Любить
+    {english:"I love my family.", russian:"Я люблю свою семью.", pron:"Ya lyu-blyu svo-yu sem-yu"},
+    {english:"She loves her friends.", russian:"Она любит своих друзей.", pron:"O-na lyu-bit svo-ikh dru-zey"},
+    {english:"Do you love me?", russian:"Ты любишь меня?", pron:"Ty lyu-bish’ me-nya?"},
+    {english:"We love each other.", russian:"Мы любим друг друга.", pron:"My lyu-bim droog dru-ga"},
+    {english:"He loved her yesterday.", russian:"Он любил её вчера.", pron:"On lyu-bil ye-yo vche-ra"},
+    {english:"I like to love everyone.", russian:"Мне нравится любить всех.", pron:"Mne nrav-it-sya lyu-bit’ vsekh"},
+    {english:"They love every day.", russian:"Они любят каждый день.", pron:"O-ni lyu-byat kazh-dyy den’"},
+    {english:"Love carefully.", russian:"Люби внимательно.", pron:"Lyu-bi vni-mat-el-no"},
+    {english:"I am loving now.", russian:"Я люблю сейчас.", pron:"Ya lyu-blyu seychas"},
+    {english:"She loves animals.", russian:"Она любит животных.", pron:"O-na lyu-bit zhiv-ot-nykh"}
+],
+
+57: [  // Word: Like / Нравиться
+    {english:"I like this song.", russian:"Мне нравится эта песня.", pron:"Mne nrav-it-sya e-ta pes-nya"},
+    {english:"She likes chocolate.", russian:"Ей нравится шоколад.", pron:"Yey nrav-it-sya sho-ko-lad"},
+    {english:"Do you like it?", russian:"Тебе это нравится?", pron:"Te-be e-to nrav-it-sya?"},
+    {english:"We like this place.", russian:"Нам нравится это место.", pron:"Nam nrav-it-sya e-to mes-to"},
+    {english:"He liked the movie.", russian:"Ему понравился фильм.", pron:"Ye-mu po-nra-vi-lsya film"},
+    {english:"I like to read.", russian:"Мне нравится читать.", pron:"Mne nrav-it-sya chi-tat’"},
+    {english:"They like every day.", russian:"Им нравится каждый день.", pron:"Im nrav-it-sya kazh-dyy den’"},
+    {english:"Like carefully.", russian:"Нравься внимательно.", pron:"Nrav-sya vni-mat-el-no"},
+    {english:"I am liking it now.", russian:"Мне нравится сейчас.", pron:"Mne nrav-it-sya seychas"},
+    {english:"She likes animals.", russian:"Ей нравятся животные.", pron:"Yey nrav-yat-sya zhiv-ot-ny-e"}
+],
+
+58: [  // Word: Hate / Ненавидеть
+    {english:"I hate lying.", russian:"Я ненавижу ложь.", pron:"Ya ne-na-vi-zhu lozh’"},
+    {english:"She hates waiting.", russian:"Она ненавидит ждать.", pron:"O-na ne-na-vi-dit zhdat’"},
+    {english:"Do you hate him?", russian:"Ты его ненавидишь?", pron:"Ty ye-go ne-na-vi-dish’?"},
+    {english:"We hate cheating.", russian:"Мы ненавидим обманывать.", pron:"My ne-na-vi-dim ob-ma-ny-vat’"},
+    {english:"He hated yesterday.", russian:"Он ненавидел вчера.", pron:"On ne-na-vi-del vche-ra"},
+    {english:"I like to hate bad habits.", russian:"Мне нравится ненавидеть плохие привычки.", pron:"Mne nrav-it-sya ne-na-vi-det’ plo-khi-ye pri-vych-ki"},
+    {english:"They hate every day.", russian:"Они ненавидят каждый день.", pron:"O-ni ne-na-vi-dyat kazh-dyy den’"},
+    {english:"Hate carefully.", russian:"Ненавидь внимательно.", pron:"Ne-na-vid’ vni-mat-el-no"},
+    {english:"I am hating now.", russian:"Я ненавижу сейчас.", pron:"Ya ne-na-vi-zhu seychas"},
+    {english:"She hates loud noises.", russian:"Она ненавидит громкие звуки.", pron:"O-na ne-na-vi-dit grom-ki-ye zvu-ki"}
+],
+
+59: [  // Word: Start / Начинать
+    {english:"I start work at 9.", russian:"Я начинаю работу в 9.", pron:"Ya na-chi-na-yu ra-bo-tu v dye-vyat’"},
+    {english:"She starts school at 8.", russian:"Она начинает школу в 8.", pron:"O-na na-chi-na-yet shko-lu v vo-syem’"},
+    {english:"Do you start now?", russian:"Ты начинаешь сейчас?", pron:"Ty na-chi-na-yesh’ seychas?"},
+    {english:"We start together.", russian:"Мы начинаем вместе.", pron:"My na-chi-na-yem vmye-stye"},
+    {english:"He started yesterday.", russian:"Он начал вчера.", pron:"On na-chal vche-ra"},
+    {english:"I like to start early.", russian:"Мне нравится начинать рано.", pron:"Mne nrav-it-sya na-chi-nat’ ra-no"},
+    {english:"They start every day.", russian:"Они начинают каждый день.", pron:"O-ni na-chi-na-yut kazh-dyy den’"},
+    {english:"Start carefully.", russian:"Начинай внимательно.", pron:"Na-chi-nay vni-mat-el-no"},
+    {english:"I am starting now.", russian:"Я начинаю сейчас.", pron:"Ya na-chi-na-yu seychas"},
+    {english:"She starts fast.", russian:"Она начинает быстро.", pron:"O-na na-chi-na-yet by-stro"}
+],
+
+60: [  // Word: Finish / Заканчивать
+    {english:"I finish work at 6.", russian:"Я заканчиваю работу в 6.", pron:"Ya za-kan-chi-va-yu ra-bo-tu v shes’"},
+    {english:"She finishes school at 3.", russian:"Она заканчивает школу в 3.", pron:"O-na za-kan-chi-va-yet shko-lu v tree"},
+    {english:"Do you finish now?", russian:"Ты заканчиваешь сейчас?", pron:"Ty za-kan-chi-va-yesh’ seychas?"},
+    {english:"We finish together.", russian:"Мы заканчиваем вместе.", pron:"My za-kan-chi-va-yem vmye-stye"},
+    {english:"He finished yesterday.", russian:"Он закончил вчера.", pron:"On za-kon-chil vche-ra"},
+    {english:"I like to finish early.", russian:"Мне нравится заканчивать рано.", pron:"Mne nrav-it-sya za-kan-chi-vat’ ra-no"},
+    {english:"They finish every day.", russian:"Они заканчивают каждый день.", pron:"O-ni za-kan-chi-va-yut kazh-dyy den’"},
+    {english:"Finish carefully.", russian:"Заканчивай внимательно.", pron:"Za-kan-chi-vay vni-mat-el-no"},
+    {english:"I am finishing now.", russian:"Я заканчиваю сейчас.", pron:"Ya za-kan-chi-va-yu seychas"},
+    {english:"She finishes quickly.", russian:"Она заканчивает быстро.", pron:"O-na za-kan-chi-va-yet by-stro"}
+],
+
+61: [  // Word: Open / Открывать
+    {english:"I open the window.", russian:"Я открываю окно.", pron:"Ya ot-kry-va-yu ok-no"},
+    {english:"She opens the door.", russian:"Она открывает дверь.", pron:"O-na ot-kry-va-yet dver’"},
+    {english:"Do you open it?", russian:"Ты открываешь это?", pron:"Ty ot-kry-va-yesh’ e-to?"},
+    {english:"We open together.", russian:"Мы открываем вместе.", pron:"My ot-kry-va-yem vmye-stye"},
+    {english:"He opened yesterday.", russian:"Он открыл вчера.", pron:"On ot-kryl vche-ra"},
+    {english:"I like to open gifts.", russian:"Мне нравится открывать подарки.", pron:"Mne nrav-it-sya ot-kry-vat’ po-dar-ki"},
+    {english:"They open every morning.", russian:"Они открывают каждое утро.", pron:"O-ni ot-kry-va-yut kazh-do-ye oo-tra"},
+    {english:"Open carefully.", russian:"Открывай внимательно.", pron:"Ot-kry-vay vni-mat-el-no"},
+    {english:"I am opening now.", russian:"Я открываю сейчас.", pron:"Ya ot-kry-va-yu seychas"},
+    {english:"She opens slowly.", russian:"Она открывает медленно.", pron:"O-na ot-kry-va-yet med-len-no"}
+],
+
+62: [  // Word: Close / Закрывать
+    {english:"I close the window.", russian:"Я закрываю окно.", pron:"Ya za-kry-va-yu ok-no"},
+    {english:"She closes the door.", russian:"Она закрывает дверь.", pron:"O-na za-kry-va-yet dver’"},
+    {english:"Do you close it?", russian:"Ты закрываешь это?", pron:"Ty za-kry-va-yesh’ e-to?"},
+    {english:"We close together.", russian:"Мы закрываем вместе.", pron:"My za-kry-va-yem vmye-stye"},
+    {english:"He closed yesterday.", russian:"Он закрыл вчера.", pron:"On za-kryl vche-ra"},
+    {english:"I like to close the shop.", russian:"Мне нравится закрывать магазин.", pron:"Mne nrav-it-sya za-kry-vat’ ma-ga-zin"},
+    {english:"They close every night.", russian:"Они закрывают каждый вечер.", pron:"O-ni za-kry-va-yut kazh-dyy ve-cher"},
+    {english:"Close carefully.", russian:"Закрывай внимательно.", pron:"Za-kry-vay vni-mat-el-no"},
+    {english:"I am closing now.", russian:"Я закрываю сейчас.", pron:"Ya za-kry-va-yu seychas"},
+    {english:"She closes quickly.", russian:"Она закрывает быстро.", pron:"O-na za-kry-va-yet by-stro"}
+],
+
+63: [  // Word: Wait / Ждать
+    {english:"I wait for the bus.", russian:"Я жду автобус.", pron:"Ya zhdu av-to-bus"},
+    {english:"She waits at the station.", russian:"Она ждёт на станции.", pron:"O-na zhdyot na sta-ntsii"},
+    {english:"Do you wait often?", russian:"Ты часто ждёшь?", pron:"Ty chas-to zhdyosh’?"},
+    {english:"We wait together.", russian:"Мы ждём вместе.", pron:"My zhdyom vmye-stye"},
+    {english:"He waited yesterday.", russian:"Он ждал вчера.", pron:"On zhdal vche-ra"},
+    {english:"I like to wait patiently.", russian:"Мне нравится ждать терпеливо.", pron:"Mne nrav-it-sya zhdat’ ter-pe-li-vo"},
+    {english:"They wait every morning.", russian:"Они ждут каждое утро.", pron:"O-ni zhdyut kazh-do-ye oo-tra"},
+    {english:"Wait carefully.", russian:"Жди внимательно.", pron:"Zhdi vni-mat-el-no"},
+    {english:"I am waiting now.", russian:"Я жду сейчас.", pron:"Ya zhdu seychas"},
+    {english:"She waits quietly.", russian:"Она ждёт тихо.", pron:"O-na zhdyot ti-kho"}
+],
+
+64: [  // Word: Help / Помогать
+    {english:"I help my friends.", russian:"Я помогаю друзьям.", pron:"Ya po-mo-ga-yu dru-zyam"},
+    {english:"She helps her mother.", russian:"Она помогает маме.", pron:"O-na po-mo-ga-yet ma-me"},
+    {english:"Do you help often?", russian:"Ты часто помогаешь?", pron:"Ty chas-to po-mo-ga-yesh’?"},
+    {english:"We help together.", russian:"Мы помогаем вместе.", pron:"My po-mo-ga-yem vmye-stye"},
+    {english:"He helped yesterday.", russian:"Он помог вчера.", pron:"On po-mog vche-ra"},
+    {english:"I like to help others.", russian:"Мне нравится помогать другим.", pron:"Mne nrav-it-sya po-mo-gat’ dru-gim"},
+    {english:"They help every day.", russian:"Они помогают каждый день.", pron:"O-ni po-mo-ga-yut kazh-dyy den’"},
+    {english:"Help carefully.", russian:"Помогай внимательно.", pron:"Po-mo-gay vni-mat-el-no"},
+    {english:"I am helping now.", russian:"Я помогаю сейчас.", pron:"Ya po-mo-ga-yu seychas"},
+    {english:"She helps quietly.", russian:"Она помогает тихо.", pron:"O-na po-mo-ga-yet ti-kho"}
+],
+
+65: [  // Word: Work / Работать
+    {english:"I work every day.", russian:"Я работаю каждый день.", pron:"Ya ra-bo-ta-yu kazh-dyy den’"},
+    {english:"She works in an office.", russian:"Она работает в офисе.", pron:"O-na ra-bo-ta-yet v ofi-se"},
+    {english:"Do you work now?", russian:"Ты работаешь сейчас?", pron:"Ty ra-bo-ta-yesh’ seychas?"},
+    {english:"We work together.", russian:"Мы работаем вместе.", pron:"My ra-bo-ta-yem vmye-stye"},
+    {english:"He worked yesterday.", russian:"Он работал вчера.", pron:"On ra-bo-tal vche-ra"},
+    {english:"I like to work hard.", russian:"Мне нравится усердно работать.", pron:"Mne nrav-it-sya u-serd-no ra-bo-tat’"},
+    {english:"They work every morning.", russian:"Они работают каждое утро.", pron:"O-ni ra-bo-ta-yut kazh-do-ye oo-tra"},
+    {english:"Work carefully.", russian:"Работай внимательно.", pron:"Ra-bo-tay vni-mat-el-no"},
+    {english:"I am working now.", russian:"Я работаю сейчас.", pron:"Ya ra-bo-ta-yu seychas"},
+    {english:"She works quickly.", russian:"Она работает быстро.", pron:"O-na ra-bo-ta-yet by-stro"}
+],
+
+66: [  // Word: Play / Играть
+    {english:"I play football every day.", russian:"Я играю в футбол каждый день.", pron:"Ya igra-yu v fut-bol kazh-dyy den’"},
+    {english:"She plays piano.", russian:"Она играет на пианино.", pron:"O-na igra-yet na pia-ni-no"},
+    {english:"Do you play often?", russian:"Ты часто играешь?", pron:"Ty chas-to igra-yesh’?"},
+    {english:"We play together.", russian:"Мы играем вместе.", pron:"My igra-yem vmye-stye"},
+    {english:"He played yesterday.", russian:"Он играл вчера.", pron:"On igra-l vche-ra"},
+    {english:"I like to play games.", russian:"Мне нравится играть в игры.", pron:"Mne nrav-it-sya igra-t’ v ig-ry"},
+    {english:"They play every evening.", russian:"Они играют каждый вечер.", pron:"O-ni igra-yut kazh-dyy ve-cher"},
+    {english:"Play carefully.", russian:"Играй внимательно.", pron:"Ig-rai vni-mat-el-no"},
+    {english:"I am playing now.", russian:"Я играю сейчас.", pron:"Ya igra-yu seychas"},
+    {english:"She plays quietly.", russian:"Она играет тихо.", pron:"O-na igra-yet ti-kho"}
+],
+
+67: [  // Word: Study / Учиться
+    {english:"I study English every day.", russian:"Я учусь английскому каждый день.", pron:"Ya u-chus’ an-glees-ko-mu kazh-dyy den’"},
+    {english:"She studies math.", russian:"Она учится математике.", pron:"O-na u-chitsya ma-te-ma-ti-ke"},
+    {english:"Do you study now?", russian:"Ты учишься сейчас?", pron:"Ty u-chish-sya seychas?"},
+    {english:"We study together.", russian:"Мы учимся вместе.", pron:"My u-chim-sya vmye-stye"},
+    {english:"He studied yesterday.", russian:"Он учился вчера.", pron:"On u-chil-sya vche-ra"},
+    {english:"I like to study every night.", russian:"Мне нравится учиться каждую ночь.", pron:"Mne nrav-it-sya u-chit-sya kazh-du-yu noch’"},
+    {english:"They study every morning.", russian:"Они учатся каждое утро.", pron:"O-ni u-chatsya kazh-do-ye oo-tra"},
+    {english:"Study carefully.", russian:"Учись внимательно.", pron:"U-chis’ vni-mat-el-no"},
+    {english:"I am studying now.", russian:"Я учусь сейчас.", pron:"Ya u-chus’ seychas"},
+    {english:"She studies quietly.", russian:"Она учится тихо.", pron:"O-na u-chitsya ti-kho"}
+],
+
+68: [  // Word: Wait / Ожидать
+    {english:"I wait for the train.", russian:"Я ожидаю поезд.", pron:"Ya o-zhid-a-yu po-yezd"},
+    {english:"She waits for her friend.", russian:"Она ожидает друга.", pron:"O-na o-zhid-a-yet dru-ga"},
+    {english:"Do you wait often?", russian:"Ты часто ожидаешь?", pron:"Ty chas-to o-zhid-a-yesh’?"},
+    {english:"We wait together.", russian:"Мы ожидаем вместе.", pron:"My o-zhid-a-yem vmye-stye"},
+    {english:"He waited yesterday.", russian:"Он ожидал вчера.", pron:"On o-zhid-al vche-ra"},
+    {english:"I like to wait patiently.", russian:"Мне нравится ждать терпеливо.", pron:"Mne nrav-it-sya zhdat’ ter-pe-li-vo"},
+    {english:"They wait every day.", russian:"Они ожидают каждый день.", pron:"O-ni o-zhid-a-yut kazh-dyy den’"},
+    {english:"Wait carefully.", russian:"Ожидай внимательно.", pron:"O-zhid-ay vni-mat-el-no"},
+    {english:"I am waiting now.", russian:"Я ожидаю сейчас.", pron:"Ya o-zhid-a-yu seychas"},
+    {english:"She waits quietly.", russian:"Она ожидает тихо.", pron:"O-na o-zhid-a-yet ti-kho"}
+],
+
+69: [  // Word: Turn / Поворачивать
+    {english:"I turn left.", russian:"Я поворачиваю налево.", pron:"Ya po-va-ra-chi-vayu na-le-vo"},
+    {english:"She turns right.", russian:"Она поворачивает направо.", pron:"O-na po-va-ra-chi-vayet na-pravo"},
+    {english:"Do you turn now?", russian:"Ты поворачиваешь сейчас?", pron:"Ty po-va-ra-chi-va-yesh’ seychas?"},
+    {english:"We turn together.", russian:"Мы поворачиваем вместе.", pron:"My po-va-ra-chi-vayem vmye-stye"},
+    {english:"He turned yesterday.", russian:"Он повернул вчера.", pron:"On po-ver-nul vche-ra"},
+    {english:"I like to turn carefully.", russian:"Мне нравится поворачивать осторожно.", pron:"Mne nrav-it-sya po-va-ra-chi-vat’ os-tor-ozh-no"},
+    {english:"They turn every corner.", russian:"Они поворачивают на каждом углу.", pron:"O-ni po-va-ra-chi-vayut na kazh-dom ug-lu"},
+    {english:"Turn carefully.", russian:"Поворачивай внимательно.", pron:"Po-va-ra-chi-vay vni-mat-el-no"},
+    {english:"I am turning now.", russian:"Я поворачиваю сейчас.", pron:"Ya po-va-ra-chi-vayu seychas"},
+    {english:"She turns slowly.", russian:"Она поворачивает медленно.", pron:"O-na po-va-ra-chi-vayet med-len-no"}
+],
+
+70: [  // Word: Use / Использовать
+    {english:"I use my phone every day.", russian:"Я использую телефон каждый день.", pron:"Ya is-pol-zu-yu te-le-fon kazh-dyy den’"},
+    {english:"She uses a computer.", russian:"Она использует компьютер.", pron:"O-na is-pol-zu-yet kom-pyu-ter"},
+    {english:"Do you use it?", russian:"Ты используешь это?", pron:"Ty is-pol-zu-yesh’ e-to?"},
+    {english:"We use together.", russian:"Мы используем вместе.", pron:"My is-pol-zu-yem vmye-stye"},
+    {english:"He used it yesterday.", russian:"Он использовал это вчера.", pron:"On is-pol-zo-val e-to vche-ra"},
+    {english:"I like to use apps.", russian:"Мне нравится использовать приложения.", pron:"Mne nrav-it-sya is-pol-zo-vat’ pri-lo-zhe-ni-ya"},
+    {english:"They use every day.", russian:"Они используют каждый день.", pron:"O-ni is-pol-zu-yut kazh-dyy den’"},
+    {english:"Use carefully.", russian:"Используй внимательно.", pron:"Is-pol-zu-y vni-mat-el-no"},
+    {english:"I am using now.", russian:"Я использую сейчас.", pron:"Ya is-pol-zu-yu seychas"},
+    {english:"She uses quickly.", russian:"Она использует быстро.", pron:"O-na is-pol-zu-yet by-stro"}
+],
+
+71: [  // Word: Buy / Покупать
+    {english:"I buy fruits every day.", russian:"Я покупаю фрукты каждый день.", pron:"Ya po-ku-pa-yu fruk-ty kazh-dyy den’"},
+    {english:"She buys clothes.", russian:"Она покупает одежду.", pron:"O-na po-ku-pa-yet o-dezh-du"},
+    {english:"Do you buy often?", russian:"Ты часто покупаешь?", pron:"Ty chas-to po-ku-pa-yesh’?"},
+    {english:"We buy together.", russian:"Мы покупаем вместе.", pron:"My po-ku-pa-yem vmye-stye"},
+    {english:"He bought yesterday.", russian:"Он купил вчера.", pron:"On ku-pil vche-ra"},
+    {english:"I like to buy gifts.", russian:"Мне нравится покупать подарки.", pron:"Mne nrav-it-sya po-ku-pat’ po-dar-ki"},
+    {english:"They buy every week.", russian:"Они покупают каждую неделю.", pron:"O-ni po-ku-pa-yut kazh-du-yu ne-de-lyu"},
+    {english:"Buy carefully.", russian:"Покупай внимательно.", pron:"Po-ku-pai vni-mat-el-no"},
+    {english:"I am buying now.", russian:"Я покупаю сейчас.", pron:"Ya po-ku-pa-yu seychas"},
+    {english:"She buys quickly.", russian:"Она покупает быстро.", pron:"O-na po-ku-pa-yet by-stro"}
+],
+
+72: [  // Word: Sell / Продавать
+    {english:"I sell vegetables every day.", russian:"Я продаю овощи каждый день.", pron:"Ya pro-da-yu o-vo-shchi kazh-dyy den’"},
+    {english:"She sells clothes.", russian:"Она продаёт одежду.", pron:"O-na pro-da-yot o-dezh-du"},
+    {english:"Do you sell often?", russian:"Ты часто продаёшь?", pron:"Ty chas-to pro-da-yesh’?"},
+    {english:"We sell together.", russian:"Мы продаём вместе.", pron:"My pro-da-yom vmye-stye"},
+    {english:"He sold yesterday.", russian:"Он продал вчера.", pron:"On pro-dal vche-ra"},
+    {english:"I like to sell things.", russian:"Мне нравится продавать вещи.", pron:"Mne nrav-it-sya pro-da-vat’ vesh-chi"},
+    {english:"They sell every day.", russian:"Они продают каждый день.", pron:"O-ni pro-da-yut kazh-dyy den’"},
+    {english:"Sell carefully.", russian:"Продавай внимательно.", pron:"Pro-da-vai vni-mat-el-no"},
+    {english:"I am selling now.", russian:"Я продаю сейчас.", pron:"Ya pro-da-yu seychas"},
+    {english:"She sells quickly.", russian:"Она продаёт быстро.", pron:"O-na pro-da-yot by-stro"}
+],
+
+73: [  // Word: Eat / Есть
+    {english:"I eat breakfast every day.", russian:"Я завтракаю каждый день.", pron:"Ya za-vtra-ka-yu kazh-dyy den’"},
+    {english:"She eats vegetables.", russian:"Она ест овощи.", pron:"O-na yest o-vo-shchi"},
+    {english:"Do you eat often?", russian:"Ты часто ешь?", pron:"Ty chas-to yesh’?"},
+    {english:"We eat together.", russian:"Мы едим вместе.", pron:"My ye-dim vmye-stye"},
+    {english:"He ate yesterday.", russian:"Он ел вчера.", pron:"On yel vche-ra"},
+    {english:"I like to eat fruits.", russian:"Мне нравится есть фрукты.", pron:"Mne nrav-it-sya yest’ fruk-ty"},
+    {english:"They eat every morning.", russian:"Они едят каждое утро.", pron:"O-ni ye-dyat kazh-do-ye oo-tra"},
+    {english:"Eat carefully.", russian:"Ешь внимательно.", pron:"Yesh’ vni-mat-el-no"},
+    {english:"I am eating now.", russian:"Я ем сейчас.", pron:"Ya yem seychas"},
+    {english:"She eats slowly.", russian:"Она ест медленно.", pron:"O-na yest med-len-no"}
+],
+
+74: [  // Word: Drink / Пить
+    {english:"I drink water every day.", russian:"Я пью воду каждый день.", pron:"Ya p’yu vo-du kazh-dyy den’"},
+    {english:"She drinks tea.", russian:"Она пьёт чай.", pron:"O-na p’yot chai"},
+    {english:"Do you drink coffee?", russian:"Ты пьёшь кофе?", pron:"Ty p’yosh’ kofe?"},
+    {english:"We drink together.", russian:"Мы пьём вместе.", pron:"My p’yom vmye-stye"},
+    {english:"He drank yesterday.", russian:"Он пил вчера.", pron:"On pil vche-ra"},
+    {english:"I like to drink juice.", russian:"Мне нравится пить сок.", pron:"Mne nrav-it-sya pit’ sok"},
+    {english:"They drink every morning.", russian:"Они пьют каждое утро.", pron:"O-ni p’yut kazh-do-ye oo-tra"},
+    {english:"Drink carefully.", russian:"Пей внимательно.", pron:"Pey vni-mat-el-no"},
+    {english:"I am drinking now.", russian:"Я пью сейчас.", pron:"Ya p’yu seychas"},
+    {english:"She drinks slowly.", russian:"Она пьёт медленно.", pron:"O-na p’yot med-len-no"}
+],
+
+75: [  // Word: Sleep / Спать
+    {english:"I sleep 8 hours every night.", russian:"Я сплю 8 часов каждую ночь.", pron:"Ya splyu vo-sem’ cha-sov kazh-du-yu noch’"},
+    {english:"She sleeps early.", russian:"Она спит рано.", pron:"O-na spit ra-no"},
+    {english:"Do you sleep well?", russian:"Ты хорошо спишь?", pron:"Ty kha-ro-sho spish’?"},
+    {english:"We sleep together.", russian:"Мы спим вместе.", pron:"My spim vmye-stye"},
+    {english:"He slept yesterday.", russian:"Он спал вчера.", pron:"On spal vche-ra"},
+    {english:"I like to sleep late.", russian:"Мне нравится спать допоздна.", pron:"Mne nrav-it-sya spat’ do-pozd-na"},
+    {english:"They sleep every night.", russian:"Они спят каждую ночь.", pron:"O-ni spyat kazh-du-yu noch’"},
+    {english:"Sleep carefully.", russian:"Спи внимательно.", pron:"Spi vni-mat-el-no"},
+    {english:"I am sleeping now.", russian:"Я сплю сейчас.", pron:"Ya splyu seychas"},
+    {english:"She sleeps quietly.", russian:"Она спит тихо.", pron:"O-na spit ti-kho"}
+],
+
+76: [  // Word: Walk / Ходить
+    {english:"I walk to work every day.", russian:"Я хожу на работу каждый день.", pron:"Ya kho-zhu na ra-bo-tu kazh-dyy den’"},
+    {english:"She walks in the park.", russian:"Она ходит в парк.", pron:"O-na kho-dit v park"},
+    {english:"Do you walk often?", russian:"Ты часто ходишь?", pron:"Ty chas-to kho-dish’?"},
+    {english:"We walk together.", russian:"Мы ходим вместе.", pron:"My kho-dim vmye-stye"},
+    {english:"He walked yesterday.", russian:"Он ходил вчера.", pron:"On kho-dil vche-ra"},
+    {english:"I like to walk in the morning.", russian:"Мне нравится ходить утром.", pron:"Mne nrav-it-sya kho-dit’ oo-trom"},
+    {english:"They walk every day.", russian:"Они ходят каждый день.", pron:"O-ni kho-dyat kazh-dyy den’"},
+    {english:"Walk carefully.", russian:"Ходи внимательно.", pron:"Kho-di vni-mat-el-no"},
+    {english:"I am walking now.", russian:"Я хожу сейчас.", pron:"Ya kho-zhu seychas"},
+    {english:"She walks slowly.", russian:"Она ходит медленно.", pron:"O-na kho-dit med-len-no"}
+],
+
+77: [  // Word: Run / Бегать
+    {english:"I run every morning.", russian:"Я бегаю каждое утро.", pron:"Ya be-ga-yu kazh-do-ye oo-tra"},
+    {english:"She runs fast.", russian:"Она бегает быстро.", pron:"O-na be-ga-yet by-stro"},
+    {english:"Do you run often?", russian:"Ты часто бегаешь?", pron:"Ty chas-to be-ga-yesh’?"},
+    {english:"We run together.", russian:"Мы бегаем вместе.", pron:"My be-ga-yem vmye-stye"},
+    {english:"He ran yesterday.", russian:"Он бегал вчера.", pron:"On be-gal vche-ra"},
+    {english:"I like to run in park.", russian:"Мне нравится бегать в парке.", pron:"Mne nrav-it-sya be-gat’ v par-ke"},
+    {english:"They run every day.", russian:"Они бегают каждый день.", pron:"O-ni be-ga-yut kazh-dyy den’"},
+    {english:"Run carefully.", russian:"Бегай внимательно.", pron:"Be-gai vni-mat-el-no"},
+    {english:"I am running now.", russian:"Я бегаю сейчас.", pron:"Ya be-ga-yu seychas"},
+    {english:"She runs quietly.", russian:"Она бегает тихо.", pron:"O-na be-ga-yet ti-kho"}
+],
+
+78: [  // Word: Drive / Водить
+    {english:"I drive to work every day.", russian:"Я вожу на работу каждый день.", pron:"Ya vo-zhu na ra-bo-tu kazh-dyy den’"},
+    {english:"She drives carefully.", russian:"Она водит осторожно.", pron:"O-na vo-dit os-tor-ozh-no"},
+    {english:"Do you drive often?", russian:"Ты часто водишь?", pron:"Ty chas-to vo-dish’?"},
+    {english:"We drive together.", russian:"Мы водим вместе.", pron:"My vo-dim vmye-stye"},
+    {english:"He drove yesterday.", russian:"Он водил вчера.", pron:"On vo-dil vche-ra"},
+    {english:"I like to drive fast.", russian:"Мне нравится водить быстро.", pron:"Mne nrav-it-sya vo-dit’ by-stro"},
+    {english:"They drive every day.", russian:"Они водят каждый день.", pron:"O-ni vo-dyat kazh-dyy den’"},
+    {english:"Drive carefully.", russian:"Води внимательно.", pron:"Vo-di vni-mat-el-no"},
+    {english:"I am driving now.", russian:"Я вожу сейчас.", pron:"Ya vo-zhu seychas"},
+    {english:"She drives slowly.", russian:"Она водит медленно.", pron:"O-na vo-dit med-len-no"}
+],
+
+79: [  // Word: Teach / Учить
+    {english:"I teach English.", russian:"Я учу английский.", pron:"Ya u-chu an-glees-kiy"},
+    {english:"She teaches math.", russian:"Она учит математику.", pron:"O-na u-chit ma-te-ma-ti-ku"},
+    {english:"Do you teach now?", russian:"Ты учишь сейчас?", pron:"Ty u-chish seychas?"},
+    {english:"We teach together.", russian:"Мы учим вместе.", pron:"My u-chim vmye-stye"},
+    {english:"He taught yesterday.", russian:"Он учил вчера.", pron:"On u-chil vche-ra"},
+    {english:"I like to teach children.", russian:"Мне нравится учить детей.", pron:"Mne nrav-it-sya u-chit’ de-tey"},
+    {english:"They teach every day.", russian:"Они учат каждый день.", pron:"O-ni u-chat kazh-dyy den’"},
+    {english:"Teach carefully.", russian:"Учи внимательно.", pron:"U-chi vni-mat-el-no"},
+    {english:"I am teaching now.", russian:"Я учу сейчас.", pron:"Ya u-chu seychas"},
+    {english:"She teaches quietly.", russian:"Она учит тихо.", pron:"O-na u-chit ti-kho"}
+],
+
+80: [  // Word: Learn / Изучать
+    {english:"I learn Russian every day.", russian:"Я изучаю русский каждый день.", pron:"Ya i-zu-cha-yu rus-skiy kazh-dyy den’"},
+    {english:"She learns quickly.", russian:"Она изучает быстро.", pron:"O-na i-zu-cha-yet by-stro"},
+    {english:"Do you learn often?", russian:"Ты часто изучаешь?", pron:"Ty chas-to i-zu-cha-yesh’?"},
+    {english:"We learn together.", russian:"Мы изучаем вместе.", pron:"My i-zu-cha-yem vmye-stye"},
+    {english:"He learned yesterday.", russian:"Он изучал вчера.", pron:"On i-zu-cha-l vche-ra"},
+    {english:"I like to learn new things.", russian:"Мне нравится изучать новое.", pron:"Mne nrav-it-sya i-zu-chat’ no-vo-ye"},
+    {english:"They learn every day.", russian:"Они изучают каждый день.", pron:"O-ni i-zu-cha-yut kazh-dyy den’"},
+    {english:"Learn carefully.", russian:"Изучай внимательно.", pron:"I-zu-chay vni-mat-el-no"},
+    {english:"I am learning now.", russian:"Я изучаю сейчас.", pron:"Ya i-zu-cha-yu seychas"},
+    {english:"She learns quietly.", russian:"Она изучает тихо.", pron:"O-na i-zu-cha-yet ti-kho"}
+]
+,
+81: [  // Word: Read / Читать
+    {english:"I read books every day.", russian:"Я читаю книги каждый день.", pron:"Ya chi-ta-yu kni-gi kazh-dyy den’"},
+    {english:"She reads newspapers.", russian:"Она читает газеты.", pron:"O-na chi-ta-yet ga-ze-ty"},
+    {english:"Do you read often?", russian:"Ты часто читаешь?", pron:"Ty chas-to chi-ta-yesh’?"},
+    {english:"We read together.", russian:"Мы читаем вместе.", pron:"My chi-ta-yem vmye-stye"},
+    {english:"He read yesterday.", russian:"Он читал вчера.", pron:"On chi-tal vche-ra"},
+    {english:"I like to read stories.", russian:"Мне нравится читать истории.", pron:"Mne nrav-it-sya chi-tat’ is-to-rii"},
+    {english:"They read every night.", russian:"Они читают каждый вечер.", pron:"O-ni chi-tayut kazh-dyy ve-cher"},
+    {english:"Read carefully.", russian:"Читай внимательно.", pron:"Chi-tai vni-mat-el-no"},
+    {english:"I am reading now.", russian:"Я читаю сейчас.", pron:"Ya chi-ta-yu seychas"},
+    {english:"She reads slowly.", russian:"Она читает медленно.", pron:"O-na chi-ta-yet med-len-no"}
+],
+
+82: [  // Word: Write / Писать
+    {english:"I write letters every day.", russian:"Я пишу письма каждый день.", pron:"Ya pi-shu pis’-ma kazh-dyy den’"},
+    {english:"She writes notes.", russian:"Она пишет заметки.", pron:"O-na pi-shet za-met-ki"},
+    {english:"Do you write often?", russian:"Ты часто пишешь?", pron:"Ty chas-to pi-shesh’?"},
+    {english:"We write together.", russian:"Мы пишем вместе.", pron:"My pi-shem vmye-stye"},
+    {english:"He wrote yesterday.", russian:"Он писал вчера.", pron:"On pi-sal vche-ra"},
+    {english:"I like to write stories.", russian:"Мне нравится писать истории.", pron:"Mne nrav-it-sya pi-sat’ is-to-rii"},
+    {english:"They write every day.", russian:"Они пишут каждый день.", pron:"O-ni pi-shut kazh-dyy den’"},
+    {english:"Write carefully.", russian:"Пиши внимательно.", pron:"Pi-shi vni-mat-el-no"},
+    {english:"I am writing now.", russian:"Я пишу сейчас.", pron:"Ya pi-shu seychas"},
+    {english:"She writes quickly.", russian:"Она пишет быстро.", pron:"O-na pi-shet by-stro"}
+],
+
+83: [  // Word: Watch / Смотреть
+    {english:"I watch TV every day.", russian:"Я смотрю телевизор каждый день.", pron:"Ya smot-ryu te-le-vi-zor kazh-dyy den’"},
+    {english:"She watches movies.", russian:"Она смотрит фильмы.", pron:"O-na smot-rit fil’-my"},
+    {english:"Do you watch often?", russian:"Ты часто смотришь?", pron:"Ty chas-to smot-rish’?"},
+    {english:"We watch together.", russian:"Мы смотрим вместе.", pron:"My smot-rim vmye-stye"},
+    {english:"He watched yesterday.", russian:"Он смотрел вчера.", pron:"On smot-rel vche-ra"},
+    {english:"I like to watch cartoons.", russian:"Мне нравится смотреть мультфильмы.", pron:"Mne nrav-it-sya smot-ret’ mul’-tfil’-my"},
+    {english:"They watch every evening.", russian:"Они смотрят каждый вечер.", pron:"O-ni smot-ryat kazh-dyy ve-cher"},
+    {english:"Watch carefully.", russian:"Смотри внимательно.", pron:"Smo-tri vni-mat-el-no"},
+    {english:"I am watching now.", russian:"Я смотрю сейчас.", pron:"Ya smot-ryu seychas"},
+    {english:"She watches quietly.", russian:"Она смотрит тихо.", pron:"O-na smot-rit ti-kho"}
+],
+
+84: [  // Word: Listen / Слушать
+    {english:"I listen to music every day.", russian:"Я слушаю музыку каждый день.", pron:"Ya slu-sha-yu mu-zy-ku kazh-dyy den’"},
+    {english:"She listens to radio.", russian:"Она слушает радио.", pron:"O-na slu-sha-yet ra-di-o"},
+    {english:"Do you listen often?", russian:"Ты часто слушаешь?", pron:"Ty chas-to slu-sha-yesh’?"},
+    {english:"We listen together.", russian:"Мы слушаем вместе.", pron:"My slu-sha-yem vmye-stye"},
+    {english:"He listened yesterday.", russian:"Он слушал вчера.", pron:"On slu-shal vche-ra"},
+    {english:"I like to listen to songs.", russian:"Мне нравится слушать песни.", pron:"Mne nrav-it-sya slu-shat’ pes-ni"},
+    {english:"They listen every day.", russian:"Они слушают каждый день.", pron:"O-ni slu-sha-yut kazh-dyy den’"},
+    {english:"Listen carefully.", russian:"Слушай внимательно.", pron:"Slu-shay vni-mat-el-no"},
+    {english:"I am listening now.", russian:"Я слушаю сейчас.", pron:"Ya slu-sha-yu seychas"},
+    {english:"She listens quietly.", russian:"Она слушает тихо.", pron:"O-na slu-sha-yet ti-kho"}
+],
+
+85: [  // Word: Speak / Говорить
+    {english:"I speak English.", russian:"Я говорю по-английски.", pron:"Ya go-vo-ryu po-an-glees-ki"},
+    {english:"She speaks Russian.", russian:"Она говорит по-русски.", pron:"O-na go-vo-rit po-rus-ski"},
+    {english:"Do you speak now?", russian:"Ты говоришь сейчас?", pron:"Ty go-vo-rish’ seychas?"},
+    {english:"We speak together.", russian:"Мы говорим вместе.", pron:"My go-vo-rim vmye-stye"},
+    {english:"He spoke yesterday.", russian:"Он говорил вчера.", pron:"On go-vo-ril vche-ra"},
+    {english:"I like to speak with friends.", russian:"Мне нравится говорить с друзьями.", pron:"Mne nrav-it-sya go-vo-rit’ s dru-zyami"},
+    {english:"They speak every day.", russian:"Они говорят каждый день.", pron:"O-ni go-vo-ryat kazh-dyy den’"},
+    {english:"Speak carefully.", russian:"Говори внимательно.", pron:"Go-vo-ri vni-mat-el-no"},
+    {english:"I am speaking now.", russian:"Я говорю сейчас.", pron:"Ya go-vo-ryu seychas"},
+    {english:"She speaks quietly.", russian:"Она говорит тихо.", pron:"O-na go-vo-rit ti-kho"}
+],
+
+86: [  // Word: Ask / Спрашивать
+    {english:"I ask questions.", russian:"Я задаю вопросы.", pron:"Ya za-da-yu vo-pro-sy"},
+    {english:"She asks for help.", russian:"Она спрашивает помощи.", pron:"O-na spra-shi-va-yet po-mo-shchi"},
+    {english:"Do you ask often?", russian:"Ты часто спрашиваешь?", pron:"Ty chas-to spra-shi-va-yesh’?"},
+    {english:"We ask together.", russian:"Мы спрашиваем вместе.", pron:"My spra-shi-va-yem vmye-stye"},
+    {english:"He asked yesterday.", russian:"Он спросил вчера.", pron:"On spro-sil vche-ra"},
+    {english:"I like to ask questions.", russian:"Мне нравится спрашивать вопросы.", pron:"Mne nrav-it-sya spra-shi-vat’ vo-pro-sy"},
+    {english:"They ask every day.", russian:"Они спрашивают каждый день.", pron:"O-ni spra-shi-va-yut kazh-dyy den’"},
+    {english:"Ask carefully.", russian:"Спрашивай внимательно.", pron:"Spra-shi-vai vni-mat-el-no"},
+    {english:"I am asking now.", russian:"Я спрашиваю сейчас.", pron:"Ya spra-shi-vayu seychas"},
+    {english:"She asks politely.", russian:"Она спрашивает вежливо.", pron:"O-na spra-shi-va-yet ve-zhli-vo"}
+],
+
+87: [  // Word: Answer / Отвечать
+    {english:"I answer questions.", russian:"Я отвечаю на вопросы.", pron:"Ya ot-ve-chai-yu na vo-pro-sy"},
+    {english:"She answers quickly.", russian:"Она отвечает быстро.", pron:"O-na ot-ve-chi-ta-yet by-stro"},
+    {english:"Do you answer often?", russian:"Ты часто отвечаешь?", pron:"Ty chas-to ot-ve-chai-yesh’?"},
+    {english:"We answer together.", russian:"Мы отвечаем вместе.", pron:"My ot-ve-chai-yem vmye-stye"},
+    {english:"He answered yesterday.", russian:"Он ответил вчера.", pron:"On ot-ve-til vche-ra"},
+    {english:"I like to answer questions.", russian:"Мне нравится отвечать на вопросы.", pron:"Mne nrav-it-sya ot-ve-chat’ na vo-pro-sy"},
+    {english:"They answer every day.", russian:"Они отвечают каждый день.", pron:"O-ni ot-ve-chayut kazh-dyy den’"},
+    {english:"Answer carefully.", russian:"Отвечай внимательно.", pron:"Ot-ve-chai vni-mat-el-no"},
+    {english:"I am answering now.", russian:"Я отвечаю сейчас.", pron:"Ya ot-ve-chai-yu seychas"},
+    {english:"She answers politely.", russian:"Она отвечает вежливо.", pron:"O-na ot-ve-chi-ta-yet ve-zhli-vo"}
+],
+
+88: [  // Word: Call / Звонить
+    {english:"I call my friend.", russian:"Я звоню другу.", pron:"Ya zvo-nyu dru-gu"},
+    {english:"She calls her mother.", russian:"Она звонит маме.", pron:"O-na zvo-nit ma-me"},
+    {english:"Do you call often?", russian:"Ты часто звонишь?", pron:"Ty chas-to zvo-nish’?"},
+    {english:"We call together.", russian:"Мы звоним вместе.", pron:"My zvo-nim vmye-stye"},
+    {english:"He called yesterday.", russian:"Он звонил вчера.", pron:"On zvo-nil vche-ra"},
+    {english:"I like to call family.", russian:"Мне нравится звонить семье.", pron:"Mne nrav-it-sya zvo-nit’ sem-ye"},
+    {english:"They call every day.", russian:"Они звонят каждый день.", pron:"O-ni zvo-nyat kazh-dyy den’"},
+    {english:"Call carefully.", russian:"Звони внимательно.", pron:"Zvo-ni vni-mat-el-no"},
+    {english:"I am calling now.", russian:"Я звоню сейчас.", pron:"Ya zvo-nyu seychas"},
+    {english:"She calls quietly.", russian:"Она звонит тихо.", pron:"O-na zvo-nit ti-kho"}
+],
+
+89: [  // Word: Open / Открывать (new sentences)
+    {english:"I open the book.", russian:"Я открываю книгу.", pron:"Ya ot-kry-va-yu kni-gu"},
+    {english:"She opens the box.", russian:"Она открывает коробку.", pron:"O-na ot-kry-va-yet ko-rob-ku"},
+    {english:"Do you open the door?", russian:"Ты открываешь дверь?", pron:"Ty ot-kry-va-yesh’ dver’?"},
+    {english:"We open together.", russian:"Мы открываем вместе.", pron:"My ot-kry-va-yem vmye-stye"},
+    {english:"He opened it yesterday.", russian:"Он открыл это вчера.", pron:"On ot-kryl e-to vche-ra"},
+    {english:"I like to open presents.", russian:"Мне нравится открывать подарки.", pron:"Mne nrav-it-sya ot-kry-vat’ po-dar-ki"},
+    {english:"They open every morning.", russian:"Они открывают каждое утро.", pron:"O-ni ot-kry-va-yut kazh-do-ye oo-tra"},
+    {english:"Open carefully.", russian:"Открывай внимательно.", pron:"Ot-kry-vay vni-mat-el-no"},
+    {english:"I am opening now.", russian:"Я открываю сейчас.", pron:"Ya ot-kry-va-yu seychas"},
+    {english:"She opens slowly.", russian:"Она открывает медленно.", pron:"O-na ot-kry-va-yet med-len-no"}
+],
+
+90: [  // Word: Close / Закрывать (new sentences)
+    {english:"I close the book.", russian:"Я закрываю книгу.", pron:"Ya za-kry-va-yu kni-gu"},
+    {english:"She closes the window.", russian:"Она закрывает окно.", pron:"O-na za-kry-va-yet ok-no"},
+    {english:"Do you close the door?", russian:"Ты закрываешь дверь?", pron:"Ty za-kry-va-yesh’ dver’?"},
+    {english:"We close together.", russian:"Мы закрываем вместе.", pron:"My za-kry-va-yem vmye-stye"},
+    {english:"He closed it yesterday.", russian:"Он закрыл это вчера.", pron:"On za-kryl e-to vche-ra"},
+    {english:"I like to close the shop.", russian:"Мне нравится закрывать магазин.", pron:"Mne nrav-it-sya za-kry-vat’ ma-ga-zin"},
+    {english:"They close every night.", russian:"Они закрывают каждую ночь.", pron:"O-ni za-kry-va-yut kazh-du-yu noch’"},
+    {english:"Close carefully.", russian:"Закрывай внимательно.", pron:"Za-kry-vay vni-mat-el-no"},
+    {english:"I am closing now.", russian:"Я закрываю сейчас.", pron:"Ya za-kry-va-yu seychas"},
+    {english:"She closes quickly.", russian:"Она закрывает быстро.", pron:"O-na za-kry-va-yet by-stro"}
+]
+,
+91: [  // Word: Open / Открывать
+    {english:"I open the book.", russian:"Я открываю книгу.", pron:"Ya ot-kry-va-yu kni-gu"},
+    {english:"She opens the box.", russian:"Она открывает коробку.", pron:"O-na ot-kry-va-yet ko-rob-ku"},
+    {english:"Do you open the door?", russian:"Ты открываешь дверь?", pron:"Ty ot-kry-va-yesh’ dver’?"},
+    {english:"We open together.", russian:"Мы открываем вместе.", pron:"My ot-kry-va-yem vmye-stye"},
+    {english:"He opened it yesterday.", russian:"Он открыл это вчера.", pron:"On ot-kryl e-to vche-ra"},
+    {english:"I like to open presents.", russian:"Мне нравится открывать подарки.", pron:"Mne nrav-it-sya ot-kry-vat’ po-dar-ki"},
+    {english:"They open every morning.", russian:"Они открывают каждое утро.", pron:"O-ni ot-kry-va-yut kazh-do-ye oo-tra"},
+    {english:"Open carefully.", russian:"Открывай внимательно.", pron:"Ot-kry-vay vni-mat-el-no"},
+    {english:"I am opening now.", russian:"Я открываю сейчас.", pron:"Ya ot-kry-va-yu seychas"},
+    {english:"She opens slowly.", russian:"Она открывает медленно.", pron:"O-na ot-kry-va-yet med-len-no"}
+],
+
+92: [  // Word: Close / Закрывать
+    {english:"I close the book.", russian:"Я закрываю книгу.", pron:"Ya za-kry-va-yu kni-gu"},
+    {english:"She closes the window.", russian:"Она закрывает окно.", pron:"O-na za-kry-va-yet ok-no"},
+    {english:"Do you close the door?", russian:"Ты закрываешь дверь?", pron:"Ty za-kry-va-yesh’ dver’?"},
+    {english:"We close together.", russian:"Мы закрываем вместе.", pron:"My za-kry-va-yem vmye-stye"},
+    {english:"He closed it yesterday.", russian:"Он закрыл это вчера.", pron:"On za-kryl e-to vche-ra"},
+    {english:"I like to close the shop.", russian:"Мне нравится закрывать магазин.", pron:"Mne nrav-it-sya za-kry-vat’ ma-ga-zin"},
+    {english:"They close every night.", russian:"Они закрывают каждую ночь.", pron:"O-ni za-kry-va-yut kazh-du-yu noch’"},
+    {english:"Close carefully.", russian:"Закрывай внимательно.", pron:"Za-kry-vay vni-mat-el-no"},
+    {english:"I am closing now.", russian:"Я закрываю сейчас.", pron:"Ya za-kry-va-yu seychas"},
+    {english:"She closes quickly.", russian:"Она закрывает быстро.", pron:"O-na za-kry-va-yet by-stro"}
+],
+
+93: [  // Word: Buy / Покупать
+    {english:"I buy fruits every day.", russian:"Я покупаю фрукты каждый день.", pron:"Ya po-ku-pa-yu fruk-ty kazh-dyy den’"},
+    {english:"She buys clothes.", russian:"Она покупает одежду.", pron:"O-na po-ku-pa-yet o-dezh-du"},
+    {english:"Do you buy often?", russian:"Ты часто покупаешь?", pron:"Ty chas-to po-ku-pa-yesh’?"},
+    {english:"We buy together.", russian:"Мы покупаем вместе.", pron:"My po-ku-pa-yem vmye-stye"},
+    {english:"He bought yesterday.", russian:"Он купил вчера.", pron:"On ku-pil vche-ra"},
+    {english:"I like to buy gifts.", russian:"Мне нравится покупать подарки.", pron:"Mne nrav-it-sya po-ku-pat’ po-dar-ki"},
+    {english:"They buy every week.", russian:"Они покупают каждую неделю.", pron:"O-ni po-ku-pa-yut kazh-du-yu ne-de-lyu"},
+    {english:"Buy carefully.", russian:"Покупай внимательно.", pron:"Po-ku-pai vni-mat-el-no"},
+    {english:"I am buying now.", russian:"Я покупаю сейчас.", pron:"Ya po-ku-pa-yu seychas"},
+    {english:"She buys quickly.", russian:"Она покупает быстро.", pron:"O-na po-ku-pa-yet by-stro"}
+],
+
+94: [  // Word: Sell / Продавать
+    {english:"I sell vegetables every day.", russian:"Я продаю овощи каждый день.", pron:"Ya pro-da-yu o-vo-shchi kazh-dyy den’"},
+    {english:"She sells clothes.", russian:"Она продаёт одежду.", pron:"O-na pro-da-yot o-dezh-du"},
+    {english:"Do you sell often?", russian:"Ты часто продаёшь?", pron:"Ty chas-to pro-da-yesh’?"},
+    {english:"We sell together.", russian:"Мы продаём вместе.", pron:"My pro-da-yom vmye-stye"},
+    {english:"He sold yesterday.", russian:"Он продал вчера.", pron:"On pro-dal vche-ra"},
+    {english:"I like to sell things.", russian:"Мне нравится продавать вещи.", pron:"Mne nrav-it-sya pro-da-vat’ vesh-chi"},
+    {english:"They sell every day.", russian:"Они продают каждый день.", pron:"O-ni pro-da-yut kazh-dyy den’"},
+    {english:"Sell carefully.", russian:"Продавай внимательно.", pron:"Pro-da-vai vni-mat-el-no"},
+    {english:"I am selling now.", russian:"Я продаю сейчас.", pron:"Ya pro-da-yu seychas"},
+    {english:"She sells quickly.", russian:"Она продаёт быстро.", pron:"O-na pro-da-yot by-stro"}
+],
+
+95: [  // Word: Eat / Есть
+    {english:"I eat breakfast every day.", russian:"Я завтракаю каждый день.", pron:"Ya za-vtra-ka-yu kazh-dyy den’"},
+    {english:"She eats vegetables.", russian:"Она ест овощи.", pron:"O-na yest o-vo-shchi"},
+    {english:"Do you eat often?", russian:"Ты часто ешь?", pron:"Ty chas-to yesh’?"},
+    {english:"We eat together.", russian:"Мы едим вместе.", pron:"My ye-dim vmye-stye"},
+    {english:"He ate yesterday.", russian:"Он ел вчера.", pron:"On yel vche-ra"},
+    {english:"I like to eat fruits.", russian:"Мне нравится есть фрукты.", pron:"Mne nrav-it-sya yest’ fruk-ty"},
+    {english:"They eat every morning.", russian:"Они едят каждое утро.", pron:"O-ni ye-dyat kazh-do-ye oo-tra"},
+    {english:"Eat carefully.", russian:"Ешь внимательно.", pron:"Yesh’ vni-mat-el-no"},
+    {english:"I am eating now.", russian:"Я ем сейчас.", pron:"Ya yem seychas"},
+    {english:"She eats slowly.", russian:"Она ест медленно.", pron:"O-na yest med-len-no"}
+],
+
+96: [  // Word: Drink / Пить
+    {english:"I drink water every day.", russian:"Я пью воду каждый день.", pron:"Ya p’yu vo-du kazh-dyy den’"},
+    {english:"She drinks tea.", russian:"Она пьёт чай.", pron:"O-na p’yot chai"},
+    {english:"Do you drink coffee?", russian:"Ты пьёшь кофе?", pron:"Ty p’yosh’ kofe?"},
+    {english:"We drink together.", russian:"Мы пьём вместе.", pron:"My p’yom vmye-stye"},
+    {english:"He drank yesterday.", russian:"Он пил вчера.", pron:"On pil vche-ra"},
+    {english:"I like to drink juice.", russian:"Мне нравится пить сок.", pron:"Mne nrav-it-sya pit’ sok"},
+    {english:"They drink every morning.", russian:"Они пьют каждое утро.", pron:"O-ni p’yut kazh-do-ye oo-tra"},
+    {english:"Drink carefully.", russian:"Пей внимательно.", pron:"Pey vni-mat-el-no"},
+    {english:"I am drinking now.", russian:"Я пью сейчас.", pron:"Ya p’yu seychas"},
+    {english:"She drinks slowly.", russian:"Она пьёт медленно.", pron:"O-na p’yot med-len-no"}
+],
+
+97: [  // Word: Sleep / Спать
+    {english:"I sleep 8 hours every night.", russian:"Я сплю 8 часов каждую ночь.", pron:"Ya splyu vo-sem’ cha-sov kazh-du-yu noch’"},
+    {english:"She sleeps early.", russian:"Она спит рано.", pron:"O-na spit ra-no"},
+    {english:"Do you sleep well?", russian:"Ты хорошо спишь?", pron:"Ty kha-ro-sho spish’?"},
+    {english:"We sleep together.", russian:"Мы спим вместе.", pron:"My spim vmye-stye"},
+    {english:"He slept yesterday.", russian:"Он спал вчера.", pron:"On spal vche-ra"},
+    {english:"I like to sleep late.", russian:"Мне нравится спать допоздна.", pron:"Mne nrav-it-sya spat’ do-pozd-na"},
+    {english:"They sleep every night.", russian:"Они спят каждую ночь.", pron:"O-ni spyat kazh-du-yu noch’"},
+    {english:"Sleep carefully.", russian:"Спи внимательно.", pron:"Spi vni-mat-el-no"},
+    {english:"I am sleeping now.", russian:"Я сплю сейчас.", pron:"Ya splyu seychas"},
+    {english:"She sleeps quietly.", russian:"Она спит тихо.", pron:"O-na spit ti-kho"}
+],
+
+98: [  // Word: Walk / Ходить
+    {english:"I walk to work every day.", russian:"Я хожу на работу каждый день.", pron:"Ya kho-zhu na ra-bo-tu kazh-dyy den’"},
+    {english:"She walks in the park.", russian:"Она ходит в парк.", pron:"O-na kho-dit v park"},
+    {english:"Do you walk often?", russian:"Ты часто ходишь?", pron:"Ty chas-to kho-dish’?"},
+    {english:"We walk together.", russian:"Мы ходим вместе.", pron:"My kho-dim vmye-stye"},
+    {english:"He walked yesterday.", russian:"Он ходил вчера.", pron:"On kho-dil vche-ra"},
+    {english:"I like to walk in the morning.", russian:"Мне нравится ходить утром.", pron:"Mne nrav-it-sya kho-dit’ oo-trom"},
+    {english:"They walk every day.", russian:"Они ходят каждый день.", pron:"O-ni kho-dyat kazh-dyy den’"},
+    {english:"Walk carefully.", russian:"Ходи внимательно.", pron:"Kho-di vni-mat-el-no"},
+    {english:"I am walking now.", russian:"Я хожу сейчас.", pron:"Ya kho-zhu seychas"},
+    {english:"She walks slowly.", russian:"Она ходит медленно.", pron:"O-na kho-dit med-len-no"}
+],
+
+99: [  // Word: Run / Бегать
+    {english:"I run every morning.", russian:"Я бегаю каждое утро.", pron:"Ya be-ga-yu kazh-do-ye oo-tra"},
+    {english:"She runs fast.", russian:"Она бегает быстро.", pron:"O-na be-ga-yet by-stro"},
+    {english:"Do you run often?", russian:"Ты часто бегаешь?", pron:"Ty chas-to be-ga-yesh’?"},
+    {english:"We run together.", russian:"Мы бегаем вместе.", pron:"My be-ga-yem vmye-stye"},
+    {english:"He ran yesterday.", russian:"Он бегал вчера.", pron:"On be-gal vche-ra"},
+    {english:"I like to run in park.", russian:"Мне нравится бегать в парке.", pron:"Mne nrav-it-sya be-gat’ v par-ke"},
+    {english:"They run every day.", russian:"Они бегают каждый день.", pron:"O-ni be-ga-yut kazh-dyy den’"},
+    {english:"Run carefully.", russian:"Бегай внимательно.", pron:"Be-gai vni-mat-el-no"},
+    {english:"I am running now.", russian:"Я бегаю сейчас.", pron:"Ya be-ga-yu seychas"},
+    {english:"She runs quietly.", russian:"Она бегает тихо.", pron:"O-na be-ga-yet ti-kho"}
+],
+
+100: [  // Word: Drive / Водить
+    {english:"I drive to work every day.", russian:"Я вожу на работу каждый день.", pron:"Ya vo-zhu na ra-bo-tu kazh-dyy den’"},
+    {english:"She drives carefully.", russian:"Она водит осторожно.", pron:"O-na vo-dit os-tor-ozh-no"},
+    {english:"Do you drive often?", russian:"Ты часто водишь?", pron:"Ty chas-to vo-dish’?"},
+    {english:"We drive together.", russian:"Мы водим вместе.", pron:"My vo-dim vmye-stye"},
+    {english:"He drove yesterday.", russian:"Он водил вчера.", pron:"On vo-dil vche-ra"},
+    {english:"I like to drive fast.", russian:"Мне нравится водить быстро.", pron:"Mne nrav-it-sya vo-dit’ by-stro"},
+    {english:"They drive every day.", russian:"Они водят каждый день.", pron:"O-ni vo-dyat kazh-dyy den’"},
+    {english:"Drive carefully.", russian:"Води внимательно.", pron:"Vo-di vni-mat-el-no"},
+    {english:"I am driving now.", russian:"Я вожу сейчас.", pron:"Ya vo-zhu seychas"},
+    {english:"She drives slowly.", russian:"Она водит медленно.", pron:"O-na vo-dit med-len-no"}
+]
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---------- LIVE DATE & TIME ---------- */
+function updateDateTime() {
+    const now = new Date();
+    const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    document.getElementById("dayDate").textContent =
+        days[now.getDay()] + ", " + now.toLocaleDateString();
+    document.getElementById("timeNow").textContent =
+        now.toLocaleTimeString();
+}
+setInterval(updateDateTime, 1000);
+updateDateTime();
+
+/* ---------- LESSON SYSTEM ---------- */
+const TOTAL = 100;
+const lessonsGrid = document.getElementById("lessonsGrid");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+
+// UNLOCK ALL LESSONS
+const unlocked = TOTAL;
+let completed = JSON.parse(localStorage.getItem("completedLessons")) || [];
+
+function updateProgress() {
+    const percent = Math.round((completed.length / TOTAL) * 100);
+    progressBar.style.width = percent + "%";
+    progressBar.textContent = percent + "%";
+    progressText.textContent = `${completed.length} of ${TOTAL} lessons completed`;
+}
+updateProgress();
+
+
+/* ---------- CREATE LESSONS ---------- */
+for (let i = 1; i <= TOTAL; i++) {
+    const card = document.createElement("div");
+    card.className = "lesson-logo";
+    card.innerHTML = `Lesson ${i}<span>Available</span>`;
+    card.onclick = () => openLesson(i);
+    lessonsGrid.appendChild(card);
+}
+
+/* ---------- OPEN LESSON ---------- */
+function openLesson(num) {
+    lessonsGrid.style.display = "none";
+    const lessonContent = document.getElementById("lessonContent");
+    lessonContent.style.display = "block";
+    document.getElementById("lessonTitle").textContent = `Lesson ${num}`;
+
+    const phrasesDiv = document.getElementById("lessonPhrases");
+    phrasesDiv.innerHTML = "";
+
+    const phrases = lessonsData[num] || [{ english: "Content coming soon!", russian: "", pron: "" }];
+    phrases.forEach(p => {
+        const phraseDiv = document.createElement("div");
+        phraseDiv.className = "phrase";
+        phraseDiv.innerHTML = `
+            <div class="english">${p.english}</div>
+            <div class="russian">${p.russian}</div>
+            <div class="pronunciation">${p.pron}</div>
+            <button class="speak-btn">🔊</button>
+        `;
+        phrasesDiv.appendChild(phraseDiv);
+
+        // speak button
+        const btn = phraseDiv.querySelector('.speak-btn');
+        btn.addEventListener('click', () => {
+            const utter = new SpeechSynthesisUtterance(p.pron);
+            utter.lang = 'en-US';
+            speechSynthesis.speak(utter);
+        });
+    });
+
+    // mark completed
+    if (!completed.includes(num)) {
+        completed.push(num);
+        localStorage.setItem("completedLessons", JSON.stringify(completed));
+        updateProgress();
+    }
+}
+
+/* ---------- BACK BUTTON ---------- */
+document.getElementById("backBtn").onclick = () => {
+    document.getElementById("lessonContent").style.display = "none";
+    lessonsGrid.style.display = "grid";
+};
+</script>
+
+</body>
+</html>

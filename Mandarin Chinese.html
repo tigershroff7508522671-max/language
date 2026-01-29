@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Languages.com | Learning Dashboard</title>
+
+<style>
+:root {
+    --primary: #f0df22;
+    --primary-dark: #0a150e;
+    --bg: #f0fdf4;
+    --card: #ffffff;
+    --text: #064e3b;
+    --muted: #6b7280;
+    --locked: #e5e7eb;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* ---------- TOP BAR ---------- */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.topbar {
+    max-width: 1400px;
+    margin: auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.brand-logo {
+    width: 38px;
+    height: 38px;
+    background: white;
+    color: var(--primary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+}
+
+.page-title {
+    font-size: 18px;
+    font-weight: 500;
+    opacity: 0.95;
+}
+
+.datetime {
+    background: rgba(255,255,255,0.18);
+    padding: 8px 14px;
+    border-radius: 12px;
+    text-align: right;
+    font-size: 13px;
+    backdrop-filter: blur(6px);
+}
+
+.datetime .time {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .page-title { display: none; }
+}
+
+/* ---------- PROGRESS ---------- */
+.progress-container {
+    width: 90%;
+    max-width: 900px;
+    background: #fff9c4;
+    border-radius: 999px;
+    margin: 25px auto 10px;
+    height: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--primary);
+    color: black;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: center;
+    transition: width 0.4s ease;
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 15px;
+}
+
+/* ---------- MAIN ---------- */
+main {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* ---------- LESSON GRID ---------- */
+.lesson-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 18px;
+}
+
+.lesson-logo {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    border-top: 4px solid var(--primary);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.lesson-logo span {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+}
+
+.lesson-logo:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+/* ---------- LESSON VIEW ---------- */
+.lesson-container {
+    display: none;
+    background: var(--card);
+    padding: 25px;
+    margin-top: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.phrase {
+    margin-bottom: 12px;
+    padding: 12px;
+    background: #fffde7;
+    border-radius: 12px;
+  
+
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.phrase .english {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.phrase .chinese {
+    color: #f0df22;
+    font-size: 15px;
+    margin-top: 2px;
+}
+
+.phrase .pronunciation {
+    color: #6b7280;
+    font-style: italic;
+    margin-top: 2px;
+}
+
+.speak-btn {
+    background: var(--primary);
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background 0.3s;
+}
+.speak-btn:hover { background: var(--primary-dark); color:white; }
+
+.back-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 30px;
+    background: var(--primary);
+    color: black;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.back-btn:hover {
+    background: var(--primary-dark);
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="topbar">
+        <div class="brand">
+            <div class="brand-logo">L</div>
+            Languages.com
+        </div>
+
+        <div class="page-title">
+            chinese Learning Dashboard
+        </div>
+
+        <div class="datetime">
+            <div id="dayDate"></div>
+            <div class="time" id="timeNow"></div>
+        </div>
+    </div>
+</header>
+
+<!-- PROGRESS -->
+<div class="progress-container">
+    <div class="progress-bar" id="progressBar">0%</div>
+</div>
+<div class="progress-text" id="progressText">0 of 100 lessons completed</div>
+
+<main>
+    <div class="lesson-grid" id="lessonsGrid"></div>
+
+    <div class="lesson-container" id="lessonContent">
+        <h2 id="lessonTitle"></h2>
+        <div id="lessonPhrases"></div>
+        <a href="#" class="back-btn" id="backBtn">← Back to Lessons</a>
+    </div>
+</main>
+
+<script>
+const lessonsData = {
+  1: [
+    {english:"A – A", chinese:"阿", pron:"ā"},
+    {english:"B – B", chinese:"波", pron:"bō"},
+    {english:"C – C", chinese:"色", pron:"sè"},
+    {english:"D – D", chinese:"德", pron:"dé"},
+    {english:"E – E", chinese:"鹅", pron:"é"},
+    {english:"F – F", chinese:"艾弗", pron:"ài fú"},
+    {english:"G – G", chinese:"哥", pron:"gē"},
+    {english:"H – H", chinese:"艾尺", pron:"ài chǐ"},
+    {english:"I – I", chinese:"伊", pron:"yī"},
+    {english:"J – J", chinese:"吉", pron:"jí"},
+    {english:"K – K", chinese:"开", pron:"kāi"},
+    {english:"L – L", chinese:"艾勒", pron:"ài lè"},
+    {english:"M – M", chinese:"艾姆", pron:"ài mǔ"},
+    {english:"N – N", chinese:"艾娜", pron:"ài nà"},
+    {english:"O – O", chinese:"哦", pron:"ó"},
+    {english:"P – P", chinese:"屁", pron:"pì"},
+    {english:"Q – Q", chinese:"吉吾", pron:"jī wú"},
+    {english:"R – R", chinese:"艾儿", pron:"ài ér"},
+    {english:"S – S", chinese:"艾丝", pron:"ài sī"},
+    {english:"T – T", chinese:"提", pron:"tí"},
+    {english:"U – U", chinese:"吾", pron:"wú"},
+    {english:"V – V", chinese:"维", pron:"wéi"},
+    {english:"W – W", chinese:"豆贝尔维", pron:"dòu bèi ěr wéi"},
+    {english:"X – X", chinese:"艾克斯", pron:"ài kè sī"},
+    {english:"Y – Y", chinese:"吾艾", pron:"wú ài"},
+    {english:"Z – Z", chinese:"贼德", pron:"zéi dé"}
+],
+
+  2: [
+    {english:"Hi!", chinese:"你好!", pron:"Nǐ hǎo!"},
+    {english:"Hi, how are you?", chinese:"你好，你怎么样?", pron:"Nǐ hǎo, nǐ zěnme yàng?"},
+    {english:"Hi, I’m Vikas.", chinese:"你好，我是Vikas。", pron:"Nǐ hǎo, wǒ shì Vikas."},
+    {english:"Hi, nice to meet you.", chinese:"你好，很高兴认识你。", pron:"Nǐ hǎo, hěn gāoxìng rènshí nǐ."},
+    {english:"Hi, good morning.", chinese:"早上好!", pron:"Zǎoshang hǎo!"},
+    {english:"Hi, good evening.", chinese:"晚上好!", pron:"Wǎnshàng hǎo!"},
+    {english:"Hi, what’s up?", chinese:"你好，最近怎么样?", pron:"Nǐ hǎo, zuìjìn zěnme yàng?"},
+    {english:"Hi, welcome!", chinese:"你好，欢迎!", pron:"Nǐ hǎo, huānyíng!"},
+    {english:"Hi, my friend!", chinese:"你好，我的朋友!", pron:"Nǐ hǎo, wǒ de péngyǒu!"},
+    {english:"Hi, long time no see.", chinese:"你好，好久不见。", pron:"Nǐ hǎo, hǎojiǔ bùjiàn."}
+],
+
+   3: [ // "The Other / 另一个"
+    {english:"I want the other one.", chinese:"我想要另一个。", pron:"Wǒ xiǎng yào lìng yī gè."},
+    {english:"The other person is here.", chinese:"另一个人在这里。", pron:"Lìng yī gè rén zài zhèlǐ."},
+    {english:"I like the other bag.", chinese:"我喜欢另一个包。", pron:"Wǒ xǐhuān lìng yī gè bāo."},
+    {english:"The other room is big.", chinese:"另一个房间很大。", pron:"Lìng yī gè fángjiān hěn dà."},
+    {english:"I will take the other one.", chinese:"我会拿另一个。", pron:"Wǒ huì ná lìng yī gè."},
+    {english:"The other car is faster.", chinese:"另一辆车更快。", pron:"Lìng yī liàng chē gèng kuài."},
+    {english:"I met the other team.", chinese:"我遇到了另一队。", pron:"Wǒ yùdào le lìng yī duì."},
+    {english:"The other choice is better.", chinese:"另一个选择更好。", pron:"Lìng yī gè xuǎnzé gèng hǎo."},
+    {english:"She went to the other shop.", chinese:"她去了另一家商店。", pron:"Tā qù le lìng yī jiā shāngdiàn."},
+    {english:"We stayed in the other hotel.", chinese:"我们住在另一家酒店。", pron:"Wǒmen zhù zài lìng yī jiā jiǔdiàn."}
+],
+
+4: [ // Good / 好
+    {english:"This is good.", chinese:"这很好。", pron:"Zhè hěn hǎo."},
+    {english:"The food is good.", chinese:"食物很好。", pron:"Shíwù hěn hǎo."},
+    {english:"You did a good job.", chinese:"你做得很好。", pron:"Nǐ zuò de hěn hǎo."},
+    {english:"Good morning!", chinese:"早上好！", pron:"Zǎoshang hǎo!"},
+    {english:"Good night.", chinese:"晚安。", pron:"Wǎn'ān."},
+    {english:"That’s a good idea.", chinese:"这是个好主意。", pron:"Zhè shì gè hǎo zhǔyì."},
+    {english:"I feel good.", chinese:"我感觉很好。", pron:"Wǒ gǎnjué hěn hǎo."},
+    {english:"This is a good place.", chinese:"这是一个好地方。", pron:"Zhè shì yī gè hǎo dìfāng."},
+    {english:"The weather is good.", chinese:"天气很好。", pron:"Tiānqì hěn hǎo."},
+    {english:"Good luck!", chinese:"祝你好运！", pron:"Zhù nǐ hǎo yùn!"}
+],
+
+5: [ // Bad / 坏
+    {english:"This is bad.", chinese:"这很坏。", pron:"Zhè hěn huài."},
+    {english:"The food is bad.", chinese:"食物很糟。", pron:"Shíwù hěn zāo."},
+    {english:"I feel bad.", chinese:"我感觉不好。", pron:"Wǒ gǎnjué bù hǎo."},
+    {english:"The weather is bad.", chinese:"天气不好。", pron:"Tiānqì bù hǎo."},
+    {english:"This is a bad idea.", chinese:"这是个坏主意。", pron:"Zhè shì gè huài zhǔyì."},
+    {english:"He is a bad person.", chinese:"他是一个坏人。", pron:"Tā shì yī gè huài rén."},
+    {english:"I had a bad day.", chinese:"我今天过得很糟。", pron:"Wǒ jīntiān guò de hěn zāo."},
+    {english:"The situation is bad.", chinese:"情况很糟。", pron:"Qíngkuàng hěn zāo."},
+    {english:"Bad luck!", chinese:"倒霉！", pron:"Dǎoméi!"},
+    {english:"This movie is bad.", chinese:"这部电影很糟。", pron:"Zhè bù diànyǐng hěn zāo."}
+],
+
+6: [ // Want / 想要
+    {english:"I want water.", chinese:"我想要水。", pron:"Wǒ xiǎng yào shuǐ."},
+    {english:"She wants a new bag.", chinese:"她想要一个新包。", pron:"Tā xiǎng yào yī gè xīn bāo."},
+    {english:"I want to go home.", chinese:"我想回家。", pron:"Wǒ xiǎng huí jiā."},
+    {english:"He wants more food.", chinese:"他想要更多食物。", pron:"Tā xiǎng yào gèng duō shíwù."},
+    {english:"Do you want tea?", chinese:"你想要茶吗？", pron:"Nǐ xiǎng yào chá ma?"},
+    {english:"I want to sleep.", chinese:"我想睡觉。", pron:"Wǒ xiǎng shuìjiào."},
+    {english:"They want help.", chinese:"他们想要帮助。", pron:"Tāmen xiǎng yào bāngzhù."},
+    {english:"I want a new phone.", chinese:"我想要一个新手机。", pron:"Wǒ xiǎng yào yī gè xīn shǒujī."},
+    {english:"She wants to study.", chinese:"她想学习。", pron:"Tā xiǎng xuéxí."},
+    {english:"We want to travel.", chinese:"我们想去旅行。", pron:"Wǒmen xiǎng qù lǚxíng."}
+],
+
+7: [ // Need / 需要
+    {english:"I need help.", chinese:"我需要帮助。", pron:"Wǒ xūyào bāngzhù."},
+    {english:"You need water.", chinese:"你需要水。", pron:"Nǐ xūyào shuǐ."},
+    {english:"We need to go now.", chinese:"我们现在需要走。", pron:"Wǒmen xiànzài xūyào zǒu."},
+    {english:"He needs money.", chinese:"他需要钱。", pron:"Tā xūyào qián."},
+    {english:"She needs rest.", chinese:"她需要休息。", pron:"Tā xūyào xiūxí."},
+    {english:"I need a new phone.", chinese:"我需要一部新手机。", pron:"Wǒ xūyào yī bù xīn shǒujī."},
+    {english:"Do you need anything?", chinese:"你需要什么吗？", pron:"Nǐ xūyào shénme ma?"},
+    {english:"We need food.", chinese:"我们需要食物。", pron:"Wǒmen xūyào shíwù."},
+    {english:"They need guidance.", chinese:"他们需要指导。", pron:"Tāmen xūyào zhǐdǎo."},
+    {english:"I need to study.", chinese:"我需要学习。", pron:"Wǒ xūyào xuéxí."}
+],
+
+8: [ // Go / 去
+    {english:"I go to school.", chinese:"我去学校。", pron:"Wǒ qù xuéxiào."},
+    {english:"He goes to work.", chinese:"他去上班。", pron:"Tā qù shàngbān."},
+    {english:"We go home.", chinese:"我们回家。", pron:"Wǒmen huí jiā."},
+    {english:"I want to go there.", chinese:"我想去那里。", pron:"Wǒ xiǎng qù nàlǐ."},
+    {english:"Go now!", chinese:"现在去！", pron:"Xiànzài qù!"},
+    {english:"They go together.", chinese:"他们一起去。", pron:"Tāmen yīqǐ qù."},
+    {english:"She goes fast.", chinese:"她走得很快。", pron:"Tā zǒu de hěn kuài."},
+    {english:"I go shopping.", chinese:"我去购物。", pron:"Wǒ qù gòuwù."},
+    {english:"Go straight.", chinese:"直走。", pron:"Zhí zǒu."},
+    {english:"We go every day.", chinese:"我们每天去。", pron:"Wǒmen měitiān qù."}
+],
+
+9: [ // Come / 来
+    {english:"I will come tomorrow.", chinese:"我明天会来。", pron:"Wǒ míngtiān huì lái."},
+    {english:"She comes every day.", chinese:"她每天都来。", pron:"Tā měitiān dōu lái."},
+    {english:"Come here.", chinese:"过来。", pron:"Guòlái."},
+    {english:"They will come soon.", chinese:"他们很快会来。", pron:"Tāmen hěn kuài huì lái."},
+    {english:"He comes late.", chinese:"他来晚了。", pron:"Tā lái wǎn le."},
+    {english:"Please come in.", chinese:"请进。", pron:"Qǐng jìn."},
+    {english:"We come together.", chinese:"我们一起过来。", pron:"Wǒmen yīqǐ guòlái."},
+    {english:"Come quickly!", chinese:"快来！", pron:"Kuài lái!"},
+    {english:"I come from India.", chinese:"我来自印度。", pron:"Wǒ láizì Yìndù."},
+    {english:"Will you come?", chinese:"你会来吗？", pron:"Nǐ huì lái ma?"}
+],
+
+10: [ // See / 看见
+    {english:"I see the car.", chinese:"我看见汽车。", pron:"Wǒ kànjiàn qìchē."},
+    {english:"She sees me.", chinese:"她看见我。", pron:"Tā kànjiàn wǒ."},
+    {english:"Do you see it?", chinese:"你看见了吗？", pron:"Nǐ kànjiàn le ma?"},
+    {english:"We see the sunset.", chinese:"我们看见日落。", pron:"Wǒmen kànjiàn rìluò."},
+    {english:"I can see everything.", chinese:"我能看见一切。", pron:"Wǒ néng kànjiàn yīqiè."},
+    {english:"He sees a bird.", chinese:"他看见一只鸟。", pron:"Tā kànjiàn yī zhī niǎo."},
+    {english:"I want to see you.", chinese:"我想见你。", pron:"Wǒ xiǎng jiàn nǐ."},
+    {english:"They see the problem.", chinese:"他们看见问题。", pron:"Tāmen kànjiàn wèntí."},
+    {english:"I saw a movie.", chinese:"我看了一部电影。", pron:"Wǒ kàn le yī bù diànyǐng."},
+    {english:"Did you see that?", chinese:"你看见了吗？", pron:"Nǐ kànjiàn le ma?"}
+],
+
+11: [ // Eat / 吃
+    {english:"I eat breakfast.", chinese:"我吃早餐。", pron:"Wǒ chī zǎocān."},
+    {english:"She eats quickly.", chinese:"她吃得很快。", pron:"Tā chī de hěn kuài."},
+    {english:"Do you want to eat?", chinese:"你想吃吗？", pron:"Nǐ xiǎng chī ma?"},
+    {english:"We eat together.", chinese:"我们一起吃。", pron:"Wǒmen yīqǐ chī."},
+    {english:"I like to eat fruit.", chinese:"我喜欢吃水果。", pron:"Wǒ xǐhuān chī shuǐguǒ."},
+    {english:"He eats lunch.", chinese:"他吃午餐。", pron:"Tā chī wǔcān."},
+    {english:"I don’t want to eat.", chinese:"我不想吃。", pron:"Wǒ bù xiǎng chī."},
+    {english:"They eat dinner.", chinese:"他们吃晚餐。", pron:"Tāmen chī wǎncān."},
+    {english:"I ate too much.", chinese:"我吃太多了。", pron:"Wǒ chī tài duō le."},
+    {english:"What do you eat?", chinese:"你吃什么？", pron:"Nǐ chī shénme?"}
+],
+
+12: [ // Drink / 喝
+    {english:"I drink water.", chinese:"我喝水。", pron:"Wǒ hē shuǐ."},
+    {english:"She drinks tea.", chinese:"她喝茶。", pron:"Tā hē chá."},
+    {english:"Do you want to drink?", chinese:"你想喝吗？", pron:"Nǐ xiǎng hē ma?"},
+    {english:"We drink coffee.", chinese:"我们喝咖啡。", pron:"Wǒmen hē kāfēi."},
+    {english:"He drinks milk.", chinese:"他喝牛奶。", pron:"Tā hē niúnǎi."},
+    {english:"I need to drink.", chinese:"我需要喝水。", pron:"Wǒ xūyào hē shuǐ."},
+    {english:"They drink juice.", chinese:"他们喝果汁。", pron:"Tāmen hē guǒzhī."},
+    {english:"I drank too much.", chinese:"我喝太多了。", pron:"Wǒ hē tài duō le."},
+    {english:"Drink slowly.", chinese:"慢慢喝。", pron:"Màn man hē."},
+    {english:"What are you drinking?", chinese:"你在喝什么？", pron:"Nǐ zài hē shénme?"}
+],
+
+13: [ // Go / 去 / 旅行
+    {english:"I go to school every day.", chinese:"我每天去学校。", pron:"Wǒ měitiān qù xuéxiào."},
+    {english:"She goes to the market.", chinese:"她去市场。", pron:"Tā qù shìchǎng."},
+    {english:"Do you go to work?", chinese:"你去上班吗？", pron:"Nǐ qù shàngbān ma?"},
+    {english:"We go for a walk.", chinese:"我们去散步。", pron:"Wǒmen qù sànbù."},
+    {english:"He goes to the gym.", chinese:"他去健身房。", pron:"Tā qù jiànshēnfáng."},
+    {english:"I go shopping on weekends.", chinese:"我周末去购物。", pron:"Wǒ zhōumò qù gòuwù."},
+    {english:"They go together.", chinese:"他们一起去。", pron:"Tāmen yīqǐ qù."},
+    {english:"I like to go there.", chinese:"我喜欢去那里。", pron:"Wǒ xǐhuān qù nàlǐ."},
+    {english:"Go straight ahead.", chinese:"一直往前走。", pron:"Yīzhí wǎng qián zǒu."},
+    {english:"He goes every morning.", chinese:"他每天早上去。", pron:"Tā měitiān zǎoshang qù."}
+],
+
+14: [ // Come / 来 / 抵达
+    {english:"I will come soon.", chinese:"我很快会来。", pron:"Wǒ hěn kuài huì lái."},
+    {english:"She comes every morning.", chinese:"她每天早上来。", pron:"Tā měitiān zǎoshang lái."},
+    {english:"Come to my house.", chinese:"来我家。", pron:"Lái wǒ jiā."},
+    {english:"They come together.", chinese:"他们一起过来。", pron:"Tāmen yīqǐ guòlái."},
+    {english:"He came late.", chinese:"他来晚了。", pron:"Tā lái wǎn le."},
+    {english:"I come from India.", chinese:"我来自印度。", pron:"Wǒ láizì Yìndù."},
+    {english:"Will you come tomorrow?", chinese:"你明天会来吗？", pron:"Nǐ míngtiān huì lái ma?"},
+    {english:"Please come in.", chinese:"请进。", pron:"Qǐng jìn."},
+    {english:"I am coming now.", chinese:"我现在来。", pron:"Wǒ xiànzài lái."},
+    {english:"They came yesterday.", chinese:"他们昨天来了。", pron:"Tāmen zuótiān lái le."}
+],
+
+15: [ // Look / 看
+    {english:"Look at this.", chinese:"看看这个。", pron:"Kàn kàn zhège."},
+    {english:"She looks happy.", chinese:"她看起来很开心。", pron:"Tā kàn qǐlái hěn kāixīn."},
+    {english:"I look at the sky.", chinese:"我看天空。", pron:"Wǒ kàn tiānkōng."},
+    {english:"Look over there.", chinese:"看看那边。", pron:"Kàn kàn nà biān."},
+    {english:"They are looking for you.", chinese:"他们在找你。", pron:"Tāmen zài zhǎo nǐ."},
+    {english:"Look carefully.", chinese:"仔细看。", pron:"Zǐxì kàn."},
+    {english:"I looked yesterday.", chinese:"我昨天看了。", pron:"Wǒ zuótiān kàn le."},
+    {english:"She is looking at the map.", chinese:"她在看地图。", pron:"Tā zài kàn dìtú."},
+    {english:"Look this way.", chinese:"往这边看。", pron:"Wǎng zhè biān kàn."},
+    {english:"He looked happy.", chinese:"他看起来很开心。", pron:"Tā kàn qǐlái hěn kāixīn."}
+],
+
+16: [ // Take / 拿 / 取
+    {english:"I take a pen.", chinese:"我拿一支笔。", pron:"Wǒ ná yī zhī bǐ."},
+    {english:"Take this book.", chinese:"拿这本书。", pron:"Ná zhè běn shū."},
+    {english:"He takes money.", chinese:"他拿钱。", pron:"Tā ná qián."},
+    {english:"Take care!", chinese:"保重！", pron:"Bǎozhòng!"},
+    {english:"They took the bus.", chinese:"他们坐了公交车。", pron:"Tāmen zuò le gōngjiāo chē."},
+    {english:"I will take it.", chinese:"我会拿它。", pron:"Wǒ huì ná tā."},
+    {english:"Take your time.", chinese:"慢慢来。", pron:"Màn man lái."},
+    {english:"She takes notes.", chinese:"她做笔记。", pron:"Tā zuò bǐjì."},
+    {english:"I took it yesterday.", chinese:"我昨天拿了它。", pron:"Wǒ zuótiān ná le tā."},
+    {english:"Take this with you.", chinese:"把这个带走。", pron:"Bǎ zhège dài zǒu."}
+],
+
+17: [ // Give / 给
+    {english:"Give me water.", chinese:"给我水。", pron:"Gěi wǒ shuǐ."},
+    {english:"She gives a gift.", chinese:"她送礼物。", pron:"Tā sòng lǐwù."},
+    {english:"Give it to him.", chinese:"把它给他。", pron:"Bǎ tā gěi tā."},
+    {english:"I give money to charity.", chinese:"我把钱捐给慈善机构。", pron:"Wǒ bǎ qián juān gěi císhàn jīgòu."},
+    {english:"They give flowers.", chinese:"他们送花。", pron:"Tāmen sòng huā."},
+    {english:"Give me a minute.", chinese:"给我一分钟。", pron:"Gěi wǒ yī fēnzhōng."},
+    {english:"He gives advice.", chinese:"他给建议。", pron:"Tā gěi jiànyì."},
+    {english:"I gave it yesterday.", chinese:"我昨天给了它。", pron:"Wǒ zuótiān gěi le tā."},
+    {english:"Give generously.", chinese:"慷慨地给。", pron:"Kāngkǎi de gěi."},
+    {english:"She gives me a smile.", chinese:"她对我微笑。", pron:"Tā duì wǒ wēixiào."}
+],
+
+18: [ // Know / 知道 / 认识
+    {english:"I know the answer.", chinese:"我知道答案。", pron:"Wǒ zhīdào dá'àn."},
+    {english:"She knows him.", chinese:"她认识他。", pron:"Tā rènshi tā."},
+    {english:"Do you know this place?", chinese:"你认识这个地方吗？", pron:"Nǐ rènshi zhège dìfāng ma?"},
+    {english:"We know the rules.", chinese:"我们知道规则。", pron:"Wǒmen zhīdào guīzé."},
+    {english:"I don’t know.", chinese:"我不知道。", pron:"Wǒ bù zhīdào."},
+    {english:"He knows everything.", chinese:"他知道一切。", pron:"Tā zhīdào yīqiè."},
+    {english:"I know her name.", chinese:"我知道她的名字。", pron:"Wǒ zhīdào tā de míngzi."},
+    {english:"They know the way.", chinese:"他们知道路。", pron:"Tāmen zhīdào lù."},
+    {english:"Do you know him well?", chinese:"你很了解他吗？", pron:"Nǐ hěn liǎojiě tā ma?"},
+    {english:"I know how to do it.", chinese:"我知道怎么做。", pron:"Wǒ zhīdào zěnme zuò."}
+],
+
+19: [ // Work / 工作
+    {english:"I work every day.", chinese:"我每天工作。", pron:"Wǒ měitiān gōngzuò."},
+    {english:"She works in an office.", chinese:"她在办公室工作。", pron:"Tā zài bàngōngshì gōngzuò."},
+    {english:"He works hard.", chinese:"他努力工作。", pron:"Tā nǔlì gōngzuò."},
+    {english:"Do you work today?", chinese:"你今天工作吗？", pron:"Nǐ jīntiān gōngzuò ma?"},
+    {english:"We work together.", chinese:"我们一起工作。", pron:"Wǒmen yīqǐ gōngzuò."},
+    {english:"I like my work.", chinese:"我喜欢我的工作。", pron:"Wǒ xǐhuān wǒ de gōngzuò."},
+    {english:"They work at a school.", chinese:"他们在学校工作。", pron:"Tāmen zài xuéxiào gōngzuò."},
+    {english:"I started work early.", chinese:"我很早开始工作。", pron:"Wǒ hěn zǎo kāishǐ gōngzuò."},
+    {english:"She finished work late.", chinese:"她很晚才完成工作。", pron:"Tā hěn wǎn cái wánchéng gōngzuò."},
+    {english:"He is looking for work.", chinese:"他在找工作。", pron:"Tā zài zhǎo gōngzuò."}
+],
+
+20: [ // Play / 玩 / 游戏
+    {english:"I play football.", chinese:"我踢足球。", pron:"Wǒ tī zúqiú."},
+    {english:"She plays piano.", chinese:"她弹钢琴。", pron:"Tā tán gāngqín."},
+    {english:"Do you want to play?", chinese:"你想玩吗？", pron:"Nǐ xiǎng wán ma?"},
+    {english:"We play together.", chinese:"我们一起玩。", pron:"Wǒmen yīqǐ wán."},
+    {english:"He plays video games.", chinese:"他玩电子游戏。", pron:"Tā wán diànzǐ yóuxì."},
+    {english:"I played yesterday.", chinese:"我昨天玩了。", pron:"Wǒ zuótiān wán le."},
+    {english:"She likes to play outside.", chinese:"她喜欢在外面玩。", pron:"Tā xǐhuān zài wàimiàn wán."},
+    {english:"They play every weekend.", chinese:"他们每个周末都玩。", pron:"Tāmen měi gè zhōumò dōu wán."},
+    {english:"I play the guitar.", chinese:"我弹吉他。", pron:"Wǒ tán jítā."},
+    {english:"He plays chess.", chinese:"他下棋。", pron:"Tā xià qí."}
+],
+
+21: [ // Read / 读
+    {english:"I read a book.", chinese:"我读一本书。", pron:"Wǒ dú yī běn shū."},
+    {english:"She reads newspapers.", chinese:"她读报纸。", pron:"Tā dú bàozhǐ."},
+    {english:"Do you read this?", chinese:"你读这个吗？", pron:"Nǐ dú zhège ma?"},
+    {english:"We read together.", chinese:"我们一起读。", pron:"Wǒmen yīqǐ dú."},
+    {english:"He reads every day.", chinese:"他每天读书。", pron:"Tā měitiān dú shū."},
+    {english:"I read yesterday.", chinese:"我昨天读了。", pron:"Wǒ zuótiān dú le."},
+    {english:"She likes to read.", chinese:"她喜欢读书。", pron:"Tā xǐhuān dú shū."},
+    {english:"They read the instructions.", chinese:"他们读说明。", pron:"Tāmen dú shuōmíng."},
+    {english:"Read carefully.", chinese:"仔细读。", pron:"Zǐxì dú."},
+    {english:"I am reading now.", chinese:"我现在在读。", pron:"Wǒ xiànzài zài dú."}
+],
+
+22: [ // Write / 写
+    {english:"I write a letter.", chinese:"我写信。", pron:"Wǒ xiě xìn."},
+    {english:"She writes emails.", chinese:"她写电子邮件。", pron:"Tā xiě diànzǐ yóujiàn."},
+    {english:"Do you write often?", chinese:"你经常写吗？", pron:"Nǐ jīngcháng xiě ma?"},
+    {english:"We write together.", chinese:"我们一起写。", pron:"Wǒmen yīqǐ xiě."},
+    {english:"He writes fast.", chinese:"他写得很快。", pron:"Tā xiě de hěn kuài."},
+    {english:"I wrote yesterday.", chinese:"我昨天写了。", pron:"Wǒ zuótiān xiě le."},
+    {english:"She likes to write.", chinese:"她喜欢写作。", pron:"Tā xǐhuān xiězuò."},
+    {english:"They write reports.", chinese:"他们写报告。", pron:"Tāmen xiě bàogào."},
+    {english:"Write your name.", chinese:"写下你的名字。", pron:"Xiě xià nǐ de míngzi."},
+    {english:"I am writing now.", chinese:"我现在在写。", pron:"Wǒ xiànzài zài xiě."}
+],
+
+23: [ // Sleep / 睡觉
+    {english:"I sleep eight hours.", chinese:"我睡八小时。", pron:"Wǒ shuì bā xiǎoshí."},
+    {english:"She sleeps well.", chinese:"她睡得很好。", pron:"Tā shuì de hěn hǎo."},
+    {english:"Do you want to sleep?", chinese:"你想睡觉吗？", pron:"Nǐ xiǎng shuìjiào ma?"},
+    {english:"We sleep early.", chinese:"我们早睡。", pron:"Wǒmen zǎo shuì."},
+    {english:"He sleeps a lot.", chinese:"他睡很多。", pron:"Tā shuì hěn duō."},
+    {english:"I slept yesterday.", chinese:"我昨天睡了。", pron:"Wǒ zuótiān shuì le."},
+    {english:"She likes to sleep.", chinese:"她喜欢睡觉。", pron:"Tā xǐhuān shuìjiào."},
+    {english:"They sleep together.", chinese:"他们一起睡。", pron:"Tāmen yīqǐ shuì."},
+    {english:"Sleep well!", chinese:"晚安！", pron:"Wǎn'ān!"},
+    {english:"I am sleeping now.", chinese:"我现在在睡觉。", pron:"Wǒ xiànzài zài shuìjiào."}
+],
+
+24: [ // Buy / 买
+    {english:"I buy fruits.", chinese:"我买水果。", pron:"Wǒ mǎi shuǐguǒ."},
+    {english:"She buys clothes.", chinese:"她买衣服。", pron:"Tā mǎi yīfú."},
+    {english:"Do you want to buy?", chinese:"你想买吗？", pron:"Nǐ xiǎng mǎi ma?"},
+    {english:"We buy together.", chinese:"我们一起买。", pron:"Wǒmen yīqǐ mǎi."},
+    {english:"He buys gifts.", chinese:"他买礼物。", pron:"Tā mǎi lǐwù."},
+    {english:"I bought this yesterday.", chinese:"我昨天买了这个。", pron:"Wǒ zuótiān mǎi le zhège."},
+    {english:"She likes to buy new things.", chinese:"她喜欢买新东西。", pron:"Tā xǐhuān mǎi xīn dōngxī."},
+    {english:"They buy every week.", chinese:"他们每周都买。", pron:"Tāmen měi zhōu dōu mǎi."},
+    {english:"Buy carefully.", chinese:"小心购买。", pron:"Xiǎoxīn gòumǎi."},
+    {english:"I am buying now.", chinese:"我现在在买。", pron:"Wǒ xiànzài zài mǎi."}
+],
+
+25: [ // Sell / 卖
+    {english:"I sell fruits.", chinese:"我卖水果。", pron:"Wǒ mài shuǐguǒ."},
+    {english:"She sells clothes.", chinese:"她卖衣服。", pron:"Tā mài yīfú."},
+    {english:"Do you want to sell?", chinese:"你想卖吗？", pron:"Nǐ xiǎng mài ma?"},
+    {english:"We sell together.", chinese:"我们一起卖。", pron:"Wǒmen yīqǐ mài."},
+    {english:"He sells gifts.", chinese:"他卖礼物。", pron:"Tā mài lǐwù."},
+    {english:"I sold this yesterday.", chinese:"我昨天卖了这个。", pron:"Wǒ zuótiān mài le zhège."},
+    {english:"She likes to sell things.", chinese:"她喜欢卖东西。", pron:"Tā xǐhuān mài dōngxī."},
+    {english:"They sell every week.", chinese:"他们每周都卖。", pron:"Tāmen měi zhōu dōu mài."},
+    {english:"Sell carefully.", chinese:"小心卖。", pron:"Xiǎoxīn mài."},
+    {english:"I am selling now.", chinese:"我现在在卖。", pron:"Wǒ xiànzài zài mài."}
+],
+
+26: [ // Wait / 等
+    {english:"I wait for the bus.", chinese:"我等公交车。", pron:"Wǒ děng gōngjiāo chē."},
+    {english:"She waits every day.", chinese:"她每天都等。", pron:"Tā měitiān dōu děng."},
+    {english:"Do you wait here?", chinese:"你在这里等吗？", pron:"Nǐ zài zhèlǐ děng ma?"},
+    {english:"We wait together.", chinese:"我们一起等。", pron:"Wǒmen yīqǐ děng."},
+    {english:"He waited yesterday.", chinese:"他昨天等了。", pron:"Tā zuótiān děng le."},
+    {english:"Wait a minute.", chinese:"等一下。", pron:"Děng yīxià."},
+    {english:"They wait patiently.", chinese:"他们耐心等待。", pron:"Tāmen nàixīn děngdài."},
+    {english:"I am waiting now.", chinese:"我现在在等。", pron:"Wǒ xiànzài zài děng."},
+    {english:"Wait for me.", chinese:"等我。", pron:"Děng wǒ."},
+    {english:"She waits at the station.", chinese:"她在车站等。", pron:"Tā zài chēzhàn děng."}
+],
+
+27: [ // Run / 跑
+    {english:"I run every morning.", chinese:"我每天早上跑步。", pron:"Wǒ měitiān zǎoshang pǎobù."},
+    {english:"She runs fast.", chinese:"她跑得很快。", pron:"Tā pǎo de hěn kuài."},
+    {english:"Do you run often?", chinese:"你经常跑步吗？", pron:"Nǐ jīngcháng pǎobù ma?"},
+    {english:"We run together.", chinese:"我们一起跑步。", pron:"Wǒmen yīqǐ pǎobù."},
+    {english:"He ran yesterday.", chinese:"他昨天跑了。", pron:"Tā zuótiān pǎo le."},
+    {english:"I am running now.", chinese:"我现在在跑步。", pron:"Wǒ xiànzài zài pǎobù."},
+    {english:"Run quickly!", chinese:"快跑！", pron:"Kuài pǎo!"},
+    {english:"They run every evening.", chinese:"他们每晚跑步。", pron:"Tāmen měi wǎn pǎobù."},
+    {english:"She likes to run.", chinese:"她喜欢跑步。", pron:"Tā xǐhuān pǎobù."},
+    {english:"Run to the school.", chinese:"跑向学校。", pron:"Pǎo xiàng xuéxiào."}
+],
+
+28: [ // Speak / 说
+    {english:"I speak chinese.", chinese:"我说俄语。", pron:"Wǒ shuō Éyǔ."},
+    {english:"She speaks English.", chinese:"她说英语。", pron:"Tā shuō Yīngyǔ."},
+    {english:"Do you speak French?", chinese:"你说法语吗？", pron:"Nǐ shuō Fǎyǔ ma?"},
+    {english:"We speak together.", chinese:"我们一起说。", pron:"Wǒmen yīqǐ shuō."},
+    {english:"He speaks slowly.", chinese:"他说得慢。", pron:"Tā shuō de màn."},
+    {english:"I spoke yesterday.", chinese:"我昨天说了。", pron:"Wǒ zuótiān shuō le."},
+    {english:"Speak louder!", chinese:"大声说！", pron:"Dàshēng shuō!"},
+    {english:"They speak every day.", chinese:"他们每天说话。", pron:"Tāmen měitiān shuōhuà."},
+    {english:"She likes to speak.", chinese:"她喜欢说话。", pron:"Tā xǐhuān shuōhuà."},
+    {english:"I am speaking now.", chinese:"我现在在说话。", pron:"Wǒ xiànzài zài shuōhuà."}
+],
+
+29: [ // Listen / 听
+    {english:"I listen to music.", chinese:"我听音乐。", pron:"Wǒ tīng yīnyuè."},
+    {english:"She listens carefully.", chinese:"她仔细听。", pron:"Tā zǐxì tīng."},
+    {english:"Do you listen to me?", chinese:"你在听我说吗？", pron:"Nǐ zài tīng wǒ shuō ma?"},
+    {english:"We listen together.", chinese:"我们一起听。", pron:"Wǒmen yīqǐ tīng."},
+    {english:"He listens every day.", chinese:"他每天都听。", pron:"Tā měitiān dōu tīng."},
+    {english:"I listened yesterday.", chinese:"我昨天听了。", pron:"Wǒ zuótiān tīng le."},
+    {english:"Listen carefully!", chinese:"仔细听！", pron:"Zǐxì tīng!"},
+    {english:"They listen to the teacher.", chinese:"他们听老师讲。", pron:"Tāmen tīng lǎoshī jiǎng."},
+    {english:"She likes to listen to music.", chinese:"她喜欢听音乐。", pron:"Tā xǐhuān tīng yīnyuè."},
+    {english:"I am listening now.", chinese:"我现在在听。", pron:"Wǒ xiànzài zài tīng."}
+],
+
+30: [ // Learn / 学习
+    {english:"I learn chinese.", chinese:"我学习俄语。", pron:"Wǒ xuéxí Éyǔ."},
+    {english:"She learns quickly.", chinese:"她学得很快。", pron:"Tā xué de hěn kuài."},
+    {english:"Do you learn English?", chinese:"你学习英语吗？", pron:"Nǐ xuéxí Yīngyǔ ma?"},
+    {english:"We learn together.", chinese:"我们一起学习。", pron:"Wǒmen yīqǐ xuéxí."},
+    {english:"He learned yesterday.", chinese:"他昨天学了。", pron:"Tā zuótiān xué le."},
+    {english:"I like to learn.", chinese:"我喜欢学习。", pron:"Wǒ xǐhuān xuéxí."},
+    {english:"Learn carefully.", chinese:"仔细学习。", pron:"Zǐxì xuéxí."},
+    {english:"They learn every day.", chinese:"他们每天学习。", pron:"Tāmen měitiān xuéxí."},
+    {english:"She is learning now.", chinese:"她现在在学习。", pron:"Tā xiànzài zài xuéxí."},
+    {english:"I want to learn more.", chinese:"我想学更多。", pron:"Wǒ xiǎng xué gèng duō."}
+],
+31: [  // Word: Teach / 教
+    {english:"I teach English.", chinese:"我教英语。", pron:"Wǒ jiāo Yīngyǔ"},
+    {english:"She teaches math.", chinese:"她教数学。", pron:"Tā jiāo shùxué"},
+    {english:"Do you teach here?", chinese:"你在这里教书吗？", pron:"Nǐ zài zhèlǐ jiāo shū ma?"},
+    {english:"We teach together.", chinese:"我们一起教书。", pron:"Wǒmen yìqǐ jiāo shū"},
+    {english:"He teaches well.", chinese:"他教得很好。", pron:"Tā jiāo de hěn hǎo"},
+    {english:"I taught yesterday.", chinese:"我昨天教了。", pron:"Wǒ zuótiān jiāo le"},
+    {english:"She likes to teach.", chinese:"她喜欢教书。", pron:"Tā xǐhuan jiāo shū"},
+    {english:"They teach students.", chinese:"他们教学生。", pron:"Tāmen jiāo xuéshēng"},
+    {english:"Teach carefully.", chinese:"认真地教。", pron:"Rènzhēn de jiāo"},
+    {english:"I am teaching now.", chinese:"我现在在教书。", pron:"Wǒ xiànzài zài jiāo shū"}
+],
+
+32: [  // Word: Understand / 理解
+    {english:"I understand Hindi.", chinese:"我懂印地语。", pron:"Wǒ dǒng Yìndìyǔ"},
+    {english:"She understands me.", chinese:"她理解我。", pron:"Tā lǐjiě wǒ"},
+    {english:"Do you understand?", chinese:"你明白吗？", pron:"Nǐ míngbái ma?"},
+    {english:"We understand each other.", chinese:"我们互相理解。", pron:"Wǒmen hùxiāng lǐjiě"},
+    {english:"He understands quickly.", chinese:"他理解得很快。", pron:"Tā lǐjiě de hěn kuài"},
+    {english:"I understood yesterday.", chinese:"我昨天明白了。", pron:"Wǒ zuótiān míngbái le"},
+    {english:"She likes to understand new things.", chinese:"她喜欢理解新事物。", pron:"Tā xǐhuan lǐjiě xīn shìwù"},
+    {english:"They understand everything.", chinese:"他们什么都懂。", pron:"Tāmen shénme dōu dǒng"},
+    {english:"Understand carefully.", chinese:"仔细理解。", pron:"Zǐxì lǐjiě"},
+    {english:"I am understanding now.", chinese:"我现在在理解。", pron:"Wǒ xiànzài zài lǐjiě"}
+],
+
+33: [  // Word: Remember / 记得
+    {english:"I remember you.", chinese:"我记得你。", pron:"Wǒ jìde nǐ"},
+    {english:"She remembers the day.", chinese:"她记得那一天。", pron:"Tā jìde nà yì tiān"},
+    {english:"Do you remember me?", chinese:"你记得我吗？", pron:"Nǐ jìde wǒ ma?"},
+    {english:"We remember everything.", chinese:"我们记得一切。", pron:"Wǒmen jìde yíqiè"},
+    {english:"He remembers clearly.", chinese:"他记得很清楚。", pron:"Tā jìde hěn qīngchu"},
+    {english:"I remembered yesterday.", chinese:"我昨天记得了。", pron:"Wǒ zuótiān jìde le"},
+    {english:"She likes to remember important things.", chinese:"她喜欢记住重要的事情。", pron:"Tā xǐhuan jìzhù zhòngyào de shìqing"},
+    {english:"They remember well.", chinese:"他们记得很好。", pron:"Tāmen jìde hěn hǎo"},
+    {english:"Remember carefully.", chinese:"要记清楚。", pron:"Yào jì qīngchu"},
+    {english:"I am remembering now.", chinese:"我现在在记。", pron:"Wǒ xiànzài zài jì"}
+],
+
+34: [  // Word: Forget / 忘记
+    {english:"I forget sometimes.", chinese:"我有时候会忘记。", pron:"Wǒ yǒu shíhou huì wàngjì"},
+    {english:"She forgets her keys.", chinese:"她忘记了她的钥匙。", pron:"Tā wàngjì le tā de yàoshi"},
+    {english:"Do you forget often?", chinese:"你经常忘记吗？", pron:"Nǐ jīngcháng wàngjì ma?"},
+    {english:"We forget nothing.", chinese:"我们什么都不忘。", pron:"Wǒmen shénme dōu bù wàng"},
+    {english:"He forgot yesterday.", chinese:"他昨天忘记了。", pron:"Tā zuótiān wàngjì le"},
+    {english:"I will not forget.", chinese:"我不会忘记。", pron:"Wǒ bù huì wàngjì"},
+    {english:"She likes to forget mistakes.", chinese:"她喜欢忘记错误。", pron:"Tā xǐhuan wàngjì cuòwù"},
+    {english:"They forget easily.", chinese:"他们很容易忘记。", pron:"Tāmen hěn róngyì wàngjì"},
+    {english:"Forget about it.", chinese:"忘了吧。", pron:"Wàng le ba"},
+    {english:"I am forgetting now.", chinese:"我现在在忘记。", pron:"Wǒ xiànzài zài wàngjì"}
+],
+
+35: [  // Word: Help / 帮助
+    {english:"I help my friend.", chinese:"我帮助我的朋友。", pron:"Wǒ bāngzhù wǒ de péngyou"},
+    {english:"She helps her mother.", chinese:"她帮助她的妈妈。", pron:"Tā bāngzhù tā de māma"},
+    {english:"Do you help often?", chinese:"你经常帮忙吗？", pron:"Nǐ jīngcháng bāngmáng ma?"},
+    {english:"We help each other.", chinese:"我们互相帮助。", pron:"Wǒmen hùxiāng bāngzhù"},
+    {english:"He helped yesterday.", chinese:"他昨天帮忙了。", pron:"Tā zuótiān bāngmáng le"},
+    {english:"I need help.", chinese:"我需要帮助。", pron:"Wǒ xūyào bāngzhù"},
+    {english:"She likes to help people.", chinese:"她喜欢帮助别人。", pron:"Tā xǐhuan bāngzhù biérén"},
+    {english:"They help every day.", chinese:"他们每天帮忙。", pron:"Tāmen měitiān bāngmáng"},
+    {english:"Help quickly!", chinese:"快帮忙！", pron:"Kuài bāngmáng!"},
+    {english:"I am helping now.", chinese:"我现在在帮忙。", pron:"Wǒ xiànzài zài bāngmáng"}
+],
+
+36: [  // Word: Call / 打电话
+    {english:"I call my friend.", chinese:"我给朋友打电话。", pron:"Wǒ gěi péngyou dǎ diànhuà"},
+    {english:"She calls her mother.", chinese:"她给妈妈打电话。", pron:"Tā gěi māma dǎ diànhuà"},
+    {english:"Do you call often?", chinese:"你经常打电话吗？", pron:"Nǐ jīngcháng dǎ diànhuà ma?"},
+    {english:"We call every day.", chinese:"我们每天打电话。", pron:"Wǒmen měitiān dǎ diànhuà"},
+    {english:"He called yesterday.", chinese:"他昨天打电话了。", pron:"Tā zuótiān dǎ diànhuà le"},
+    {english:"Call me later.", chinese:"以后给我打电话。", pron:"Yǐhòu gěi wǒ dǎ diànhuà"},
+    {english:"She likes to call people.", chinese:"她喜欢给别人打电话。", pron:"Tā xǐhuan gěi biérén dǎ diànhuà"},
+    {english:"They call together.", chinese:"他们一起打电话。", pron:"Tāmen yìqǐ dǎ diànhuà"},
+    {english:"I am calling now.", chinese:"我现在在打电话。", pron:"Wǒ xiànzài zài dǎ diànhuà"},
+    {english:"Call quickly!", chinese:"快打电话！", pron:"Kuài dǎ diànhuà!"}
+],
+
+37: [  // Word: Open / 打开
+    {english:"I open the door.", chinese:"我打开门。", pron:"Wǒ dǎkāi mén"},
+    {english:"She opens the window.", chinese:"她打开窗户。", pron:"Tā dǎkāi chuānghù"},
+    {english:"Do you open it?", chinese:"你打开它吗？", pron:"Nǐ dǎkāi tā ma?"},
+    {english:"We open together.", chinese:"我们一起打开。", pron:"Wǒmen yīqǐ dǎkāi"},
+    {english:"He opened yesterday.", chinese:"他昨天打开了。", pron:"Tā zuótiān dǎkāi le"},
+    {english:"I like to open gifts.", chinese:"我喜欢打开礼物。", pron:"Wǒ xǐhuān dǎkāi lǐwù"},
+    {english:"They open every morning.", chinese:"他们每天早上打开。", pron:"Tāmen měitiān zǎoshang dǎkāi"},
+    {english:"Open carefully.", chinese:"小心打开。", pron:"Xiǎoxīn dǎkāi"},
+    {english:"I am opening now.", chinese:"我现在正在打开。", pron:"Wǒ xiànzài zhèngzài dǎkāi"},
+    {english:"Open quickly!", chinese:"快打开！", pron:"Kuài dǎkāi!"}
+],
+38: [  // Word: Close / 关闭
+    {english:"I close the door.", chinese:"我关门。", pron:"Wǒ guān mén"},
+    {english:"She closes the window.", chinese:"她关窗户。", pron:"Tā guān chuānghù"},
+    {english:"Do you close it?", chinese:"你关它吗？", pron:"Nǐ guān tā ma?"},
+    {english:"We close together.", chinese:"我们一起关闭。", pron:"Wǒmen yīqǐ guānbì"},
+    {english:"He closed yesterday.", chinese:"他昨天关了。", pron:"Tā zuótiān guān le"},
+    {english:"I like to close boxes.", chinese:"我喜欢关箱子。", pron:"Wǒ xǐhuān guān xiāngzi"},
+    {english:"They close every night.", chinese:"他们每天晚上关闭。", pron:"Tāmen měitiān wǎnshàng guānbì"},
+    {english:"Close carefully.", chinese:"小心关闭。", pron:"Xiǎoxīn guānbì"},
+    {english:"I am closing now.", chinese:"我现在正在关闭。", pron:"Wǒ xiànzài zhèngzài guānbì"},
+    {english:"Close quickly!", chinese:"快关闭！", pron:"Kuài guānbì!"}
+],
+39: [  // Word: Wash / 洗
+    {english:"I wash my hands.", chinese:"我洗手。", pron:"Wǒ xǐ shǒu"},
+    {english:"She washes the dishes.", chinese:"她洗碗。", pron:"Tā xǐ wǎn"},
+    {english:"Do you wash every day?", chinese:"你每天洗吗？", pron:"Nǐ měitiān xǐ ma?"},
+    {english:"We wash together.", chinese:"我们一起洗。", pron:"Wǒmen yīqǐ xǐ"},
+    {english:"He washed yesterday.", chinese:"他昨天洗了。", pron:"Tā zuótiān xǐ le"},
+    {english:"I like to wash clothes.", chinese:"我喜欢洗衣服。", pron:"Wǒ xǐhuān xǐ yīfú"},
+    {english:"They wash every morning.", chinese:"他们每天早上洗。", pron:"Tāmen měitiān zǎoshang xǐ"},
+    {english:"Wash carefully.", chinese:"小心洗。", pron:"Xiǎoxīn xǐ"},
+    {english:"I am washing now.", chinese:"我现在正在洗。", pron:"Wǒ xiànzài zhèngzài xǐ"},
+    {english:"Wash quickly!", chinese:"快洗！", pron:"Kuài xǐ!"}
+],
+
+40: [  // Word: Clean / 打扫
+    {english:"I clean the room.", chinese:"我打扫房间。", pron:"Wǒ dǎsǎo fángjiān"},
+    {english:"She cleans the kitchen.", chinese:"她打扫厨房。", pron:"Tā dǎsǎo chúfáng"},
+    {english:"Do you clean often?", chinese:"你经常打扫吗？", pron:"Nǐ jīngcháng dǎsǎo ma?"},
+    {english:"We clean together.", chinese:"我们一起打扫。", pron:"Wǒmen yīqǐ dǎsǎo"},
+    {english:"He cleaned yesterday.", chinese:"他昨天打扫了。", pron:"Tā zuótiān dǎsǎo le"},
+    {english:"I like to clean.", chinese:"我喜欢打扫。", pron:"Wǒ xǐhuān dǎsǎo"},
+    {english:"They clean every day.", chinese:"他们每天打扫。", pron:"Tāmen měitiān dǎsǎo"},
+    {english:"Clean carefully.", chinese:"小心打扫。", pron:"Xiǎoxīn dǎsǎo"},
+    {english:"I am cleaning now.", chinese:"我现在正在打扫。", pron:"Wǒ xiànzài zhèngzài dǎsǎo"},
+    {english:"Clean quickly!", chinese:"快打扫！", pron:"Kuài dǎsǎo!"}
+],
+41: [  // Word: Buy / 买
+    {english:"I buy fruits every morning.", chinese:"我每天早上买水果。", pron:"Wǒ měitiān zǎoshang mǎi shuǐguǒ"},
+    {english:"She buys gifts for her friends.", chinese:"她为朋友买礼物。", pron:"Tā wèi péngyǒu mǎi lǐwù"},
+    {english:"Do you buy vegetables?", chinese:"你买蔬菜吗？", pron:"Nǐ mǎi shūcài ma?"},
+    {english:"We buy together.", chinese:"我们一起买。", pron:"Wǒmen yīqǐ mǎi"},
+    {english:"He buys clothes every week.", chinese:"他每周买衣服。", pron:"Tā měi zhōu mǎi yīfú"},
+    {english:"I bought a new phone.", chinese:"我买了新手机。", pron:"Wǒ mǎi le xīn shǒujī"},
+    {english:"She likes to buy books.", chinese:"她喜欢买书。", pron:"Tā xǐhuān mǎi shū"},
+    {english:"They buy every Saturday.", chinese:"他们每周六买东西。", pron:"Tāmen měi zhōu liù mǎi dōngxī"},
+    {english:"Buy carefully.", chinese:"小心购买。", pron:"Xiǎoxīn gòumǎi"},
+    {english:"I am buying now.", chinese:"我现在正在买。", pron:"Wǒ xiànzài zhèngzài mǎi"}
+],
+42: [  // Word: Sell / 卖
+    {english:"I sell fruits in the market.", chinese:"我在市场卖水果。", pron:"Wǒ zài shìchǎng mài shuǐguǒ"},
+    {english:"She sells clothes online.", chinese:"她在网上卖衣服。", pron:"Tā zài wǎngshàng mài yīfú"},
+    {english:"Do you sell books?", chinese:"你卖书吗？", pron:"Nǐ mài shū ma?"},
+    {english:"We sell together.", chinese:"我们一起卖。", pron:"Wǒmen yīqǐ mài"},
+    {english:"He sells toys every day.", chinese:"他每天卖玩具。", pron:"Tā měitiān mài wánjù"},
+    {english:"I sold my old car.", chinese:"我卖了旧车。", pron:"Wǒ mài le jiù chē"},
+    {english:"She likes to sell things.", chinese:"她喜欢卖东西。", pron:"Tā xǐhuān mài dōngxī"},
+    {english:"They sell at the market.", chinese:"他们在市场卖东西。", pron:"Tāmen zài shìchǎng mài dōngxī"},
+    {english:"Sell carefully.", chinese:"小心出售。", pron:"Xiǎoxīn chūshòu"},
+    {english:"I am selling now.", chinese:"我现在正在卖。", pron:"Wǒ xiànzài zhèngzài mài"}
+],
+43: [  // Word: Eat / 吃
+    {english:"I eat breakfast every morning.", chinese:"我每天早上吃早餐。", pron:"Wǒ měitiān zǎoshang chī zǎocān"},
+    {english:"She eats vegetables.", chinese:"她吃蔬菜。", pron:"Tā chī shūcài"},
+    {english:"Do you eat meat?", chinese:"你吃肉吗？", pron:"Nǐ chī ròu ma?"},
+    {english:"We eat together.", chinese:"我们一起吃。", pron:"Wǒmen yīqǐ chī"},
+    {english:"He ate pizza yesterday.", chinese:"他昨天吃了比萨。", pron:"Tā zuótiān chī le bǐsà"},
+    {english:"I like to eat fruits.", chinese:"我喜欢吃水果。", pron:"Wǒ xǐhuān chī shuǐguǒ"},
+    {english:"They eat every day.", chinese:"他们每天吃。", pron:"Tāmen měitiān chī"},
+    {english:"Eat carefully.", chinese:"小心吃。", pron:"Xiǎoxīn chī"},
+    {english:"I am eating now.", chinese:"我现在正在吃。", pron:"Wǒ xiànzài zhèngzài chī"},
+    {english:"Eat quickly!", chinese:"快吃！", pron:"Kuài chī!"}
+],
+44: [  // Word: Drink / 喝
+    {english:"I drink water.", chinese:"我喝水。", pron:"Wǒ hē shuǐ"},
+    {english:"She drinks tea.", chinese:"她喝茶。", pron:"Tā hē chá"},
+    {english:"Do you drink milk?", chinese:"你喝牛奶吗？", pron:"Nǐ hē niúnǎi ma?"},
+    {english:"We drink together.", chinese:"我们一起喝。", pron:"Wǒmen yīqǐ hē"},
+    {english:"He drank juice yesterday.", chinese:"他昨天喝了果汁。", pron:"Tā zuótiān hē le guǒzhī"},
+    {english:"I like to drink coffee.", chinese:"我喜欢喝咖啡。", pron:"Wǒ xǐhuān hē kāfēi"},
+    {english:"They drink every day.", chinese:"他们每天喝。", pron:"Tāmen měitiān hē"},
+    {english:"Drink carefully.", chinese:"小心喝。", pron:"Xiǎoxīn hē"},
+    {english:"I am drinking now.", chinese:"我现在正在喝。", pron:"Wǒ xiànzài zhèngzài hē"},
+    {english:"Drink quickly!", chinese:"快喝！", pron:"Kuài hē!"}
+],
+45: [  // Word: Sit / 坐
+    {english:"I sit on the chair.", chinese:"我坐在椅子上。", pron:"Wǒ zuò zài yǐzi shàng"},
+    {english:"She sits near the window.", chinese:"她坐在窗边。", pron:"Tā zuò zài chuāng biān"},
+    {english:"Do you sit here?", chinese:"你坐在这里吗？", pron:"Nǐ zuò zài zhèlǐ ma?"},
+    {english:"We sit together.", chinese:"我们一起坐。", pron:"Wǒmen yīqǐ zuò"},
+    {english:"He sat yesterday.", chinese:"他昨天坐下了。", pron:"Tā zuótiān zuò xià le"},
+    {english:"I like to sit quietly.", chinese:"我喜欢安静地坐。", pron:"Wǒ xǐhuān ānjìng de zuò"},
+    {english:"They sit every morning.", chinese:"他们每天早上坐。", pron:"Tāmen měitiān zǎoshang zuò"},
+    {english:"Sit carefully.", chinese:"小心坐。", pron:"Xiǎoxīn zuò"},
+    {english:"I am sitting now.", chinese:"我现在正在坐。", pron:"Wǒ xiànzài zhèngzài zuò"},
+    {english:"Sit quickly!", chinese:"快坐下！", pron:"Kuài zuò xià!"}
+],
+46: [  // Word: Stand / 站
+    {english:"I stand near the door.", chinese:"我站在门旁。", pron:"Wǒ zhàn zài mén páng"},
+    {english:"She stands in the line.", chinese:"她站在队里。", pron:"Tā zhàn zài duì lǐ"},
+    {english:"Do you stand here?", chinese:"你站在这里吗？", pron:"Nǐ zhàn zài zhèlǐ ma?"},
+    {english:"We stand together.", chinese:"我们一起站。", pron:"Wǒmen yīqǐ zhàn"},
+    {english:"He stood yesterday.", chinese:"他昨天站着。", pron:"Tā zuótiān zhàn zhe"},
+    {english:"I like to stand tall.", chinese:"我喜欢站得高。", pron:"Wǒ xǐhuān zhàn de gāo"},
+    {english:"They stand every morning.", chinese:"他们每天早上站。", pron:"Tāmen měitiān zǎoshang zhàn"},
+    {english:"Stand carefully.", chinese:"小心站好。", pron:"Xiǎoxīn zhàn hǎo"},
+    {english:"I am standing now.", chinese:"我现在正在站。", pron:"Wǒ xiànzài zhèngzài zhàn"},
+    {english:"Stand quickly!", chinese:"快站好！", pron:"Kuài zhàn hǎo!"}
+],
+47: [  // Word: Run / 跑
+    {english:"I run every morning.", chinese:"我每天早上跑步。", pron:"Wǒ měitiān zǎoshang pǎobù"},
+    {english:"She runs fast.", chinese:"她跑得很快。", pron:"Tā pǎo de hěn kuài"},
+    {english:"Do you run daily?", chinese:"你每天跑步吗？", pron:"Nǐ měitiān pǎobù ma?"},
+    {english:"We run together.", chinese:"我们一起跑步。", pron:"Wǒmen yīqǐ pǎobù"},
+    {english:"He ran yesterday.", chinese:"他昨天跑了。", pron:"Tā zuótiān pǎo le"},
+    {english:"I like to run in the park.", chinese:"我喜欢在公园跑步。", pron:"Wǒ xǐhuān zài gōngyuán pǎobù"},
+    {english:"They run every evening.", chinese:"他们每天晚上跑步。", pron:"Tāmen měitiān wǎnshang pǎobù"},
+    {english:"Run carefully.", chinese:"小心跑。", pron:"Xiǎoxīn pǎo"},
+    {english:"I am running now.", chinese:"我现在正在跑步。", pron:"Wǒ xiànzài zhèngzài pǎobù"},
+    {english:"Run quickly!", chinese:"快跑！", pron:"Kuài pǎo!"}
+],
+48: [  // Word: Walk / 走
+    {english:"I walk to school.", chinese:"我走路去学校。", pron:"Wǒ zǒulù qù xuéxiào"},
+    {english:"She walks slowly.", chinese:"她走得很慢。", pron:"Tā zǒu de hěn màn"},
+    {english:"Do you walk daily?", chinese:"你每天走路吗？", pron:"Nǐ měitiān zǒulù ma?"},
+    {english:"We walk together.", chinese:"我们一起走。", pron:"Wǒmen yīqǐ zǒu"},
+    {english:"He walked yesterday.", chinese:"他昨天走了。", pron:"Tā zuótiān zǒu le"},
+    {english:"I like to walk in the park.", chinese:"我喜欢在公园散步。", pron:"Wǒ xǐhuān zài gōngyuán sànbù"},
+    {english:"They walk every morning.", chinese:"他们每天早上走路。", pron:"Tāmen měitiān zǎoshang zǒulù"},
+    {english:"Walk carefully.", chinese:"小心走。", pron:"Xiǎoxīn zǒu"},
+    {english:"I am walking now.", chinese:"我现在正在走路。", pron:"Wǒ xiànzài zhèngzài zǒulù"},
+    {english:"Walk quickly!", chinese:"快走！", pron:"Kuài zǒu!"}
+],
+49: [  // Word: Sleep / 睡觉
+    {english:"I sleep at night.", chinese:"我晚上睡觉。", pron:"Wǒ wǎnshang shuìjiào"},
+    {english:"She sleeps early.", chinese:"她很早睡觉。", pron:"Tā hěn zǎo shuìjiào"},
+    {english:"Do you sleep well?", chinese:"你睡得好吗？", pron:"Nǐ shuì de hǎo ma?"},
+    {english:"We sleep together.", chinese:"我们一起睡觉。", pron:"Wǒmen yīqǐ shuìjiào"},
+    {english:"He slept yesterday.", chinese:"他昨天睡了。", pron:"Tā zuótiān shuì le"},
+    {english:"I like to sleep late.", chinese:"我喜欢晚睡。", pron:"Wǒ xǐhuān wǎn shuì"},
+    {english:"They sleep every night.", chinese:"他们每晚睡觉。", pron:"Tāmen měi wǎn shuìjiào"},
+    {english:"Sleep carefully.", chinese:"小心睡觉。", pron:"Xiǎoxīn shuìjiào"},
+    {english:"I am sleeping now.", chinese:"我现在正在睡觉。", pron:"Wǒ xiànzài zhèngzài shuìjiào"},
+    {english:"Sleep quickly!", chinese:"快睡！", pron:"Kuài shuì!"}
+],
+50: [  // Word: Travel / 旅行
+    {english:"I travel every summer.", chinese:"我每年夏天旅行。", pron:"Wǒ měi nián xiàtiān lǚxíng"},
+    {english:"She travels by plane.", chinese:"她坐飞机旅行。", pron:"Tā zuò fēijī lǚxíng"},
+    {english:"Do you like to travel?", chinese:"你喜欢旅行吗？", pron:"Nǐ xǐhuān lǚxíng ma?"},
+    {english:"We travel together.", chinese:"我们一起旅行。", pron:"Wǒmen yīqǐ lǚxíng"},
+    {english:"He traveled yesterday.", chinese:"他昨天旅行了。", pron:"Tā zuótiān lǚxíng le"},
+    {english:"I like to travel.", chinese:"我喜欢旅行。", pron:"Wǒ xǐhuān lǚxíng"},
+    {english:"They travel every year.", chinese:"他们每年旅行。", pron:"Tāmen měi nián lǚxíng"},
+    {english:"Travel carefully.", chinese:"小心旅行。", pron:"Xiǎoxīn lǚxíng"},
+    {english:"I am traveling now.", chinese:"我现在正在旅行。", pron:"Wǒ xiànzài zhèngzài lǚxíng"},
+    {english:"She travels fast.", chinese:"她旅行得很快。", pron:"Tā lǚxíng de hěn kuài"}
+],
+51: [  // Word: Read / 阅读
+    {english:"I read books every day.", chinese:"我每天读书。", pron:"Wǒ měitiān dú shū"},
+    {english:"She reads newspapers.", chinese:"她读报纸。", pron:"Tā dú bàozhǐ"},
+    {english:"Do you read often?", chinese:"你经常读书吗？", pron:"Nǐ jīngcháng dú shū ma?"},
+    {english:"We read together.", chinese:"我们一起读书。", pron:"Wǒmen yīqǐ dú shū"},
+    {english:"He read yesterday.", chinese:"他昨天读了书。", pron:"Tā zuótiān dú le shū"},
+    {english:"I like to read novels.", chinese:"我喜欢读小说。", pron:"Wǒ xǐhuān dú xiǎoshuō"},
+    {english:"They read every morning.", chinese:"他们每天早上读书。", pron:"Tāmen měitiān zǎoshang dú shū"},
+    {english:"Read carefully.", chinese:"仔细阅读。", pron:"Zǐxì yuèdú"},
+    {english:"I am reading now.", chinese:"我现在正在读书。", pron:"Wǒ xiànzài zhèngzài dú shū"},
+    {english:"She reads quietly.", chinese:"她安静地读书。", pron:"Tā ānjìng de dú shū"}
+],
+52: [  // Word: Write / 写
+    {english:"I write letters every day.", chinese:"我每天写信。", pron:"Wǒ měitiān xiě xìn"},
+    {english:"She writes emails.", chinese:"她写电子邮件。", pron:"Tā xiě diànzǐ yóujiàn"},
+    {english:"Do you write often?", chinese:"你经常写吗？", pron:"Nǐ jīngcháng xiě ma?"},
+    {english:"We write together.", chinese:"我们一起写。", pron:"Wǒmen yīqǐ xiě"},
+    {english:"He wrote yesterday.", chinese:"他昨天写了。", pron:"Tā zuótiān xiě le"},
+    {english:"I like to write stories.", chinese:"我喜欢写故事。", pron:"Wǒ xǐhuān xiě gùshì"},
+    {english:"They write every morning.", chinese:"他们每天早上写。", pron:"Tāmen měitiān zǎoshang xiě"},
+    {english:"Write carefully.", chinese:"仔细写。", pron:"Zǐxì xiě"},
+    {english:"I am writing now.", chinese:"我现在正在写。", pron:"Wǒ xiànzài zhèngzài xiě"},
+    {english:"She writes fast.", chinese:"她写得很快。", pron:"Tā xiě de hěn kuài"}
+],
+53: [  // Word: Listen / 听
+    {english:"I listen to music every day.", chinese:"我每天听音乐。", pron:"Wǒ měitiān tīng yīnyuè"},
+    {english:"She listens to the teacher.", chinese:"她听老师讲课。", pron:"Tā tīng lǎoshī jiǎngkè"},
+    {english:"Do you listen carefully?", chinese:"你仔细听吗？", pron:"Nǐ zǐxì tīng ma?"},
+    {english:"We listen together.", chinese:"我们一起听。", pron:"Wǒmen yīqǐ tīng"},
+    {english:"He listened yesterday.", chinese:"他昨天听了。", pron:"Tā zuótiān tīng le"},
+    {english:"I like to listen to stories.", chinese:"我喜欢听故事。", pron:"Wǒ xǐhuān tīng gùshì"},
+    {english:"They listen every morning.", chinese:"他们每天早上听。", pron:"Tāmen měitiān zǎoshang tīng"},
+    {english:"Listen carefully.", chinese:"仔细听。", pron:"Zǐxì tīng"},
+    {english:"I am listening now.", chinese:"我现在正在听。", pron:"Wǒ xiànzài zhèngzài tīng"},
+    {english:"She listens quietly.", chinese:"她安静地听。", pron:"Tā ānjìng de tīng"}
+],
+54: [  // Word: Speak / 说
+    {english:"I speak English.", chinese:"我说英语。", pron:"Wǒ shuō Yīngyǔ"},
+    {english:"She speaks Hindi.", chinese:"她说印地语。", pron:"Tā shuō Yìndìyǔ"},
+    {english:"Do you speak often?", chinese:"你经常说话吗？", pron:"Nǐ jīngcháng shuōhuà ma?"},
+    {english:"We speak together.", chinese:"我们一起说话。", pron:"Wǒmen yīqǐ shuōhuà"},
+    {english:"He spoke yesterday.", chinese:"他昨天说了话。", pron:"Tā zuótiān shuō le huà"},
+    {english:"I like to speak with friends.", chinese:"我喜欢和朋友说话。", pron:"Wǒ xǐhuān hé péngyǒu shuōhuà"},
+    {english:"They speak every day.", chinese:"他们每天说话。", pron:"Tāmen měitiān shuōhuà"},
+    {english:"Speak clearly.", chinese:"说清楚。", pron:"Shuō qīngchu"},
+    {english:"I am speaking now.", chinese:"我现在正在说话。", pron:"Wǒ xiànzài zhèngzài shuōhuà"},
+    {english:"She speaks slowly.", chinese:"她说得很慢。", pron:"Tā shuō de hěn màn"}
+],
+55: [  // Word: Watch / 看
+    {english:"I watch TV every evening.", chinese:"我每天晚上看电视。", pron:"Wǒ měitiān wǎnshang kàn diànshì"},
+    {english:"She watches movies.", chinese:"她看电影。", pron:"Tā kàn diànyǐng"},
+    {english:"Do you watch often?", chinese:"你经常看吗？", pron:"Nǐ jīngcháng kàn ma?"},
+    {english:"We watch together.", chinese:"我们一起看。", pron:"Wǒmen yīqǐ kàn"},
+    {english:"He watched yesterday.", chinese:"他昨天看了。", pron:"Tā zuótiān kàn le"},
+    {english:"I like to watch documentaries.", chinese:"我喜欢看纪录片。", pron:"Wǒ xǐhuān kàn jìlùpiàn"},
+    {english:"They watch every day.", chinese:"他们每天看。", pron:"Tāmen měitiān kàn"},
+    {english:"Watch carefully.", chinese:"仔细看。", pron:"Zǐxì kàn"},
+    {english:"I am watching now.", chinese:"我现在正在看。", pron:"Wǒ xiànzài zhèngzài kàn"},
+    {english:"She watches quietly.", chinese:"她安静地看。", pron:"Tā ānjìng de kàn"}
+],
+56: [  // Word: Love / 爱
+    {english:"I love my family.", chinese:"我爱我的家人。", pron:"Wǒ ài wǒ de jiārén"},
+    {english:"She loves her friends.", chinese:"她爱她的朋友。", pron:"Tā ài tā de péngyǒu"},
+    {english:"Do you love me?", chinese:"你爱我吗？", pron:"Nǐ ài wǒ ma?"},
+    {english:"We love each other.", chinese:"我们彼此相爱。", pron:"Wǒmen bǐcǐ xiāng ài"},
+    {english:"He loved her yesterday.", chinese:"他昨天爱她。", pron:"Tā zuótiān ài tā"},
+    {english:"I like to love everyone.", chinese:"我喜欢爱每个人。", pron:"Wǒ xǐhuān ài měi gèrén"},
+    {english:"They love every day.", chinese:"他们每天都爱。", pron:"Tāmen měitiān dōu ài"},
+    {english:"Love carefully.", chinese:"小心地爱。", pron:"Xiǎoxīn de ài"},
+    {english:"I am loving now.", chinese:"我现在正在爱。", pron:"Wǒ xiànzài zhèngzài ài"},
+    {english:"She loves animals.", chinese:"她爱动物。", pron:"Tā ài dòngwù"}
+],
+57: [  // Word: Like / 喜欢
+    {english:"I like this song.", chinese:"我喜欢这首歌。", pron:"Wǒ xǐhuān zhè shǒu gē"},
+    {english:"She likes chocolate.", chinese:"她喜欢巧克力。", pron:"Tā xǐhuān qiǎokèlì"},
+    {english:"Do you like it?", chinese:"你喜欢吗？", pron:"Nǐ xǐhuān ma?"},
+    {english:"We like this place.", chinese:"我们喜欢这个地方。", pron:"Wǒmen xǐhuān zhège dìfāng"},
+    {english:"He liked the movie.", chinese:"他喜欢那部电影。", pron:"Tā xǐhuān nà bù diànyǐng"},
+    {english:"I like to read.", chinese:"我喜欢阅读。", pron:"Wǒ xǐhuān yuèdú"},
+    {english:"They like every day.", chinese:"他们每天都喜欢。", pron:"Tāmen měitiān dōu xǐhuān"},
+    {english:"Like carefully.", chinese:"仔细喜欢。", pron:"Zǐxì xǐhuān"},
+    {english:"I am liking it now.", chinese:"我现在喜欢它。", pron:"Wǒ xiànzài xǐhuān tā"},
+    {english:"She likes animals.", chinese:"她喜欢动物。", pron:"Tā xǐhuān dòngwù"}
+],
+58: [  // Word: Hate / 讨厌
+    {english:"I hate lying.", chinese:"我讨厌说谎。", pron:"Wǒ tǎoyàn shuōhuǎng"},
+    {english:"She hates waiting.", chinese:"她讨厌等待。", pron:"Tā tǎoyàn děngdài"},
+    {english:"Do you hate him?", chinese:"你讨厌他吗？", pron:"Nǐ tǎoyàn tā ma?"},
+    {english:"We hate cheating.", chinese:"我们讨厌作弊。", pron:"Wǒmen tǎoyàn zuòbì"},
+    {english:"He hated yesterday.", chinese:"他昨天很讨厌。", pron:"Tā zuótiān hěn tǎoyàn"},
+    {english:"I like to hate bad habits.", chinese:"我讨厌坏习惯。", pron:"Wǒ tǎoyàn huài xíguàn"},
+    {english:"They hate every day.", chinese:"他们每天都讨厌。", pron:"Tāmen měitiān dōu tǎoyàn"},
+    {english:"Hate carefully.", chinese:"小心地讨厌。", pron:"Xiǎoxīn de tǎoyàn"},
+    {english:"I am hating now.", chinese:"我现在很讨厌。", pron:"Wǒ xiànzài hěn tǎoyàn"},
+    {english:"She hates loud noises.", chinese:"她讨厌大声噪音。", pron:"Tā tǎoyàn dàshēng zàoyīn"}
+],
+59: [  // Word: Start / 开始
+    {english:"I start work at 9.", chinese:"我9点开始工作。", pron:"Wǒ jiǔ diǎn kāishǐ gōngzuò"},
+    {english:"She starts school at 8.", chinese:"她8点开始上学。", pron:"Tā bā diǎn kāishǐ shàngxué"},
+    {english:"Do you start now?", chinese:"你现在开始吗？", pron:"Nǐ xiànzài kāishǐ ma?"},
+    {english:"We start together.", chinese:"我们一起开始。", pron:"Wǒmen yīqǐ kāishǐ"},
+    {english:"He started yesterday.", chinese:"他昨天开始了。", pron:"Tā zuótiān kāishǐ le"},
+    {english:"I like to start early.", chinese:"我喜欢早开始。", pron:"Wǒ xǐhuān zǎo kāishǐ"},
+    {english:"They start every day.", chinese:"他们每天开始。", pron:"Tāmen měitiān kāishǐ"},
+    {english:"Start carefully.", chinese:"小心开始。", pron:"Xiǎoxīn kāishǐ"},
+    {english:"I am starting now.", chinese:"我现在开始。", pron:"Wǒ xiànzài kāishǐ"},
+    {english:"She starts fast.", chinese:"她开始得很快。", pron:"Tā kāishǐ de hěn kuài"}
+],
+60: [  // Word: Finish / 完成
+    {english:"I finish work at 6.", chinese:"我6点完成工作。", pron:"Wǒ liù diǎn wánchéng gōngzuò"},
+    {english:"She finishes school at 3.", chinese:"她3点放学。", pron:"Tā sān diǎn fàngxué"},
+    {english:"Do you finish now?", chinese:"你现在完成吗？", pron:"Nǐ xiànzài wánchéng ma?"},
+    {english:"We finish together.", chinese:"我们一起完成。", pron:"Wǒmen yīqǐ wánchéng"},
+    {english:"He finished yesterday.", chinese:"他昨天完成了。", pron:"Tā zuótiān wánchéng le"},
+    {english:"I like to finish early.", chinese:"我喜欢早完成。", pron:"Wǒ xǐhuān zǎo wánchéng"},
+    {english:"They finish every day.", chinese:"他们每天完成。", pron:"Tāmen měitiān wánchéng"},
+    {english:"Finish carefully.", chinese:"小心完成。", pron:"Xiǎoxīn wánchéng"},
+    {english:"I am finishing now.", chinese:"我现在完成。", pron:"Wǒ xiànzài wánchéng"},
+    {english:"She finishes quickly.", chinese:"她完成得很快。", pron:"Tā wánchéng de hěn kuài"}
+],
+
+61: [  // Word: Open
+    {english:"I open the window.", chinese:"我打开窗户。", pinyin:"Wǒ dǎkāi chuānghù."},
+    {english:"She opens the door.", chinese:"她开门。", pinyin:"Tā kāi mén."},
+    {english:"Do you open it?", chinese:"你打开它吗？", pinyin:"Nǐ dǎkāi tā ma?"},
+    {english:"We open together.", chinese:"我们一起打开。", pinyin:"Wǒmen yìqǐ dǎkāi."},
+    {english:"He opened yesterday.", chinese:"他昨天打开了。", pinyin:"Tā zuótiān dǎkāi le."},
+    {english:"I like to open gifts.", chinese:"我喜欢打开礼物。", pinyin:"Wǒ xǐhuān dǎkāi lǐwù."},
+    {english:"They open every morning.", chinese:"他们每天早上打开。", pinyin:"Tāmen měitiān zǎoshang dǎkāi."},
+    {english:"Open carefully.", chinese:"小心打开。", pinyin:"Xiǎoxīn dǎkāi."},
+    {english:"I am opening now.", chinese:"我现在正在打开。", pinyin:"Wǒ xiànzài zhèngzài dǎkāi."},
+    {english:"She opens slowly.", chinese:"她慢慢地打开。", pinyin:"Tā màn man de dǎkāi."}
+],
+62: [  // Word: Close
+    {english:"I close the window.", chinese:"我关窗户。", pinyin:"Wǒ guān chuānghù."},
+    {english:"She closes the door.", chinese:"她关门。", pinyin:"Tā guān mén."},
+    {english:"Do you close it?", chinese:"你关它吗？", pinyin:"Nǐ guān tā ma?"},
+    {english:"We close together.", chinese:"我们一起关。", pinyin:"Wǒmen yìqǐ guān."},
+    {english:"He closed yesterday.", chinese:"他昨天关了。", pinyin:"Tā zuótiān guān le."},
+    {english:"I like to close the shop.", chinese:"我喜欢关店。", pinyin:"Wǒ xǐhuān guān diàn."},
+    {english:"They close every night.", chinese:"他们每天晚上关门。", pinyin:"Tāmen měitiān wǎnshang guān mén."},
+    {english:"Close carefully.", chinese:"小心关闭。", pinyin:"Xiǎoxīn guānbì."},
+    {english:"I am closing now.", chinese:"我现在正在关。", pinyin:"Wǒ xiànzài zhèngzài guān."},
+    {english:"She closes quickly.", chinese:"她很快关上。", pinyin:"Tā hěn kuài guān shàng."}
+],
+63: [  // Word: Wait
+    {english:"I wait for the bus.", chinese:"我等公交车。", pinyin:"Wǒ děng gōngjiāochē."},
+    {english:"She waits at the station.", chinese:"她在车站等。", pinyin:"Tā zài chēzhàn děng."},
+    {english:"Do you wait often?", chinese:"你经常等吗？", pinyin:"Nǐ jīngcháng děng ma?"},
+    {english:"We wait together.", chinese:"我们一起等。", pinyin:"Wǒmen yìqǐ děng."},
+    {english:"He waited yesterday.", chinese:"他昨天等了。", pinyin:"Tā zuótiān děng le."},
+    {english:"I like to wait patiently.", chinese:"我喜欢耐心等待。", pinyin:"Wǒ xǐhuān nàixīn děngdài."},
+    {english:"They wait every morning.", chinese:"他们每天早上等。", pinyin:"Tāmen měitiān zǎoshang děng."},
+    {english:"Wait carefully.", chinese:"小心等待。", pinyin:"Xiǎoxīn děngdài."},
+    {english:"I am waiting now.", chinese:"我现在正在等。", pinyin:"Wǒ xiànzài zhèngzài děng."},
+    {english:"She waits quietly.", chinese:"她安静地等。", pinyin:"Tā ānjìng de děng."}
+],
+
+64: [  // Word: Help
+    {english:"I help my friends.", chinese:"我帮助我的朋友。", pinyin:"Wǒ bāngzhù wǒ de péngyǒu."},
+    {english:"She helps her mother.", chinese:"她帮助她的妈妈。", pinyin:"Tā bāngzhù tā de māma."},
+    {english:"Do you help often?", chinese:"你经常帮助吗？", pinyin:"Nǐ jīngcháng bāngzhù ma?"},
+    {english:"We help together.", chinese:"我们一起帮助。", pinyin:"Wǒmen yìqǐ bāngzhù."},
+    {english:"He helped yesterday.", chinese:"他昨天帮了忙。", pinyin:"Tā zuótiān bāng le máng."},
+    {english:"I like to help others.", chinese:"我喜欢帮助别人。", pinyin:"Wǒ xǐhuān bāngzhù biérén."},
+    {english:"They help every day.", chinese:"他们每天帮助别人。", pinyin:"Tāmen měitiān bāngzhù biérén."},
+    {english:"Help carefully.", chinese:"小心帮助。", pinyin:"Xiǎoxīn bāngzhù."},
+    {english:"I am helping now.", chinese:"我现在正在帮助。", pinyin:"Wǒ xiànzài zhèngzài bāngzhù."},
+    {english:"She helps quietly.", chinese:"她安静地帮助。", pinyin:"Tā ānjìng de bāngzhù."}
+],
+
+65: [  // Word: Work
+    {english:"I work every day.", chinese:"我每天工作。", pinyin:"Wǒ měitiān gōngzuò."},
+    {english:"She works in an office.", chinese:"她在办公室工作。", pinyin:"Tā zài bàngōngshì gōngzuò."},
+    {english:"Do you work now?", chinese:"你现在工作吗？", pinyin:"Nǐ xiànzài gōngzuò ma?"},
+    {english:"We work together.", chinese:"我们一起工作。", pinyin:"Wǒmen yìqǐ gōngzuò."},
+    {english:"He worked yesterday.", chinese:"他昨天工作了。", pinyin:"Tā zuótiān gōngzuò le."},
+    {english:"I like to work hard.", chinese:"我喜欢努力工作。", pinyin:"Wǒ xǐhuān nǔlì gōngzuò."},
+    {english:"They work every morning.", chinese:"他们每天早上工作。", pinyin:"Tāmen měitiān zǎoshang gōngzuò."},
+    {english:"Work carefully.", chinese:"小心工作。", pinyin:"Xiǎoxīn gōngzuò."},
+    {english:"I am working now.", chinese:"我现在正在工作。", pinyin:"Wǒ xiànzài zhèngzài gōngzuò."},
+    {english:"She works quickly.", chinese:"她工作很快。", pinyin:"Tā gōngzuò hěn kuài."}
+],
+
+66: [  // Word: Play
+    {english:"I play football every day.", chinese:"我每天踢足球。", pinyin:"Wǒ měitiān tī zúqiú."},
+    {english:"She plays piano.", chinese:"她弹钢琴。", pinyin:"Tā tán gāngqín."},
+    {english:"Do you play often?", chinese:"你经常玩吗？", pinyin:"Nǐ jīngcháng wán ma?"},
+    {english:"We play together.", chinese:"我们一起玩。", pinyin:"Wǒmen yìqǐ wán."},
+    {english:"He played yesterday.", chinese:"他昨天玩了。", pinyin:"Tā zuótiān wán le."},
+    {english:"I like to play games.", chinese:"我喜欢玩游戏。", pinyin:"Wǒ xǐhuān wán yóuxì."},
+    {english:"They play every evening.", chinese:"他们每天晚上玩。", pinyin:"Tāmen měitiān wǎnshang wán."},
+    {english:"Play carefully.", chinese:"小心玩。", pinyin:"Xiǎoxīn wán."},
+    {english:"I am playing now.", chinese:"我现在正在玩。", pinyin:"Wǒ xiànzài zhèngzài wán."},
+    {english:"She plays quietly.", chinese:"她安静地玩。", pinyin:"Tā ānjìng de wán."}
+],
+
+67: [  // Word: Study
+    {english:"I study English every day.", chinese:"我每天学习英语。", pinyin:"Wǒ měitiān xuéxí Yīngyǔ."},
+    {english:"She studies math.", chinese:"她学习数学。", pinyin:"Tā xuéxí shùxué."},
+    {english:"Do you study now?", chinese:"你现在学习吗？", pinyin:"Nǐ xiànzài xuéxí ma?"},
+    {english:"We study together.", chinese:"我们一起学习。", pinyin:"Wǒmen yìqǐ xuéxí."},
+    {english:"He studied yesterday.", chinese:"他昨天学习了。", pinyin:"Tā zuótiān xuéxí le."},
+    {english:"I like to study every night.", chinese:"我喜欢每天晚上学习。", pinyin:"Wǒ xǐhuān měitiān wǎnshang xuéxí."},
+    {english:"They study every morning.", chinese:"他们每天早上学习。", pinyin:"Tāmen měitiān zǎoshang xuéxí."},
+    {english:"Study carefully.", chinese:"认真学习。", pinyin:"Rènzhēn xuéxí."},
+    {english:"I am studying now.", chinese:"我现在正在学习。", pinyin:"Wǒ xiànzài zhèngzài xuéxí."},
+    {english:"She studies quietly.", chinese:"她安静地学习。", pinyin:"Tā ānjìng de xuéxí."}
+],
+
+68: [  // Word: Wait (formal)
+    {english:"I wait for the train.", chinese:"我等火车。", pinyin:"Wǒ děng huǒchē."},
+    {english:"She waits for her friend.", chinese:"她等她的朋友。", pinyin:"Tā děng tā de péngyǒu."},
+    {english:"Do you wait often?", chinese:"你经常等吗？", pinyin:"Nǐ jīngcháng děng ma?"},
+    {english:"We wait together.", chinese:"我们一起等。", pinyin:"Wǒmen yìqǐ děng."},
+    {english:"He waited yesterday.", chinese:"他昨天等了。", pinyin:"Tā zuótiān děng le."},
+    {english:"I like to wait patiently.", chinese:"我喜欢耐心等待。", pinyin:"Wǒ xǐhuān nàixīn děngdài."},
+    {english:"They wait every day.", chinese:"他们每天等。", pinyin:"Tāmen měitiān děng."},
+    {english:"Wait carefully.", chinese:"小心等待。", pinyin:"Xiǎoxīn děngdài."},
+    {english:"I am waiting now.", chinese:"我现在正在等。", pinyin:"Wǒ xiànzài zhèngzài děng."},
+    {english:"She waits quietly.", chinese:"她安静地等。", pinyin:"Tā ānjìng de děng."}
+],
+
+69: [  // Word: Turn
+    {english:"I turn left.", chinese:"我向左转。", pinyin:"Wǒ xiàng zuǒ zhuǎn."},
+    {english:"She turns right.", chinese:"她向右转。", pinyin:"Tā xiàng yòu zhuǎn."},
+    {english:"Do you turn now?", chinese:"你现在转吗？", pinyin:"Nǐ xiànzài zhuǎn ma?"},
+    {english:"We turn together.", chinese:"我们一起转。", pinyin:"Wǒmen yìqǐ zhuǎn."},
+    {english:"He turned yesterday.", chinese:"他昨天转了。", pinyin:"Tā zuótiān zhuǎn le."},
+    {english:"I like to turn carefully.", chinese:"我喜欢小心转弯。", pinyin:"Wǒ xǐhuān xiǎoxīn zhuǎnwān."},
+    {english:"They turn every corner.", chinese:"他们每个拐角都转。", pinyin:"Tāmen měi gè guǎijiǎo dōu zhuǎn."},
+    {english:"Turn carefully.", chinese:"小心转弯。", pinyin:"Xiǎoxīn zhuǎnwān."},
+    {english:"I am turning now.", chinese:"我现在正在转。", pinyin:"Wǒ xiànzài zhèngzài zhuǎn."},
+    {english:"She turns slowly.", chinese:"她慢慢转。", pinyin:"Tā màn man zhuǎn."}
+],
+
+70: [  // Word: Use
+    {english:"I use my phone every day.", chinese:"我每天使用手机。", pinyin:"Wǒ měitiān shǐyòng shǒujī."},
+    {english:"She uses a computer.", chinese:"她使用电脑。", pinyin:"Tā shǐyòng diànnǎo."},
+    {english:"Do you use it?", chinese:"你使用它吗？", pinyin:"Nǐ shǐyòng tā ma?"},
+    {english:"We use together.", chinese:"我们一起使用。", pinyin:"Wǒmen yìqǐ shǐyòng."},
+    {english:"He used it yesterday.", chinese:"他昨天使用了它。", pinyin:"Tā zuótiān shǐyòng le tā."},
+    {english:"I like to use apps.", chinese:"我喜欢使用应用程序。", pinyin:"Wǒ xǐhuān shǐyòng yìngyòng chéngxù."},
+    {english:"They use every day.", chinese:"他们每天使用。", pinyin:"Tāmen měitiān shǐyòng."},
+    {english:"Use carefully.", chinese:"小心使用。", pinyin:"Xiǎoxīn shǐyòng."},
+    {english:"I am using now.", chinese:"我现在正在使用。", pinyin:"Wǒ xiànzài zhèngzài shǐyòng."},
+    {english:"She uses quickly.", chinese:"她快速使用。", pinyin:"Tā kuàisù shǐyòng."}
+],
+71: [  // Word: Buy / 买
+    {english:"I buy fruits every day.", chinese:"我每天买水果。", pron:"Wǒ měitiān mǎi shuǐguǒ"},
+    {english:"She buys clothes.", chinese:"她买衣服。", pron:"Tā mǎi yīfú"},
+    {english:"Do you buy often?", chinese:"你经常买吗？", pron:"Nǐ jīngcháng mǎi ma?"},
+    {english:"We buy together.", chinese:"我们一起买。", pron:"Wǒmen yīqǐ mǎi"},
+    {english:"He bought yesterday.", chinese:"他昨天买了。", pron:"Tā zuótiān mǎi le"},
+    {english:"I like to buy gifts.", chinese:"我喜欢买礼物。", pron:"Wǒ xǐhuān mǎi lǐwù"},
+    {english:"They buy every week.", chinese:"他们每周买。", pron:"Tāmen měi zhōu mǎi"},
+    {english:"Buy carefully.", chinese:"小心购买。", pron:"Xiǎoxīn gòumǎi"},
+    {english:"I am buying now.", chinese:"我现在在买。", pron:"Wǒ xiànzài zài mǎi"},
+    {english:"She buys quickly.", chinese:"她买得很快。", pron:"Tā mǎi de hěn kuài"}
+],
+
+72: [  // Word: Sell / 卖
+    {english:"I sell vegetables every day.", chinese:"我每天卖蔬菜。", pron:"Wǒ měitiān mài shūcài"},
+    {english:"She sells clothes.", chinese:"她卖衣服。", pron:"Tā mài yīfú"},
+    {english:"Do you sell often?", chinese:"你经常卖吗？", pron:"Nǐ jīngcháng mài ma?"},
+    {english:"We sell together.", chinese:"我们一起卖。", pron:"Wǒmen yīqǐ mài"},
+    {english:"He sold yesterday.", chinese:"他昨天卖了。", pron:"Tā zuótiān mài le"},
+    {english:"I like to sell things.", chinese:"我喜欢卖东西。", pron:"Wǒ xǐhuān mài dōngxī"},
+    {english:"They sell every day.", chinese:"他们每天卖。", pron:"Tāmen měitiān mài"},
+    {english:"Sell carefully.", chinese:"小心出售。", pron:"Xiǎoxīn chūshòu"},
+    {english:"I am selling now.", chinese:"我现在在卖。", pron:"Wǒ xiànzài zài mài"},
+    {english:"She sells quickly.", chinese:"她卖得很快。", pron:"Tā mài de hěn kuài"}
+],
+
+73: [  // Word: Eat / 吃
+    {english:"I eat breakfast every day.", chinese:"我每天吃早餐。", pron:"Wǒ měitiān chī zǎocān"},
+    {english:"She eats vegetables.", chinese:"她吃蔬菜。", pron:"Tā chī shūcài"},
+    {english:"Do you eat often?", chinese:"你经常吃吗？", pron:"Nǐ jīngcháng chī ma?"},
+    {english:"We eat together.", chinese:"我们一起吃。", pron:"Wǒmen yīqǐ chī"},
+    {english:"He ate yesterday.", chinese:"他昨天吃了。", pron:"Tā zuótiān chī le"},
+    {english:"I like to eat fruits.", chinese:"我喜欢吃水果。", pron:"Wǒ xǐhuān chī shuǐguǒ"},
+    {english:"They eat every morning.", chinese:"他们每天早上吃。", pron:"Tāmen měitiān zǎoshang chī"},
+    {english:"Eat carefully.", chinese:"小心吃。", pron:"Xiǎoxīn chī"},
+    {english:"I am eating now.", chinese:"我现在在吃。", pron:"Wǒ xiànzài zài chī"},
+    {english:"She eats slowly.", chinese:"她吃得很慢。", pron:"Tā chī de hěn màn"}
+],
+
+74: [  // Word: Drink / 喝
+    {english:"I drink water every day.", chinese:"我每天喝水。", pron:"Wǒ měitiān hē shuǐ"},
+    {english:"She drinks tea.", chinese:"她喝茶。", pron:"Tā hē chá"},
+    {english:"Do you drink coffee?", chinese:"你喝咖啡吗？", pron:"Nǐ hē kāfēi ma?"},
+    {english:"We drink together.", chinese:"我们一起喝。", pron:"Wǒmen yīqǐ hē"},
+    {english:"He drank yesterday.", chinese:"他昨天喝了。", pron:"Tā zuótiān hē le"},
+    {english:"I like to drink juice.", chinese:"我喜欢喝果汁。", pron:"Wǒ xǐhuān hē guǒzhī"},
+    {english:"They drink every morning.", chinese:"他们每天早上喝。", pron:"Tāmen měitiān zǎoshang hē"},
+    {english:"Drink carefully.", chinese:"小心喝。", pron:"Xiǎoxīn hē"},
+    {english:"I am drinking now.", chinese:"我现在在喝。", pron:"Wǒ xiànzài zài hē"},
+    {english:"She drinks slowly.", chinese:"她喝得很慢。", pron:"Tā hē de hěn màn"}
+],
+
+75: [  // Word: Sleep / 睡觉
+    {english:"I sleep 8 hours every night.", chinese:"我每晚睡8个小时。", pron:"Wǒ měi wǎn shuì bā gè xiǎoshí"},
+    {english:"She sleeps early.", chinese:"她早睡。", pron:"Tā zǎo shuì"},
+    {english:"Do you sleep well?", chinese:"你睡得好吗？", pron:"Nǐ shuì de hǎo ma?"},
+    {english:"We sleep together.", chinese:"我们一起睡。", pron:"Wǒmen yīqǐ shuì"},
+    {english:"He slept yesterday.", chinese:"他昨天睡了。", pron:"Tā zuótiān shuì le"},
+    {english:"I like to sleep late.", chinese:"我喜欢晚睡。", pron:"Wǒ xǐhuān wǎn shuì"},
+    {english:"They sleep every night.", chinese:"他们每晚睡觉。", pron:"Tāmen měi wǎn shuìjiào"},
+    {english:"Sleep carefully.", chinese:"睡觉要小心。", pron:"Shuìjiào yào xiǎoxīn"},
+    {english:"I am sleeping now.", chinese:"我现在在睡觉。", pron:"Wǒ xiànzài zài shuìjiào"},
+    {english:"She sleeps quietly.", chinese:"她安静地睡觉。", pron:"Tā ānjìng de shuìjiào"}
+],
+
+76: [  // Word: Walk / 走
+    {english:"I walk to work every day.", chinese:"我每天走路去上班。", pron:"Wǒ měitiān zǒulù qù shàngbān"},
+    {english:"She walks in the park.", chinese:"她在公园散步。", pron:"Tā zài gōngyuán sànbù"},
+    {english:"Do you walk often?", chinese:"你经常走路吗？", pron:"Nǐ jīngcháng zǒulù ma?"},
+    {english:"We walk together.", chinese:"我们一起走。", pron:"Wǒmen yīqǐ zǒu"},
+    {english:"He walked yesterday.", chinese:"他昨天走路了。", pron:"Tā zuótiān zǒulù le"},
+    {english:"I like to walk in the morning.", chinese:"我喜欢早上散步。", pron:"Wǒ xǐhuān zǎoshang sànbù"},
+    {english:"They walk every day.", chinese:"他们每天走路。", pron:"Tāmen měitiān zǒulù"},
+    {english:"Walk carefully.", chinese:"走路小心。", pron:"Zǒulù xiǎoxīn"},
+    {english:"I am walking now.", chinese:"我现在在走。", pron:"Wǒ xiànzài zài zǒu"},
+    {english:"She walks slowly.", chinese:"她走得很慢。", pron:"Tā zǒu de hěn màn"}
+],
+
+77: [  // Word: Run / 跑
+    {english:"I run every morning.", chinese:"我每天早上跑步。", pron:"Wǒ měitiān zǎoshang pǎobù"},
+    {english:"She runs fast.", chinese:"她跑得很快。", pron:"Tā pǎo de hěn kuài"},
+    {english:"Do you run often?", chinese:"你经常跑步吗？", pron:"Nǐ jīngcháng pǎobù ma?"},
+    {english:"We run together.", chinese:"我们一起跑步。", pron:"Wǒmen yīqǐ pǎobù"},
+    {english:"He ran yesterday.", chinese:"他昨天跑步了。", pron:"Tā zuótiān pǎobù le"},
+    {english:"I like to run in park.", chinese:"我喜欢在公园跑步。", pron:"Wǒ xǐhuān zài gōngyuán pǎobù"},
+    {english:"They run every day.", chinese:"他们每天跑步。", pron:"Tāmen měitiān pǎobù"},
+    {english:"Run carefully.", chinese:"跑步小心。", pron:"Pǎobù xiǎoxīn"},
+    {english:"I am running now.", chinese:"我现在在跑步。", pron:"Wǒ xiànzài zài pǎobù"},
+    {english:"She runs quietly.", chinese:"她安静地跑步。", pron:"Tā ānjìng de pǎobù"}
+],
+
+78: [  // Word: Drive / 开车
+    {english:"I drive to work every day.", chinese:"我每天开车去上班。", pron:"Wǒ měitiān kāichē qù shàngbān"},
+    {english:"She drives carefully.", chinese:"她开车很小心。", pron:"Tā kāichē hěn xiǎoxīn"},
+    {english:"Do you drive often?", chinese:"你经常开车吗？", pron:"Nǐ jīngcháng kāichē ma?"},
+    {english:"We drive together.", chinese:"我们一起开车。", pron:"Wǒmen yīqǐ kāichē"},
+    {english:"He drove yesterday.", chinese:"他昨天开车了。", pron:"Tā zuótiān kāichē le"},
+    {english:"I like to drive fast.", chinese:"我喜欢开快车。", pron:"Wǒ xǐhuān kāi kuài chē"},
+    {english:"They drive every day.", chinese:"他们每天开车。", pron:"Tāmen měitiān kāichē"},
+    {english:"Drive carefully.", chinese:"开车小心。", pron:"Kāichē xiǎoxīn"},
+    {english:"I am driving now.", chinese:"我现在在开车。", pron:"Wǒ xiànzài zài kāichē"},
+    {english:"She drives slowly.", chinese:"她开车很慢。", pron:"Tā kāichē hěn màn"}
+],
+
+79: [  // Word: Teach / 教
+    {english:"I teach English.", chinese:"我教英语。", pron:"Wǒ jiāo yīngyǔ"},
+    {english:"She teaches math.", chinese:"她教数学。", pron:"Tā jiāo shùxué"},
+    {english:"Do you teach now?", chinese:"你现在教吗？", pron:"Nǐ xiànzài jiāo ma?"},
+    {english:"We teach together.", chinese:"我们一起教。", pron:"Wǒmen yīqǐ jiāo"},
+    {english:"He taught yesterday.", chinese:"他昨天教了。", pron:"Tā zuótiān jiāo le"},
+    {english:"I like to teach children.", chinese:"我喜欢教孩子。", pron:"Wǒ xǐhuān jiāo háizi"},
+    {english:"They teach every day.", chinese:"他们每天教。", pron:"Tāmen měitiān jiāo"},
+    {english:"Teach carefully.", chinese:"教的时候要小心。", pron:"Jiāo de shíhòu yào xiǎoxīn"},
+    {english:"I am teaching now.", chinese:"我现在在教。", pron:"Wǒ xiànzài zài jiāo"},
+    {english:"She teaches quietly.", chinese:"她安静地教。", pron:"Tā ānjìng de jiāo"}
+],
+
+80: [  // Word: Learn / 学
+    {english:"I learn chinese every day.", chinese:"我每天学俄语。", pron:"Wǒ měitiān xué éyǔ"},
+    {english:"She learns quickly.", chinese:"她学得很快。", pron:"Tā xué de hěn kuài"},
+    {english:"Do you learn often?", chinese:"你经常学习吗？", pron:"Nǐ jīngcháng xuéxí ma?"},
+    {english:"We learn together.", chinese:"我们一起学。", pron:"Wǒmen yīqǐ xué"},
+    {english:"He learned yesterday.", chinese:"他昨天学了。", pron:"Tā zuótiān xué le"},
+    {english:"I like to learn new things.", chinese:"我喜欢学习新东西。", pron:"Wǒ xǐhuān xuéxí xīn dōngxī"},
+    {english:"They learn every day.", chinese:"他们每天学习。", pron:"Tāmen měitiān xuéxí"},
+    {english:"Learn carefully.", chinese:"学习要认真。", pron:"Xuéxí yào rènzhēn"},
+    {english:"I am learning now.", chinese:"我现在在学习。", pron:"Wǒ xiànzài zài xuéxí"},
+    {english:"She learns quietly.", chinese:"她安静地学习。", pron:"Tā ānjìng de xuéxí"}
+],
+
+81: [  // Word: Read
+    {english:"I read books every day.", chinese:"我每天读书。", pinyin:"Wǒ měitiān dú shū."},
+    {english:"She reads newspapers.", chinese:"她读报纸。", pinyin:"Tā dú bàozhǐ."},
+    {english:"Do you read often?", chinese:"你经常读吗？", pinyin:"Nǐ jīngcháng dú ma?"},
+    {english:"We read together.", chinese:"我们一起读。", pinyin:"Wǒmen yìqǐ dú."},
+    {english:"He read yesterday.", chinese:"他昨天读了书。", pinyin:"Tā zuótiān dú le shū."},
+    {english:"I like to read stories.", chinese:"我喜欢读故事。", pinyin:"Wǒ xǐhuān dú gùshì."},
+    {english:"They read every night.", chinese:"他们每天晚上读书。", pinyin:"Tāmen měitiān wǎnshang dú shū."},
+    {english:"Read carefully.", chinese:"认真读。", pinyin:"Rènzhēn dú."},
+    {english:"I am reading now.", chinese:"我现在正在读书。", pinyin:"Wǒ xiànzài zhèngzài dú shū."},
+    {english:"She reads slowly.", chinese:"她慢慢地读。", pinyin:"Tā màn man de dú."}
+],
+
+82: [  // Word: Write
+    {english:"I write letters every day.", chinese:"我每天写信。", pinyin:"Wǒ měitiān xiě xìn."},
+    {english:"She writes notes.", chinese:"她写笔记。", pinyin:"Tā xiě bǐjì."},
+    {english:"Do you write often?", chinese:"你经常写吗？", pinyin:"Nǐ jīngcháng xiě ma?"},
+    {english:"We write together.", chinese:"我们一起写。", pinyin:"Wǒmen yìqǐ xiě."},
+    {english:"He wrote yesterday.", chinese:"他昨天写了。", pinyin:"Tā zuótiān xiě le."},
+    {english:"I like to write stories.", chinese:"我喜欢写故事。", pinyin:"Wǒ xǐhuān xiě gùshì."},
+    {english:"They write every day.", chinese:"他们每天写作。", pinyin:"Tāmen měitiān xiězuò."},
+    {english:"Write carefully.", chinese:"认真写。", pinyin:"Rènzhēn xiě."},
+    {english:"I am writing now.", chinese:"我现在正在写。", pinyin:"Wǒ xiànzài zhèngzài xiě."},
+    {english:"She writes quickly.", chinese:"她写得很快。", pinyin:"Tā xiě de hěn kuài."}
+],
+
+83: [  // Word: Watch
+    {english:"I watch TV every day.", chinese:"我每天看电视。", pinyin:"Wǒ měitiān kàn diànshì."},
+    {english:"She watches movies.", chinese:"她看电影。", pinyin:"Tā kàn diànyǐng."},
+    {english:"Do you watch often?", chinese:"你经常看吗？", pinyin:"Nǐ jīngcháng kàn ma?"},
+    {english:"We watch together.", chinese:"我们一起看。", pinyin:"Wǒmen yìqǐ kàn."},
+    {english:"He watched yesterday.", chinese:"他昨天看了。", pinyin:"Tā zuótiān kàn le."},
+    {english:"I like to watch cartoons.", chinese:"我喜欢看卡通片。", pinyin:"Wǒ xǐhuān kàn kǎtōng piàn."},
+    {english:"They watch every evening.", chinese:"他们每天晚上看。", pinyin:"Tāmen měitiān wǎnshang kàn."},
+    {english:"Watch carefully.", chinese:"认真看。", pinyin:"Rènzhēn kàn."},
+    {english:"I am watching now.", chinese:"我现在正在看。", pinyin:"Wǒ xiànzài zhèngzài kàn."},
+    {english:"She watches quietly.", chinese:"她安静地看。", pinyin:"Tā ānjìng de kàn."}
+],
+
+84: [  // Word: Listen
+    {english:"I listen to music every day.", chinese:"我每天听音乐。", pinyin:"Wǒ měitiān tīng yīnyuè."},
+    {english:"She listens to radio.", chinese:"她听收音机。", pinyin:"Tā tīng shōuyīnjī."},
+    {english:"Do you listen often?", chinese:"你经常听吗？", pinyin:"Nǐ jīngcháng tīng ma?"},
+    {english:"We listen together.", chinese:"我们一起听。", pinyin:"Wǒmen yìqǐ tīng."},
+    {english:"He listened yesterday.", chinese:"他昨天听了。", pinyin:"Tā zuótiān tīng le."},
+    {english:"I like to listen to songs.", chinese:"我喜欢听歌曲。", pinyin:"Wǒ xǐhuān tīng gēqǔ."},
+    {english:"They listen every day.", chinese:"他们每天听。", pinyin:"Tāmen měitiān tīng."},
+    {english:"Listen carefully.", chinese:"认真听。", pinyin:"Rènzhēn tīng."},
+    {english:"I am listening now.", chinese:"我现在正在听。", pinyin:"Wǒ xiànzài zhèngzài tīng."},
+    {english:"She listens quietly.", chinese:"她安静地听。", pinyin:"Tā ānjìng de tīng."}
+],
+
+85: [  // Word: Speak
+    {english:"I speak English.", chinese:"我说英语。", pinyin:"Wǒ shuō Yīngyǔ."},
+    {english:"She speaks Mandarin.", chinese:"她说普通话。", pinyin:"Tā shuō Pǔtōnghuà."},
+    {english:"Do you speak now?", chinese:"你现在说话吗？", pinyin:"Nǐ xiànzài shuōhuà ma?"},
+    {english:"We speak together.", chinese:"我们一起说话。", pinyin:"Wǒmen yìqǐ shuōhuà."},
+    {english:"He spoke yesterday.", chinese:"他昨天说了话。", pinyin:"Tā zuótiān shuō le huà."},
+    {english:"I like to speak with friends.", chinese:"我喜欢和朋友说话。", pinyin:"Wǒ xǐhuān hé péngyǒu shuōhuà."},
+    {english:"They speak every day.", chinese:"他们每天说话。", pinyin:"Tāmen měitiān shuōhuà."},
+    {english:"Speak carefully.", chinese:"说话小心。", pinyin:"Shuōhuà xiǎoxīn."},
+    {english:"I am speaking now.", chinese:"我现在正在说话。", pinyin:"Wǒ xiànzài zhèngzài shuōhuà."},
+    {english:"She speaks quietly.", chinese:"她轻声说话。", pinyin:"Tā qīngshēng shuōhuà."}
+],
+
+86: [  // Word: Ask
+    {english:"I ask questions.", chinese:"我提问题。", pinyin:"Wǒ tí wèntí."},
+    {english:"She asks for help.", chinese:"她请求帮助。", pinyin:"Tā qǐngqiú bāngzhù."},
+    {english:"Do you ask often?", chinese:"你经常问吗？", pinyin:"Nǐ jīngcháng wèn ma?"},
+    {english:"We ask together.", chinese:"我们一起问。", pinyin:"Wǒmen yìqǐ wèn."},
+    {english:"He asked yesterday.", chinese:"他昨天问了。", pinyin:"Tā zuótiān wèn le."},
+    {english:"I like to ask questions.", chinese:"我喜欢提问题。", pinyin:"Wǒ xǐhuān tí wèntí."},
+    {english:"They ask every day.", chinese:"他们每天问问题。", pinyin:"Tāmen měitiān wèn wèntí."},
+    {english:"Ask carefully.", chinese:"小心问。", pinyin:"Xiǎoxīn wèn."},
+    {english:"I am asking now.", chinese:"我现在正在问。", pinyin:"Wǒ xiànzài zhèngzài wèn."},
+    {english:"She asks politely.", chinese:"她礼貌地问。", pinyin:"Tā lǐmào de wèn."}
+],
+
+87: [  // Word: Answer
+    {english:"I answer questions.", chinese:"我回答问题。", pinyin:"Wǒ huídá wèntí."},
+    {english:"She answers quickly.", chinese:"她迅速回答。", pinyin:"Tā xùnsù huídá."},
+    {english:"Do you answer often?", chinese:"你经常回答吗？", pinyin:"Nǐ jīngcháng huídá ma?"},
+    {english:"We answer together.", chinese:"我们一起回答。", pinyin:"Wǒmen yìqǐ huídá."},
+    {english:"He answered yesterday.", chinese:"他昨天回答了。", pinyin:"Tā zuótiān huídá le."},
+    {english:"I like to answer questions.", chinese:"我喜欢回答问题。", pinyin:"Wǒ xǐhuān huídá wèntí."},
+    {english:"They answer every day.", chinese:"他们每天回答问题。", pinyin:"Tāmen měitiān huídá wèntí."},
+    {english:"Answer carefully.", chinese:"认真回答。", pinyin:"Rènzhēn huídá."},
+    {english:"I am answering now.", chinese:"我现在正在回答。", pinyin:"Wǒ xiànzài zhèngzài huídá."},
+    {english:"She answers politely.", chinese:"她礼貌地回答。", pinyin:"Tā lǐmào de huídá."}
+],
+
+88: [  // Word: Call
+    {english:"I call my friend.", chinese:"我打电话给朋友。", pinyin:"Wǒ dǎ diànhuà gěi péngyǒu."},
+    {english:"She calls her mother.", chinese:"她打电话给妈妈。", pinyin:"Tā dǎ diànhuà gěi māma."},
+    {english:"Do you call often?", chinese:"你经常打电话吗？", pinyin:"Nǐ jīngcháng dǎ diànhuà ma?"},
+    {english:"We call together.", chinese:"我们一起打电话。", pinyin:"Wǒmen yìqǐ dǎ diànhuà."},
+    {english:"He called yesterday.", chinese:"他昨天打电话了。", pinyin:"Tā zuótiān dǎ diànhuà le."},
+    {english:"I like to call family.", chinese:"我喜欢给家人打电话。", pinyin:"Wǒ xǐhuān gěi jiārén dǎ diànhuà."},
+    {english:"They call every day.", chinese:"他们每天打电话。", pinyin:"Tāmen měitiān dǎ diànhuà."},
+    {english:"Call carefully.", chinese:"小心打电话。", pinyin:"Xiǎoxīn dǎ diànhuà."},
+    {english:"I am calling now.", chinese:"我现在正在打电话。", pinyin:"Wǒ xiànzài zhèngzài dǎ diànhuà."},
+    {english:"She calls quietly.", chinese:"她轻声打电话。", pinyin:"Tā qīngshēng dǎ diànhuà."}
+],
+
+89: [  // Word: Open
+    {english:"I open the book.", chinese:"我打开书。", pinyin:"Wǒ dǎkāi shū."},
+    {english:"She opens the box.", chinese:"她打开盒子。", pinyin:"Tā dǎkāi hézi."},
+    {english:"Do you open the door?", chinese:"你开门吗？", pinyin:"Nǐ kāi mén ma?"},
+    {english:"We open together.", chinese:"我们一起打开。", pinyin:"Wǒmen yìqǐ dǎkāi."},
+    {english:"He opened it yesterday.", chinese:"他昨天打开了它。", pinyin:"Tā zuótiān dǎkāi le tā."},
+    {english:"I like to open presents.", chinese:"我喜欢打开礼物。", pinyin:"Wǒ xǐhuān dǎkāi lǐwù."},
+    {english:"They open every morning.", chinese:"他们每天早上打开。", pinyin:"Tāmen měitiān zǎoshang dǎkāi."},
+    {english:"Open carefully.", chinese:"小心打开。", pinyin:"Xiǎoxīn dǎkāi."},
+    {english:"I am opening now.", chinese:"我现在正在打开。", pinyin:"Wǒ xiànzài zhèngzài dǎkāi."},
+    {english:"She opens slowly.", chinese:"她慢慢打开。", pinyin:"Tā màn man dǎkāi."}
+],
+
+90: [  // Word: Close
+    {english:"I close the book.", chinese:"我合上书。", pinyin:"Wǒ hé shàng shū."},
+    {english:"She closes the window.", chinese:"她关窗户。", pinyin:"Tā guān chuānghù."},
+    {english:"Do you close the door?", chinese:"你关门吗？", pinyin:"Nǐ guān mén ma?"},
+    {english:"We close together.", chinese:"我们一起关。", pinyin:"Wǒmen yìqǐ guān."},
+    {english:"He closed it yesterday.", chinese:"他昨天关上了。", pinyin:"Tā zuótiān guān shàng le."},
+    {english:"I like to close the shop.", chinese:"我喜欢关店。", pinyin:"Wǒ xǐhuān guān diàn."},
+    {english:"They close every night.", chinese:"他们每天晚上关。", pinyin:"Tāmen měitiān wǎnshang guān."},
+    {english:"Close carefully.", chinese:"小心关闭。", pinyin:"Xiǎoxīn guānbì."},
+    {english:"I am closing now.", chinese:"我现在正在关。", pinyin:"Wǒ xiànzài zhèngzài guān."},
+    {english:"She closes quickly.", chinese:"她很快关上。", pinyin:"Tā hěn kuài guān shàng."}
+],
+
+
+91: [  // Word: Open
+    {english:"I open the book.", chinese:"我打开书。", pinyin:"Wǒ dǎkāi shū."},
+    {english:"She opens the box.", chinese:"她打开盒子。", pinyin:"Tā dǎkāi hézi."},
+    {english:"Do you open the door?", chinese:"你开门吗？", pinyin:"Nǐ kāi mén ma?"},
+    {english:"We open together.", chinese:"我们一起打开。", pinyin:"Wǒmen yìqǐ dǎkāi."},
+    {english:"He opened it yesterday.", chinese:"他昨天打开了它。", pinyin:"Tā zuótiān dǎkāi le tā."},
+    {english:"I like to open presents.", chinese:"我喜欢打开礼物。", pinyin:"Wǒ xǐhuān dǎkāi lǐwù."},
+    {english:"They open every morning.", chinese:"他们每天早上打开。", pinyin:"Tāmen měitiān zǎoshang dǎkāi."},
+    {english:"Open carefully.", chinese:"小心打开。", pinyin:"Xiǎoxīn dǎkāi."},
+    {english:"I am opening now.", chinese:"我现在正在打开。", pinyin:"Wǒ xiànzài zhèngzài dǎkāi."},
+    {english:"She opens slowly.", chinese:"她慢慢打开。", pinyin:"Tā màn man dǎkāi."}
+],
+
+92: [  // Word: Close
+    {english:"I close the book.", chinese:"我合上书。", pinyin:"Wǒ hé shàng shū."},
+    {english:"She closes the window.", chinese:"她关窗户。", pinyin:"Tā guān chuānghù."},
+    {english:"Do you close the door?", chinese:"你关门吗？", pinyin:"Nǐ guān mén ma?"},
+    {english:"We close together.", chinese:"我们一起关。", pinyin:"Wǒmen yìqǐ guān."},
+    {english:"He closed it yesterday.", chinese:"他昨天关上了。", pinyin:"Tā zuótiān guān shàng le."},
+    {english:"I like to close the shop.", chinese:"我喜欢关店。", pinyin:"Wǒ xǐhuān guān diàn."},
+    {english:"They close every night.", chinese:"他们每晚关门。", pinyin:"Tāmen měi wǎn guān mén."},
+    {english:"Close carefully.", chinese:"小心关闭。", pinyin:"Xiǎoxīn guānbì."},
+    {english:"I am closing now.", chinese:"我现在正在关门。", pinyin:"Wǒ xiànzài zhèngzài guān mén."},
+    {english:"She closes quickly.", chinese:"她很快关上。", pinyin:"Tā hěn kuài guān shàng."}
+],
+
+93: [  // Word: Buy
+    {english:"I buy fruits every day.", chinese:"我每天买水果。", pinyin:"Wǒ měitiān mǎi shuǐguǒ."},
+    {english:"She buys clothes.", chinese:"她买衣服。", pinyin:"Tā mǎi yīfú."},
+    {english:"Do you buy often?", chinese:"你经常买吗？", pinyin:"Nǐ jīngcháng mǎi ma?"},
+    {english:"We buy together.", chinese:"我们一起买。", pinyin:"Wǒmen yìqǐ mǎi."},
+    {english:"He bought yesterday.", chinese:"他昨天买了。", pinyin:"Tā zuótiān mǎi le."},
+    {english:"I like to buy gifts.", chinese:"我喜欢买礼物。", pinyin:"Wǒ xǐhuān mǎi lǐwù."},
+    {english:"They buy every week.", chinese:"他们每周都买。", pinyin:"Tāmen měi zhōu dōu mǎi."},
+    {english:"Buy carefully.", chinese:"小心购买。", pinyin:"Xiǎoxīn gòumǎi."},
+    {english:"I am buying now.", chinese:"我现在正在买。", pinyin:"Wǒ xiànzài zhèngzài mǎi."},
+    {english:"She buys quickly.", chinese:"她很快买好。", pinyin:"Tā hěn kuài mǎi hǎo."}
+],
+
+94: [  // Word: Sell
+    {english:"I sell vegetables every day.", chinese:"我每天卖蔬菜。", pinyin:"Wǒ měitiān mài shūcài."},
+    {english:"She sells clothes.", chinese:"她卖衣服。", pinyin:"Tā mài yīfú."},
+    {english:"Do you sell often?", chinese:"你经常卖吗？", pinyin:"Nǐ jīngcháng mài ma?"},
+    {english:"We sell together.", chinese:"我们一起卖。", pinyin:"Wǒmen yìqǐ mài."},
+    {english:"He sold yesterday.", chinese:"他昨天卖了。", pinyin:"Tā zuótiān mài le."},
+    {english:"I like to sell things.", chinese:"我喜欢卖东西。", pinyin:"Wǒ xǐhuān mài dōngxī."},
+    {english:"They sell every day.", chinese:"他们每天卖东西。", pinyin:"Tāmen měitiān mài dōngxī."},
+    {english:"Sell carefully.", chinese:"小心卖。", pinyin:"Xiǎoxīn mài."},
+    {english:"I am selling now.", chinese:"我现在正在卖。", pinyin:"Wǒ xiànzài zhèngzài mài."},
+    {english:"She sells quickly.", chinese:"她很快卖出。", pinyin:"Tā hěn kuài mài chū."}
+],
+
+95: [  // Word: Eat
+    {english:"I eat breakfast every day.", chinese:"我每天吃早餐。", pinyin:"Wǒ měitiān chī zǎocān."},
+    {english:"She eats vegetables.", chinese:"她吃蔬菜。", pinyin:"Tā chī shūcài."},
+    {english:"Do you eat often?", chinese:"你经常吃吗？", pinyin:"Nǐ jīngcháng chī ma?"},
+    {english:"We eat together.", chinese:"我们一起吃。", pinyin:"Wǒmen yìqǐ chī."},
+    {english:"He ate yesterday.", chinese:"他昨天吃了。", pinyin:"Tā zuótiān chī le."},
+    {english:"I like to eat fruits.", chinese:"我喜欢吃水果。", pinyin:"Wǒ xǐhuān chī shuǐguǒ."},
+    {english:"They eat every morning.", chinese:"他们每天早上吃。", pinyin:"Tāmen měitiān zǎoshang chī."},
+    {english:"Eat carefully.", chinese:"小心吃。", pinyin:"Xiǎoxīn chī."},
+    {english:"I am eating now.", chinese:"我现在正在吃。", pinyin:"Wǒ xiànzài zhèngzài chī."},
+    {english:"She eats slowly.", chinese:"她慢慢吃。", pinyin:"Tā màn man chī."}
+],
+
+96: [  // Word: Drink
+    {english:"I drink water every day.", chinese:"我每天喝水。", pinyin:"Wǒ měitiān hē shuǐ."},
+    {english:"She drinks tea.", chinese:"她喝茶。", pinyin:"Tā hē chá."},
+    {english:"Do you drink coffee?", chinese:"你喝咖啡吗？", pinyin:"Nǐ hē kāfēi ma?"},
+    {english:"We drink together.", chinese:"我们一起喝。", pinyin:"Wǒmen yìqǐ hē."},
+    {english:"He drank yesterday.", chinese:"他昨天喝了。", pinyin:"Tā zuótiān hē le."},
+    {english:"I like to drink juice.", chinese:"我喜欢喝果汁。", pinyin:"Wǒ xǐhuān hē guǒzhī."},
+    {english:"They drink every morning.", chinese:"他们每天早上喝。", pinyin:"Tāmen měitiān zǎoshang hē."},
+    {english:"Drink carefully.", chinese:"小心喝。", pinyin:"Xiǎoxīn hē."},
+    {english:"I am drinking now.", chinese:"我现在正在喝。", pinyin:"Wǒ xiànzài zhèngzài hē."},
+    {english:"She drinks slowly.", chinese:"她慢慢喝。", pinyin:"Tā màn man hē."}
+],
+
+97: [  // Word: Sleep
+    {english:"I sleep 8 hours every night.", chinese:"我每晚睡8小时。", pinyin:"Wǒ měi wǎn shuì 8 xiǎoshí."},
+    {english:"She sleeps early.", chinese:"她早睡。", pinyin:"Tā zǎo shuì."},
+    {english:"Do you sleep well?", chinese:"你睡得好吗？", pinyin:"Nǐ shuì de hǎo ma?"},
+    {english:"We sleep together.", chinese:"我们一起睡。", pinyin:"Wǒmen yìqǐ shuì."},
+    {english:"He slept yesterday.", chinese:"他昨天睡了。", pinyin:"Tā zuótiān shuì le."},
+    {english:"I like to sleep late.", chinese:"我喜欢晚睡。", pinyin:"Wǒ xǐhuān wǎn shuì."},
+    {english:"They sleep every night.", chinese:"他们每晚睡觉。", pinyin:"Tāmen měi wǎn shuìjiào."},
+    {english:"Sleep carefully.", chinese:"好好睡。", pinyin:"Hǎohǎo shuì."},
+    {english:"I am sleeping now.", chinese:"我现在正在睡。", pinyin:"Wǒ xiànzài zhèngzài shuì."},
+    {english:"She sleeps quietly.", chinese:"她安静地睡。", pinyin:"Tā ānjìng de shuì."}
+],
+
+98: [  // Word: Walk
+    {english:"I walk to work every day.", chinese:"我每天走路去上班。", pinyin:"Wǒ měitiān zǒulù qù shàngbān."},
+    {english:"She walks in the park.", chinese:"她在公园散步。", pinyin:"Tā zài gōngyuán sànbù."},
+    {english:"Do you walk often?", chinese:"你经常走路吗？", pinyin:"Nǐ jīngcháng zǒulù ma?"},
+    {english:"We walk together.", chinese:"我们一起走。", pinyin:"Wǒmen yìqǐ zǒu."},
+    {english:"He walked yesterday.", chinese:"他昨天走了。", pinyin:"Tā zuótiān zǒu le."},
+    {english:"I like to walk in the morning.", chinese:"我喜欢早上散步。", pinyin:"Wǒ xǐhuān zǎoshang sànbù."},
+    {english:"They walk every day.", chinese:"他们每天走路。", pinyin:"Tāmen měitiān zǒulù."},
+    {english:"Walk carefully.", chinese:"小心走。", pinyin:"Xiǎoxīn zǒu."},
+    {english:"I am walking now.", chinese:"我现在正在走。", pinyin:"Wǒ xiànzài zhèngzài zǒu."},
+    {english:"She walks slowly.", chinese:"她慢慢走。", pinyin:"Tā màn man zǒu."}
+],
+
+99: [  // Word: Run
+    {english:"I run every morning.", chinese:"我每天早上跑步。", pinyin:"Wǒ měitiān zǎoshang pǎobù."},
+    {english:"She runs fast.", chinese:"她跑得很快。", pinyin:"Tā pǎo de hěn kuài."},
+    {english:"Do you run often?", chinese:"你经常跑步吗？", pinyin:"Nǐ jīngcháng pǎobù ma?"},
+    {english:"We run together.", chinese:"我们一起跑。", pinyin:"Wǒmen yìqǐ pǎo."},
+    {english:"He ran yesterday.", chinese:"他昨天跑了。", pinyin:"Tā zuótiān pǎo le."},
+    {english:"I like to run in park.", chinese:"我喜欢在公园跑步。", pinyin:"Wǒ xǐhuān zài gōngyuán pǎobù."},
+    {english:"They run every day.", chinese:"他们每天跑步。", pinyin:"Tāmen měitiān pǎobù."},
+    {english:"Run carefully.", chinese:"小心跑。", pinyin:"Xiǎoxīn pǎo."},
+    {english:"I am running now.", chinese:"我现在正在跑。", pinyin:"Wǒ xiànzài zhèngzài pǎo."},
+    {english:"She runs quietly.", chinese:"她悄悄地跑。", pinyin:"Tā qiāoqiāo de pǎo."}
+],
+
+100: [  // Word: Drive
+    {english:"I drive to work every day.", chinese:"我每天开车去上班。", pinyin:"Wǒ měitiān kāichē qù shàngbān."},
+    {english:"She drives carefully.", chinese:"她小心开车。", pinyin:"Tā xiǎoxīn kāichē."},
+    {english:"Do you drive often?", chinese:"你经常开车吗？", pinyin:"Nǐ jīngcháng kāichē ma?"},
+    {english:"We drive together.", chinese:"我们一起开车。", pinyin:"Wǒmen yìqǐ kāichē."},
+    {english:"He drove yesterday.", chinese:"他昨天开车了。", pinyin:"Tā zuótiān kāichē le."},
+    {english:"I like to drive fast.", chinese:"我喜欢开快车。", pinyin:"Wǒ xǐhuān kāi kuài chē."},
+    {english:"They drive every day.", chinese:"他们每天开车。", pinyin:"Tāmen měitiān kāichē."},
+    {english:"Drive carefully.", chinese:"小心开车。", pinyin:"Xiǎoxīn kāichē."},
+    {english:"I am driving now.", chinese:"我现在正在开车。", pinyin:"Wǒ xiànzài zhèngzài kāichē."},
+    {english:"She drives slowly.", chinese:"她慢慢开车。", pinyin:"Tā màn man kāichē."}
+]
+
+
+
+};
+
+
+
+
+
+
+
+
+
+/* ---------- LIVE DATE & TIME ---------- */
+function updateDateTime() {
+    const now = new Date();
+    const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    document.getElementById("dayDate").textContent =
+        days[now.getDay()] + ", " + now.toLocaleDateString();
+    document.getElementById("timeNow").textContent =
+        now.toLocaleTimeString();
+}
+setInterval(updateDateTime, 1000);
+updateDateTime();
+
+/* ---------- LESSON SYSTEM ---------- */
+const TOTAL = 100;
+const lessonsGrid = document.getElementById("lessonsGrid");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+
+// UNLOCK ALL LESSONS
+const unlocked = TOTAL;
+let completed = JSON.parse(localStorage.getItem("completedLessons")) || [];
+
+function updateProgress() {
+    const percent = Math.round((completed.length / TOTAL) * 100);
+    progressBar.style.width = percent + "%";
+    progressBar.textContent = percent + "%";
+    progressText.textContent = `${completed.length} of ${TOTAL} lessons completed`;
+}
+updateProgress();
+
+
+/* ---------- CREATE LESSONS ---------- */
+for (let i = 1; i <= TOTAL; i++) {
+    const card = document.createElement("div");
+    card.className = "lesson-logo";
+    card.innerHTML = `Lesson ${i}<span>Available</span>`;
+    card.onclick = () => openLesson(i);
+    lessonsGrid.appendChild(card);
+}
+
+/* ---------- OPEN LESSON ---------- */
+function openLesson(num) {
+    lessonsGrid.style.display = "none";
+    const lessonContent = document.getElementById("lessonContent");
+    lessonContent.style.display = "block";
+    document.getElementById("lessonTitle").textContent = `Lesson ${num}`;
+
+    const phrasesDiv = document.getElementById("lessonPhrases");
+    phrasesDiv.innerHTML = "";
+
+    const phrases = lessonsData[num] || [{ english: "Content coming soon!", chinese: "", pron: "" }];
+    phrases.forEach(p => {
+        const phraseDiv = document.createElement("div");
+        phraseDiv.className = "phrase";
+        phraseDiv.innerHTML = `
+            <div class="english">${p.english}</div>
+            <div class="chinese">${p.chinese}</div>
+            <div class="pronunciation">${p.pron || p.pinyin || ""}</div>
+           
+            <button class="speak-btn">🔊</button>
+        `;
+        phrasesDiv.appendChild(phraseDiv);
+
+        // speak button
+        const btn = phraseDiv.querySelector('.speak-btn');
+        btn.addEventListener('click', () => {
+            const utter = new SpeechSynthesisUtterance(p.pron);
+            utter.lang = 'en-US';
+            speechSynthesis.speak(utter);
+        });
+    });
+
+    // mark completed
+    if (!completed.includes(num)) {
+        completed.push(num);
+        localStorage.setItem("completedLessons", JSON.stringify(completed));
+        updateProgress();
+    }
+}
+
+/* ---------- BACK BUTTON ---------- */
+document.getElementById("backBtn").onclick = () => {
+    document.getElementById("lessonContent").style.display = "none";
+    lessonsGrid.style.display = "grid";
+};
+</script>
+
+</body>
+</html>

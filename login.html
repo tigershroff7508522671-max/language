@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sign in | Languages.com</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<style>
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1e40af;
+  --bg: #f1f5f9;
+  --muted: #64748b;
+  --danger: #ef4444;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.login-card {
+  background: white;
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
+.logo {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: 1px solid #cbd5f5;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.login-btn:hover { background: var(--primary-dark); }
+
+.divider {
+  text-align: center;
+  margin: 22px 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.error {
+  color: var(--danger);
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.google-btn-container {
+  display: flex;
+  justify-content: center;
+}
+</style>
+</head>
+
+<body>
+<div class="login-card">
+  <div class="logo">Languages.com</div>
+  <div class="subtitle">Sign in with your email or Google account</div>
+
+  <div id="error" class="error"></div>
+
+  <!-- EMAIL LOGIN -->
+  <div class="field">
+    <input type="email" id="email" placeholder="Email address">
+  </div>
+  <div class="field">
+    <input type="password" id="password" placeholder="Password">
+  </div>
+  <button class="login-btn" onclick="emailLogin()">Sign in with Email</button>
+
+  <div class="divider">or</div>
+
+  <!-- GOOGLE LOGIN -->
+  <div class="google-btn-container">
+    <div id="googleBtn"></div>
+  </div>
+
+  <p style="text-align:center;color:var(--muted);font-size:12px;margin-top:15px;">
+    By continuing, you agree to our Terms of Service & Privacy Policy
+  </p>
+</div>
+
+<script>
+// ---------- EMAIL LOGIN ----------
+function emailLogin() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const error = document.getElementById("error");
+
+  if(!email || !password) {
+    error.textContent = "Please enter both email and password.";
+    return;
+  }
+  if(!email.includes("@")) {
+    error.textContent = "Enter a valid email address.";
+    return;
+  }
+
+  const user = {
+    name: email.split("@")[0],
+    email: email,
+    picture: "https://via.placeholder.com/100",
+    phone: "",
+    nationality: "",
+    passport: "",
+    role: "user",
+    progress: 0,
+    certificate: false,
+    loginAt: Date.now()
+  };
+
+  localStorage.setItem("user", JSON.stringify(user));
+  localStorage.setItem("loggedIn", "true");
+  window.location.href = "dashboard.html";
+}
+
+// ---------- GOOGLE LOGIN ----------
+google.accounts.id.initialize({
+  client_id: "YOUR_GOOGLE_CLIENT_ID", // Replace with your Google Client ID
+  callback: handleGoogleLogin
+});
+
+google.accounts.id.renderButton(
+  document.getElementById("googleBtn"),
+  { theme: "outline", size: "large", width: 300 }
+);
+
+function handleGoogleLogin(response) {
+  const payload = JSON.parse(atob(response.credential.split(".")[1]));
+  const user = {
+    name: payload.name,
+    email: payload.email,
+    picture: payload.picture,
+    phone: "",
+    nationality: "",
+    passport: "",
+    role: "user",
+    progress: 0,
+    certificate: false,
+    loginAt: Date.now()
+  };
+
+  localStorage.setItem("user", JSON.stringify(user));
+  localStorage.setItem("loggedIn", "true");
+  window.location.href = "dashboard.html";
+}
+</script>
+</body>
+</html>
