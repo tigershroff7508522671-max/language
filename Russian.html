@@ -1665,7 +1665,7 @@ function openLesson(num) {
         const btn = phraseDiv.querySelector('.speak-btn');
         btn.addEventListener('click', () => {
             const utter = new SpeechSynthesisUtterance(p.pron);
-            utter.lang = 'en-US';
+            utter.lang = 'ru-RU';
             speechSynthesis.speak(utter);
         });
     });
@@ -1687,3 +1687,4 @@ document.getElementById("backBtn").onclick = () => {
 
 </body>
 </html>
+
